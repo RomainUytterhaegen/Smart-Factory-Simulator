@@ -116,32 +116,84 @@ interface.destroy()
 
 class GuiUsine(Frame):
     def __init__(self, fenetre):
-        Frame.__init__(fenetre, width=1080, height=720)
-        # self.pack(fill=BOTH)
-        self.bouton_play = Button(self, )
+        Frame.__init__(self, fenetre, width=1080, height=720)
+        self.pack(fill=BOTH)
+
+        # déclaration des boutons
+        self.bouton_play = Button(self, text="Jouer", command=self.jouer())
+        self.bouton_pause = Button(self, text="Pause", command=self.pauser())
+        self.bouton_reinit = Button(self, text="Reinitialiser", command=self.reinitialiser())
+        self.bouton_ajouter_robot = Button(self, text="Ajouter un robot", command=self.ajouter_robot())
+        self.bouton_visualiser_taches = Button(self, text="Visualiser la liste des tâches",
+                                               command=self.visualiser_taches())
+        self.bouton_ajouter_taches = Button(self, text="Ajouter des Tâches", command=self.ajouter_taches())
+        self.bouton_mode_text = Button(self, text="Passer en Mode texte", command=self.mode_text())
+        self.bouton_modifier_usine = Button(self, text="Modifier l'usine", command=self.modifier_usine())
+
+        # pack des boutons
+        self.bouton_play.pack()
+        self.bouton_pause.pack()
+        self.bouton_reinit.pack()
+        self.bouton_ajouter_robot.pack()
+        self.bouton_visualiser_taches.pack()
+        self.bouton_ajouter_taches.pack()
+        self.bouton_mode_text.pack()
+        self.bouton_modifier_usine.pack()
 
     def jouer(self):
+        """
+        Lance la simulation de l'usine
+        :return:
+        """
         pass
 
     def pauser(self):
+        """
+        Pause la simulation de l'usine
+        :return:
+        """
         pass
 
     def reinitialiser(self):
+        """
+        Réinitialise la simulation de l'usine
+        :return:
+        """
         pass
 
     def ajouter_robot(self):
+        """
+        Permet d'afficher l'écran qui ajoute un robot à la simulation
+        :return:
+        """
         pass
 
     def visualiser_taches(self):
+        """
+        Permet de voir la liste des tâches en cours
+        :return:
+        """
         pass
 
     def ajouter_taches(self):
+        """
+        Permet d'afficher l'écran qui permet d'ajouter des tâches
+        :return:
+        """
         pass
 
     def modifier_usine(self):
+        """
+        Permet d'afficher l'écran qui permet de modifier l'usine
+        :return:
+        """
         pass
 
     def mode_text(self):
+        """
+        Permet d'afficher l'écran du mode texte
+        :return:
+        """
         pass
 
 
