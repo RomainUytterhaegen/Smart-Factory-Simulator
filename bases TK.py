@@ -1,3 +1,4 @@
+from tkinter import *
 """Premier exemple avec Tkinter.
 
 
@@ -111,11 +112,40 @@ interface.mainloop()
 
 interface.destroy()
 """
-from tkinter import *
 
-class guiUsine:
+
+class GuiUsine(Frame):
     def __init__(self, fenetre):
         Frame.__init__(fenetre, width=1080, height=720)
         # self.pack(fill=BOTH)
+        self.bouton_play = Button(self, )
+
+    def jouer(self):
+        pass
+
+    def pauser(self):
+        pass
+
+    def reinitialiser(self):
+        pass
+
+    def ajouter_robot(self):
+        pass
+
+    def visualiser_taches(self):
+        pass
+
+    def ajouter_taches(self):
+        pass
+
+    def modifier_usine(self):
+        pass
+
+    def mode_text(self):
+        pass
 
 
+if __name__ == '__main__':
+    fenetre = Tk()
+    usine = GuiUsine(fenetre=fenetre)
+    usine.mainloop()
