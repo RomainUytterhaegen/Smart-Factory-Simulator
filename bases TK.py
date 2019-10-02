@@ -1,144 +1,60 @@
 from tkinter import *
-"""Premier exemple avec Tkinter.
-
-
-On crée une fenêtre simple qui souhaite la bienvenue à l'utilisateur.
-
-
-"""
-"""
-
-# On importe Tkinter
-
-from tkinter import *
-
-
-# On crée une fenêtre, racine de notre interface
-
-fenetre = Tk()
-
-
-# On crée un label (ligne de texte) souhaitant la bienvenue
-
-# Note : le premier paramètre passé au constructeur de Label est notre
-
-# interface racine
-
-champ_label = Label(fenetre, text="Coucou")
-
-
-# On affiche le label dans la fenêtre
-
-champ_label.pack()
-
-
-var_texte = StringVar()
-
-ligne_texte = Entry(fenetre, textvariable=var_texte, width=30)
-
-ligne_texte.pack()
-
-var_case = IntVar()
-
-case = Checkbutton(fenetre, text="Ne plus poser cette question", variable=var_case)
-
-case.pack()
-
-var_choix = StringVar()
-
-
-choix_rouge = Radiobutton(fenetre, text="Rouge", variable=var_choix, value="rouge")
-
-choix_vert = Radiobutton(fenetre, text="Vert", variable=var_choix, value="vert")
-
-choix_bleu = Radiobutton(fenetre, text="Bleu", variable=var_choix, value="bleu")
-
-
-choix_rouge.pack()
-
-choix_vert.pack()
-
-choix_bleu.pack()
-
-# On démarre la boucle Tkinter qui s'interompt quand on ferme la fenêtre
-fenetre.mainloop()
-
-class Interface(Frame):
-    Notre fenêtre principale.
-
-    Tous les widgets sont stockés comme attributs de cette fenêtre.
-
-    def __init__(self, fenetre, **kwargs):
-        Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
-
-        self.pack(fill=BOTH)
-
-        self.nb_clic = 0
-
-        # Création de nos widgets
-
-        self.message = Label(self, text="Vous n'avez pas cliqué sur le bouton.")
-
-        self.message.pack()
-
-        self.bouton_quitter = Button(self, text="Quitter", command=self.quit)
-
-        self.bouton_quitter.pack(side="left")
-
-        self.bouton_cliquer = Button(self, text="Cliquez ici", fg="red",
-
-                                     command=self.cliquer)
-
-        self.bouton_cliquer.pack(side="right")
-
-    def cliquer(self):
-        Il y a eu un clic sur le bouton.
-
-
-
-        On change la valeur du label message.
-
-        self.nb_clic += 1
-
-        self.message["text"] = "Vous avez cliqué {} fois.".format(self.nb_clic)
-
-
-fenetre = Tk()
-
-interface = Interface(fenetre)
-
-
-interface.mainloop()
-
-interface.destroy()
-"""
 
 
 class GuiUsine(Frame):
-    def __init__(self, fenetre):
-        Frame.__init__(self, fenetre, width=1080, height=720)
-        self.pack(fill=BOTH)
+    def __init__(self, window):
+        Frame.__init__(self, window, bg='white')
+        window.title('Simulation Usine')
+
+        #responsive de self
+        window.rowconfigure(0, weight=1)
+        window.columnconfigure(0, weight=1)
+
+        self.grid(column=0, row=0, sticky="nsew")
+        self.rowconfigure(0, weight=0)
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
 
         # déclaration des boutons
-        self.bouton_play = Button(self, text="Jouer", command=self.jouer())
-        self.bouton_pause = Button(self, text="Pause", command=self.pauser())
-        self.bouton_reinit = Button(self, text="Reinitialiser", command=self.reinitialiser())
-        self.bouton_ajouter_robot = Button(self, text="Ajouter un robot", command=self.ajouter_robot())
-        self.bouton_visualiser_taches = Button(self, text="Visualiser la liste des tâches",
+        boutons_haut = Frame(self, bg='#faf7f2')
+        boutons_haut.columnconfigure(0, weight=1)
+        boutons_haut.columnconfigure(1, weight=1)
+        boutons_haut.columnconfigure(2, weight=1)
+        boutons_haut.columnconfigure(3, weight=1)
+        boutons_haut.columnconfigure(4, weight=1)
+        boutons_haut.columnconfigure(5, weight=1)
+        boutons_haut.columnconfigure(6, weight=1)
+        boutons_haut.columnconfigure(7, weight=1)
+        boutons_haut.rowconfigure(0, weight=1)
+
+        contenu = Frame(self, bg='#faf7f2')
+        boutons_haut.grid(row=0, column=0, sticky='news')
+        contenu.grid(row=1, column=0, sticky='sewn')
+
+
+        self.bouton_play = Button(boutons_haut, text="Jouer", command=self.jouer())
+        self.bouton_pause = Button(boutons_haut, text="Pause", command=self.pauser())
+        self.bouton_reinit = Button(boutons_haut, text="Reinitialiser", command=self.reinitialiser())
+        self.bouton_ajouter_robot = Button(boutons_haut, text="Ajouter un robot", command=self.ajouter_robot())
+        self.bouton_visualiser_taches = Button(boutons_haut, text="Visualiser la liste des tâches",
                                                command=self.visualiser_taches())
-        self.bouton_ajouter_taches = Button(self, text="Ajouter des Tâches", command=self.ajouter_taches())
-        self.bouton_mode_text = Button(self, text="Passer en Mode texte", command=self.mode_text())
-        self.bouton_modifier_usine = Button(self, text="Modifier l'usine", command=self.modifier_usine())
+        self.bouton_ajouter_taches = Button(boutons_haut, text="Ajouter des Tâches", command=self.ajouter_taches())
+        self.bouton_mode_text = Button(boutons_haut, text="Passer en Mode texte", command=self.mode_text())
+        self.bouton_modifier_usine = Button(boutons_haut, text="Modifier l'usine", command=self.modifier_usine())
 
         # pack des boutons
-        self.bouton_play.pack()
-        self.bouton_pause.pack()
-        self.bouton_reinit.pack()
-        self.bouton_ajouter_robot.pack()
-        self.bouton_visualiser_taches.pack()
-        self.bouton_ajouter_taches.pack()
-        self.bouton_mode_text.pack()
-        self.bouton_modifier_usine.pack()
+        self.bouton_play.grid(row=0, column=0, padx=2, pady=2)
+        self.bouton_pause.grid(row=0, column=1, padx=2, pady=2)
+        self.bouton_reinit.grid(row=0, column=2, padx=2, pady=2)
+        self.bouton_ajouter_robot.grid(row=0, column=3, padx=2, pady=2)
+        self.bouton_visualiser_taches.grid(row=0, column=4, padx=2, pady=2)
+        self.bouton_ajouter_taches.grid(row=0, column=5, padx=2, pady=2)
+        self.bouton_mode_text.grid(row=0, column=6, padx=2, pady=2)
+        self.bouton_modifier_usine.grid(row=0, column=7, padx=2, pady=2)
+
+        # contenu du contenu
+        self.label_test = Label(contenu, text="Ici sera mon canevas")
+        self.label_test.pack()
 
     def jouer(self):
         """
@@ -199,5 +115,5 @@ class GuiUsine(Frame):
 
 if __name__ == '__main__':
     fenetre = Tk()
-    usine = GuiUsine(fenetre=fenetre)
+    usine = GuiUsine(window=fenetre)
     usine.mainloop()
