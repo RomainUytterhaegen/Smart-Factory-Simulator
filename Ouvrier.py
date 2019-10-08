@@ -1,10 +1,9 @@
-from Obstacle import *
 class Ouvrier():
     def __init__(self,id,posInit,radius,vitMarche):
-        self.id = id
-        self.posInit = posInit  #Position initiale,fixe et mémorisée
-        self.pos = posInit      #Position en temps réel, amenée à changer
-        self.radius = radius    #Rayon correspondant à la limite de déplacement de l'ouvrier
+        self.id = id            #int
+        self.posInit = posInit  #tuple (xInit,yInit), position initiale,fixe et mémorisée
+        self.pos = posInit      #tuple (x,y), position en temps réel, amenée à changer
+        self.radius = radius    #int, rayon correspondant à la limite de déplacement de l'ouvrier
 
 
         self.vitMarche = vitMarche

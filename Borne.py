@@ -4,7 +4,8 @@ from Obstacle import Obstacle
 class Borne(Obstacle):
     tauxRecharge = 10
 
-    def __init__(self):
+    def __init__(self,id,pos1,pos2):
+        Obstacle.__init__(self, id, pos1, pos2)
         self.used = False
 
     def recharge(self, robot):

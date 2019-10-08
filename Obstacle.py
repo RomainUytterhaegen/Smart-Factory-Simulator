@@ -1,9 +1,9 @@
 
 class Obstacle:
-    def __init__(self, idObstacle:int,  pos1:tuple, pos2:tuple):
-        self.id = idObstacle
-        self.pos1 = pos1
-        self.pos2 = pos2
+    def __init__(self, id:int,  pos1:tuple, pos2:tuple):
+        self.id = id  #int
+        self.pos1 = pos1  #tuple (x1,y1)
+        self.pos2 = pos2  #tuple (x2,y2)
 
 
     def getPos1(self):
