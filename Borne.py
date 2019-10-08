@@ -2,6 +2,7 @@ import time
 from Obstacle import Obstacle
 
 class Borne(Obstacle):
+    Obstacle.__init__(self, idObstacle:int,  pos1:tuple, pos2:tuple)
     tauxRecharge = 10
 
     def __init__(self):
@@ -15,4 +16,4 @@ class Borne(Obstacle):
             time.sleep(2) # simule le temps pour recharger
             robot.remplirBatterie(Borne.tauxRecharge)
         self.used = False
-        return None
+        

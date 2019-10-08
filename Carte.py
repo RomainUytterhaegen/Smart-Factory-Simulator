@@ -9,6 +9,7 @@ class Carte:
         self.x = x
         self.y = y
         
+        
 
         
         

@@ -1,4 +1,4 @@
-from Tache.py import *
+from Tache import Tache
 
 class TacheEnchere(Tache) :
 
