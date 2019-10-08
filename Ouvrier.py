@@ -1,8 +1,12 @@
 from Obstacle import *
 class Ouvrier():
-    def __init__(self,id,pos,vitMarche):
+    def __init__(self,id,posInit,radius,vitMarche):
         self.id = id
-        self.pos = pos
+        self.posInit = posInit  #Position initiale,fixe et mémorisée
+        self.pos = posInit      #Position en temps réel, amenée à changer
+        self.radius = radius    #Rayon correspondant à la limite de déplacement de l'ouvrier
+
+
         self.vitMarche = vitMarche
 
     def getPos(self):
@@ -17,3 +21,18 @@ class Ouvrier():
         :return:
         """
         return self.vitMarche
+    def genereDestination(self):
+        """
+        Génère aléatoirement une destination pour l'ouvrier.
+        Celle ci ne peut se trouver au delà du radius
+        Retourne les coordonnées de sa destination
+        :return:
+        """
+        pass
+    def allerA(self,x,y):
+        """
+        Permet à l'ouvrier de se déplacer d'un endroit à un autre,
+        Modifie sa position pos mais pas posInit
+        :return:
+        """
+        pass
