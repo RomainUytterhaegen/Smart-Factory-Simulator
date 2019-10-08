@@ -16,51 +16,50 @@ class GuiUsine(Frame):
         self.columnconfigure(0, weight=1)
 
         # déclaration des grilles des boutons
-        boutons_haut = Frame(self, bg='#faf7f2')
-        boutons_haut.columnconfigure(0, weight=1)
-        boutons_haut.columnconfigure(1, weight=1)
-        boutons_haut.columnconfigure(2, weight=1)
-        boutons_haut.columnconfigure(3, weight=1)
-        boutons_haut.columnconfigure(4, weight=1)
-        boutons_haut.columnconfigure(5, weight=1)
-        boutons_haut.columnconfigure(6, weight=1)
-        boutons_haut.columnconfigure(7, weight=1)
-        boutons_haut.rowconfigure(0, weight=1)
+        self.boutons_haut = Frame(self, bg='#faf7f2')
+        self.boutons_haut.columnconfigure(0, weight=1)
+        self.boutons_haut.columnconfigure(1, weight=1)
+        self.boutons_haut.columnconfigure(2, weight=1)
+        self.boutons_haut.columnconfigure(3, weight=1)
+        self.boutons_haut.columnconfigure(4, weight=1)
+        # self.boutons_haut.columnconfigure(5, weight=1)
+        self.boutons_haut.columnconfigure(6, weight=1)
+        self.boutons_haut.columnconfigure(7, weight=1)
+        self.boutons_haut.rowconfigure(0, weight=1)
 
-        boutons_haut.grid(row=0, column=0, sticky='news')
+        self.boutons_haut.grid(row=0, column=0, sticky='news')
 
         # Ajout des méthodes
-        self.bouton_play = Button(boutons_haut, text="Jouer", command=self.jouer())
-        self.bouton_pause = Button(boutons_haut, text="Pause", command=self.pauser())
-        self.bouton_reinit = Button(boutons_haut, text="Reinitialiser", command=self.reinitialiser())
-        self.bouton_ajouter_robot = Button(boutons_haut, text="Ajouter un robot", command=self.ajouter_robot())
-        self.bouton_visualiser_taches = Button(boutons_haut, text="Visualiser la liste des tâches",
-                                               command=self.visualiser_taches())
-        self.bouton_ajouter_taches = Button(boutons_haut, text="Ajouter des Tâches", command=self.ajouter_taches())
-        self.bouton_mode_text = Button(boutons_haut, text="Passer en Mode texte", command=self.mode_text())
-        self.bouton_modifier_usine = Button(boutons_haut, text="Modifier l'usine", command=self.modifier_usine())
+        self.bouton_play = Button(self.boutons_haut, text="Jouer", command=self.jouer())
+        self.bouton_pause = Button(self.boutons_haut, text="Pause", command=self.pauser())
+        self.bouton_reinit = Button(self.boutons_haut, text="Reinitialiser", command=self.reinitialiser())
+        self.bouton_modifier_robot = Button(self.boutons_haut, text="Modifier les robot", command=self.modifier_robot())
+        self.bouton_modifier_taches = Button(self.boutons_haut, text="Modifier les tâches", command=self.modifier_taches())
+        self.bouton_modifier_usine = Button(self.boutons_haut, text="Modifier l'usine", command=self.modifier_usine())
+        self.bouton_mode_visuel = Button(self.boutons_haut, text="Passer en Mode visuel", command=self.mode_visuel())
+        self.bouton_mode_text = Button(self.boutons_haut, text="Passer en Mode texte", command=self.mode_text())
 
         # pack des boutons
-        self.bouton_play.grid(row=0, column=0, padx=2, pady=2)
-        self.bouton_pause.grid(row=0, column=1, padx=2, pady=2)
-        self.bouton_reinit.grid(row=0, column=2, padx=2, pady=2)
-        self.bouton_ajouter_robot.grid(row=0, column=3, padx=2, pady=2)
-        self.bouton_visualiser_taches.grid(row=0, column=4, padx=2, pady=2)
-        self.bouton_ajouter_taches.grid(row=0, column=5, padx=2, pady=2)
-        self.bouton_mode_text.grid(row=0, column=6, padx=2, pady=2)
-        self.bouton_modifier_usine.grid(row=0, column=7, padx=2, pady=2)
+        self.bouton_play.grid(row=0, column=0, padx=2, pady=2, sticky='news')
+        self.bouton_pause.grid(row=0, column=1, padx=2, pady=2, sticky='news')
+        self.bouton_reinit.grid(row=0, column=2, padx=2, pady=2, sticky='news')
+        self.bouton_modifier_robot.grid(row=0, column=3, padx=2, pady=2, sticky='news')
+        self.bouton_modifier_taches.grid(row=0, column=4, padx=2, pady=2, sticky='news')
+        self.bouton_modifier_usine.grid(row=0, column=5, padx=2, pady=2, sticky='news')
+        self.bouton_mode_visuel.grid(row=0, column=6, padx=2, pady=2, sticky='news')
+        self.bouton_mode_text.grid(row=0, column=7, padx=2, pady=2, sticky='news')
 
-        contenu = Frame(self, bg='#faf7f2')
-        contenu.rowconfigure(0, weight=2)
-        contenu.rowconfigure(1, weight=1)
-        contenu.columnconfigure(0, weight=1)
-        contenu.grid(row=1, column=0, sticky='news')
+        self.contenu = Frame(self, bg='#faf7f2')
+        self.contenu.rowconfigure(0, weight=2)
+        self.contenu.rowconfigure(1, weight=1)
+        self.contenu.columnconfigure(0, weight=1)
+        self.contenu.grid(row=1, column=0, sticky='news')
 
         # contenu du contenu
-        self.canvas_usine = Canvas(contenu)
+        self.canvas_usine = Canvas(self.contenu)
         self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
-        self.message_textmode = Message(contenu, text=self.terminal_text(), width=300000, justify='left', highlightcolor='blue')
+        self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left', highlightcolor='blue')
         self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
 
     def jouer(self):
@@ -84,23 +83,16 @@ class GuiUsine(Frame):
         """
         pass
 
-    def ajouter_robot(self):
+    def modifier_robot(self):
         """
         Permet d'afficher l'écran qui ajoute un robot à la simulation
         :return:
         """
         pass
 
-    def visualiser_taches(self):
+    def modifier_taches(self):
         """
         Permet de voir la liste des tâches en cours
-        :return:
-        """
-        pass
-
-    def ajouter_taches(self):
-        """
-        Permet d'afficher l'écran qui permet d'ajouter des tâches
         :return:
         """
         pass
@@ -110,6 +102,20 @@ class GuiUsine(Frame):
         Permet d'afficher l'écran qui permet de modifier l'usine
         :return:
         """
+        pass
+
+    def mode_visuel(self):
+        """
+        Permet d'afficher l'ecran de simulation 2d
+        :return:
+        """
+        print('yolo')
+        self.contenu = Frame(self, bg='blue')
+        self.canvas_usine = Canvas(self.contenu)
+        self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
+
+        self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left', highlightcolor='blue')
+        self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
         pass
 
     def mode_text(self):
