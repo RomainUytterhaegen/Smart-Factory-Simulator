@@ -15,6 +15,4 @@ class Borne(Obstacle):
             time.sleep(2) # simule le temps pour recharger
             robot.remplirBatterie(Borne.tauxRecharge)
         self.used = False
-        return None        
-
-        
+        return None
