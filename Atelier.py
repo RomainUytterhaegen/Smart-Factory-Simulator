@@ -8,6 +8,5 @@ class Atelier(Obstacle):
     def getUtilite(self):
         """
         Retourne l'utilité de l'atelier
-        :return:
         """
         return self.utilite

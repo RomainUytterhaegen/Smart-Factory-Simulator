@@ -14,7 +14,7 @@ class Borne(Obstacle):
             raise EnvironmentError('Le robot est déjà rechargé')
         while not(robot.isFull()):
             self.used = True
-            time.sleep(2) # simule le temps pour recharger
+            time.sleep(1) # simule le temps pour recharger
             robot.remplirBatterie(Borne.tauxRecharge)
         self.used = False
         

@@ -20,8 +20,9 @@ class Robot:
 
     def faireTache(self,tache:Tache):
         """
+        Va à l'endroit de la tâche.
         Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
-        Retourne True si la tâche a été effectuée dans les temps, False sinon.
+        Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
         """
         pass
 
@@ -61,15 +62,16 @@ class Robot:
 
     def allerA(self,x,y):
         """
-        Fait avancer le robot sur une case donnée. Attention, vérifier que c'est une case autour du Robot, si ce n'est pas un obstacle.
-        Enlève de l'autonomie à la batterie du robot.
+        Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
         """
         if x <= self.pos[0]+1 and x >= self.pos[0]-1 and y <= self.pos[1]+1 and y >= self.pos[1]-1:
             self.pos = (x,y)
             self.batterie-=1 
     
-    def encherir(self,tache):
+    def pourCombien(self,tache):
         """
         Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
+        le reste sera géré par la classe TacheEnchere.
         """
-        pass
+        return self.getDistance(tache)*self.vitesse + tache.duree()
+        
