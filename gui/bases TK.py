@@ -15,7 +15,7 @@ class GuiUsine(Frame):
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
 
-        # déclaration des boutons
+        # déclaration des grilles des boutons
         boutons_haut = Frame(self, bg='#faf7f2')
         boutons_haut.columnconfigure(0, weight=1)
         boutons_haut.columnconfigure(1, weight=1)
@@ -27,9 +27,7 @@ class GuiUsine(Frame):
         boutons_haut.columnconfigure(7, weight=1)
         boutons_haut.rowconfigure(0, weight=1)
 
-        contenu = Frame(self, bg='#faf7f2')
         boutons_haut.grid(row=0, column=0, sticky='news')
-        contenu.grid(row=1, column=0, sticky='sewn')
 
         # Ajout des méthodes
         self.bouton_play = Button(boutons_haut, text="Jouer", command=self.jouer())
@@ -52,9 +50,18 @@ class GuiUsine(Frame):
         self.bouton_mode_text.grid(row=0, column=6, padx=2, pady=2)
         self.bouton_modifier_usine.grid(row=0, column=7, padx=2, pady=2)
 
+        contenu = Frame(self, bg='#faf7f2')
+        contenu.rowconfigure(0, weight=2)
+        contenu.rowconfigure(1, weight=1)
+        contenu.columnconfigure(0, weight=1)
+        contenu.grid(row=1, column=0, sticky='news')
+
         # contenu du contenu
         self.canvas_usine = Canvas(contenu)
-        self.canvas_usine.grid(row=0, column=0, padx=5, pady=5)
+        self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
+
+        self.message_textmode = Message(contenu, text=self.terminal_text(), width=300000, justify='left', highlightcolor='blue')
+        self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
 
     def jouer(self):
         """
@@ -111,6 +118,14 @@ class GuiUsine(Frame):
         :return:
         """
         pass
+
+    def terminal_text(self):
+        """
+        défini ce que l'encadré de texte affiche
+        :return: str le contenu du mode text
+        """
+        msg = '>>Initialisation de l\'usine...\n'
+        return msg
 
 
 if __name__ == '__main__':
