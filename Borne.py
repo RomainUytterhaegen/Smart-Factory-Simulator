@@ -1,4 +1,5 @@
 import time
+from Obstacle import Obstacle
 
 class Borne(Obstacle):
     tauxRecharge = 10
