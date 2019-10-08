@@ -1,3 +1,5 @@
+from Tache import Tache
+
 class Robot:
 
     def __init__(self,idRobot:int,transport:bool,assemblage:bool,pos:tuple,vitesse = 2):
@@ -11,9 +13,16 @@ class Robot:
     
     def choixTache(self):
         """
-        Le robot recherche dans la base de donnée toutes les tâches disponibles, prend la première dont il a les capacités. 
-        Faut penser à si le robot a l'autonomie nécessaire. Si oui , si c'est une tâche simple, la tâche est prise directement. Sinon , on appelle la méthode enchère qui gère 
-        le reste. Ajouter les points d'une tâche à un robot s'il la fait. Si aucune tâche n'est disponible, retourne False. 
+        Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
+        (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
+        """
+        pass
+
+    def faireTache(self,tache:Tache):
+        """
+        Va à l'endroit de la tâche.
+        Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
+        Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
         """
         pass
 
@@ -53,15 +62,16 @@ class Robot:
 
     def allerA(self,x,y):
         """
-        Fait avancer le robot sur une case donnée. Attention, vérifier que c'est une case autour du Robot, si ce n'est pas un obstacle.
-        Enlève de l'autonomie à la batterie du robot.
+        Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
         """
         if x <= self.pos[0]+1 and x >= self.pos[0]-1 and y <= self.pos[1]+1 and y >= self.pos[1]-1:
             self.pos = (x,y)
             self.batterie-=1 
     
-    def encherir(self,tache):
+    def pourCombien(self,tache):
         """
         Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
+        le reste sera géré par la classe TacheEnchere.
         """
-        pass
+        return self.getDistance(tache)*self.vitesse + tache.duree()
+        
