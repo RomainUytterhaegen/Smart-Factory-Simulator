@@ -2,5 +2,6 @@ from Tache import Tache
 
 class TacheAssemblage(Tache) :
 
-    def __init__(self):
-        Tache.__init__()
+    def __init__(self,points=0, duree=0,enchere = False):
+        Tache.__init__(points=self.points,duree=self.duree,enchere=self.enchere)
+        

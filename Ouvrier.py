@@ -13,13 +13,15 @@ class Ouvrier():
         Retourn la position de l'ouvrier
         :return:
         """
-        return self.Pos
+        return self.pos
+
     def getVitMarche(self):
         """
         Retourne la vitesse de marche de l'ouvrier
         :return:
         """
         return self.vitMarche
+
     def genereDestination(self):
         """
         Génère aléatoirement une destination pour l'ouvrier.
