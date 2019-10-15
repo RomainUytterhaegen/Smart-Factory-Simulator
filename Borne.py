@@ -2,7 +2,7 @@ import time
 from Obstacle import Obstacle
 
 class Borne(Obstacle):
-    Obstacle.__init__(self, idObstacle:int,  pos1:tuple, pos2:tuple)
+
     tauxRecharge = 10
 
     def __init__(self,id,pos1,pos2):
