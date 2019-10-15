@@ -1,6 +1,7 @@
 import time
 from Obstacle import Obstacle
 
+
 class Borne(Obstacle):
 
     tauxRecharge = 10
@@ -17,4 +18,3 @@ class Borne(Obstacle):
             #time.sleep(1) # simule le temps pour recharger
             robot.remplirBatterie(Borne.tauxRecharge)
         self.used = False
-        

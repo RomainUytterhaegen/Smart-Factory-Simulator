@@ -1,5 +1,4 @@
-import sys
-from tkinter import * # pour Python2 se serait Tkinter
+from tkinter import *
 
 
 class Test(Frame):
