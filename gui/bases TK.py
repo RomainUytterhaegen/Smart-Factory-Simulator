@@ -30,7 +30,7 @@ class GuiUsine(Frame):
         self.boutons_haut.grid(row=0, column=0, sticky='news')
 
         # Ajout des méthodes
-        self.bouton_play = Button(self.boutons_haut, text="Jouer", command=self.jouer())
+        self.bouton_play = Button(self.boutons_haut, text="Lancer", command=self.lancer())
         self.bouton_pause = Button(self.boutons_haut, text="Pause", command=self.pauser())
         self.bouton_reinit = Button(self.boutons_haut, text="Reinitialiser", command=self.reinitialiser())
         self.bouton_modifier_robot = Button(self.boutons_haut, text="Modifier les robot", command=self.modifier_robot())
@@ -62,7 +62,7 @@ class GuiUsine(Frame):
         self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left', highlightcolor='blue')
         self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
 
-    def jouer(self):
+    def lancer(self):
         """
         Lance la simulation de l'usine
         :return:
@@ -131,6 +131,7 @@ class GuiUsine(Frame):
         :return: str le contenu du mode text
         """
         msg = '>>Initialisation de l\'usine...\n'
+        # todo réussir à aligner le texte à gauche
         return msg
 
 
