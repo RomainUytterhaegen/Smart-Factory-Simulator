@@ -49,8 +49,8 @@ class GuiUsine(Frame):
         self.bouton_pause = Button(self.boutons_haut, text="Pause", command=self.pauser)
         self.bouton_reinit = Button(self.boutons_haut, text="Reinitialiser", command=self.reinitialiser)
         self.bouton_modifier_robot = Button(self.boutons_haut, text="Modifier les robots", command=self.modifier_robot)
-        self.bouton_modifier_taches = Button(self.boutons_haut, text="Modifier les tâches",
-                                             command=self.modifier_taches)
+        self.bouton_voir_ateliers = Button(self.boutons_haut, text="Voir les ateliers",
+                                           command=self.voir_ateliers)
         self.bouton_modifier_usine = Button(self.boutons_haut, text="Modifier l'usine", command=self.modifier_usine)
         self.bouton_mode_visuel = Button(self.boutons_haut, text="Passer en Mode visuel", command=self.mode_visuel)
         self.bouton_mode_text = Button(self.boutons_haut, text="Passer en Mode texte", command=self.mode_text)
@@ -60,7 +60,7 @@ class GuiUsine(Frame):
         self.bouton_pause.grid(row=0, column=1, padx=2, pady=2, sticky='news')
         self.bouton_reinit.grid(row=0, column=2, padx=2, pady=2, sticky='news')
         self.bouton_modifier_robot.grid(row=0, column=3, padx=2, pady=2, sticky='news')
-        self.bouton_modifier_taches.grid(row=0, column=4, padx=2, pady=2, sticky='news')
+        self.bouton_voir_ateliers.grid(row=0, column=4, padx=2, pady=2, sticky='news')
         self.bouton_modifier_usine.grid(row=0, column=5, padx=2, pady=2, sticky='news')
         self.bouton_mode_visuel.grid(row=0, column=6, padx=2, pady=2, sticky='news')
         self.bouton_mode_text.grid(row=0, column=7, padx=2, pady=2, sticky='news')
@@ -70,21 +70,21 @@ class GuiUsine(Frame):
         Lance la simulation de l'usine
         :return:
         """
-        pass
+        self.mode_visuel()
 
     def pauser(self):
         """
         Pause la simulation de l'usine
         :return:
         """
-        pass
+        self.mode_visuel()
 
     def reinitialiser(self):
         """
         Réinitialise la simulation de l'usine
         :return:
         """
-        pass
+        self.mode_visuel()
 
     def modifier_robot(self):
         """
@@ -101,8 +101,6 @@ class GuiUsine(Frame):
         self.contenu.rowconfigure(4)
         self.contenu.rowconfigure(5)
         self.contenu.rowconfigure(6)
-        self.contenu.rowconfigure(7)
-        self.contenu.rowconfigure(8)
         self.contenu.columnconfigure(0, weight=1)
         self.contenu.grid(row=1, column=0, sticky='news')
 
@@ -113,8 +111,6 @@ class GuiUsine(Frame):
         self.contenu.entry_assemblage = Entry(self.contenu)
         self.contenu.label_vitesse = Label(self.contenu, text="Vitesse (1-10)?")
         self.contenu.entry_vitesse = Entry(self.contenu)
-        self.contenu.label_batterie = Label(self.contenu, text="Batterie (0-1000)?")
-        self.contenu.entry_batterie = Entry(self.contenu)
 
         self.contenu.label_transport.grid(row=0, column=0, padx=5, pady=5, sticky='new')
         self.contenu.entry_transport.grid(row=1, column=0, padx=5, pady=5, sticky='new')
@@ -122,25 +118,23 @@ class GuiUsine(Frame):
         self.contenu.entry_assemblage.grid(row=3, column=0, padx=5, pady=5, sticky='new')
         self.contenu.label_vitesse.grid(row=4, column=0, padx=5, pady=5, sticky='new')
         self.contenu.entry_vitesse.grid(row=5, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.label_batterie.grid(row=6, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.entry_batterie.grid(row=7, column=0, padx=5, pady=5, sticky='new')
 
-        self.contenu.bouton_soumettre = Button(self.contenu, text="Ajouter ce robot")
-        self.contenu.bouton_soumettre.grid(row=8, column=0, padx=5, pady=5, sticky='new')
+        self.contenu.bouton_soumettre = Button(self.contenu, text="Ajouter ce robot", activebackground='green')
+        self.contenu.bouton_soumettre.grid(row=6, column=0, padx=20, pady=20, sticky='new')
 
-    def modifier_taches(self):
+    def voir_ateliers(self):
         """
         Permet de voir la liste des tâches en cours
         :return:
         """
-        pass
+        self.contenu_non_implemente()
 
     def modifier_usine(self):
         """
         Permet d'afficher l'écran qui permet de modifier l'usine
         :return:
         """
-        pass
+        self.contenu_non_implemente()
 
     def mode_visuel(self):
         """
@@ -187,6 +181,21 @@ class GuiUsine(Frame):
         msg = '>>Initialisation de l\'usine...\n'
         # todo réussir à aligner le texte à gauche
         return msg
+
+    def contenu_non_implemente(self):
+        """
+        Affiche un label pour prévenir l'utilisateur
+        :return:
+        """
+        self.contenu.destroy()
+
+        self.contenu = Frame(self, bg='red')
+        self.contenu.rowconfigure(0, weight=1)
+        self.contenu.columnconfigure(0, weight=1)
+        self.contenu.grid(row=1, column=0, sticky='news')
+
+        self.contenu.label_non_implemente = Label(self.contenu, text="Le contenu n'est pas encore implémenté", bg='red')
+        self.contenu.label_non_implemente.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
 
 """
