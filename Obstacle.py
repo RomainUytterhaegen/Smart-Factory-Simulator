@@ -1,35 +1,39 @@
+class Ouvrier():
+    def __init__(self,id,posInit,radius,vitMarche):
+        self.id = id            #int
+        self.posInit = posInit  #tuple (xInit,yInit), position initiale,fixe et mémorisée
+        self.pos = posInit      #tuple (x,y), position en temps réel, amenée à changer
+        self.radius = radius    #int, rayon correspondant à la limite de déplacement de l'ouvrier
 
-class Obstacle:
-    def __init__(self, id:int,  pos1:tuple, pos2:tuple):
-        self.id = id  #int
-        self.pos1 = pos1  #tuple (x1,y1)
-        self.pos2 = pos2  #tuple (x2,y2)
 
+        self.vitMarche = vitMarche
 
-    def getPos1(self):
+    def getPos(self):
         """
-        Retourne les coordonnées du coin bas_gauche de l'obstacle
-        :return: Tuple
-        """
-        return self.pos1
-
-    def getPos2(self):
-        """
-        Retourne les coordonnées du coin haut_droit de l'obstacle
-        :return: Tuple
-        """
-        return self.pos2
-
-    def getHeight(self):
-        """
-        Retourne la hauteur de l'obstacle (axe Y)
+        Retourn la position de l'ouvrier
         :return:
         """
-        return self.pos2[1]-self.pos1[1]
+        return self.pos
 
-    def getWidth(self):
+    def getVitMarche(self):
         """
-        Retourne la largeur de l'obstacle (axe X)
+        Retourne la vitesse de marche de l'ouvrier
         :return:
         """
-        return self.pos2[0]-self.pos1[0]
+        return self.vitMarche
+
+    def genereDestination(self):
+        """
+        Génère aléatoirement une destination pour l'ouvrier.
+        Celle ci ne peut se trouver au delà du radius
+        Retourne les coordonnées de sa destination
+        :return:
+        """
+        pass
+    def allerA(self,x,y):
+        """
+        Permet à l'ouvrier de se déplacer d'un endroit à un autre,
+        Modifie sa position pos mais pas posInit
+        :return:
+        """
+        pass
