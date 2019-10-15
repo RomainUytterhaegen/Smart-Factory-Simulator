@@ -10,3 +10,10 @@ class Atelier(Obstacle):
         Retourne l'utilité de l'atelier
         """
         return self.utilite
+    
+    def genereTache(self):
+        """
+        Génère une tâche
+        :return: Tache
+        """
+        pass
