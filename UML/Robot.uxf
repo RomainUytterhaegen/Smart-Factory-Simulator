@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>280</y>
+      <w>210</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>Robot
+--
+-idRobot : int
+-transport : bool
+-assemblage : bool
+-vitesse : float = 2
+-batterie : float = 1000
+-pos :  int[2]
+-points : int
+--
++choixTache():Tache
++faireTache(Tache):void
++allerBorne():void
++getDistance(Obstacle):int
++getAutonomie():int
++getCompetences():list
++getVitesse():float
++allerA(int,int):void
++pourCombien(Tache):float</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

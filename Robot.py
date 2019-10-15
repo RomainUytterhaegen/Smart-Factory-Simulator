@@ -3,10 +3,10 @@ from Tache import Tache
 class Robot:
 
     def __init__(self,idRobot:int,transport:bool,assemblage:bool,pos:tuple,vitesse = 2):
-        self.id = idRobot # int
+        self.idRobot = idRobot # int
         self.transport = transport #booléen
         self.assemblage = assemblage #booléen
-        self.vitesse = vitesse #int
+        self.vitesse = vitesse #float
         self.batterie = 1000 # chaque case parcourue, 1 de batterie en moins
         self.pos = pos # (x2,y2)
         self.points = 0
