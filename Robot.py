@@ -15,14 +15,17 @@ class Robot:
         """
         Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
         (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
+        TODO méthode allerA()
         """
         pass
 
     def faireTache(self,tache:Tache):
         """
         Va à l'endroit de la tâche.
+
         Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
         Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
+        TODO ALgorithme pour trouver son chemin parmi les obstacles
         """
         pass
 
@@ -63,10 +66,9 @@ class Robot:
     def allerA(self,x,y):
         """
         Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
+        TODO algorithme pour trouver son chemin parmi les obstacles 
         """
-        if x <= self.pos[0]+1 and x >= self.pos[0]-1 and y <= self.pos[1]+1 and y >= self.pos[1]-1:
-            self.pos = (x,y)
-            self.batterie-=1 
+        pass
     
     def pourCombien(self,tache):
         """

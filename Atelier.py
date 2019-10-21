@@ -1,9 +1,14 @@
 from Obstacle import Obstacle
+from Tache import Tache
 
 class Atelier(Obstacle):
-    def __init__(self,id,pos1,pos2,utilite):
+    def __init__(self,id:int,pos1:tuple,pos2:tuple,utilite:str):
         Obstacle.__init__(self,id,pos1,pos2)
-        self.utilite = utilite
+        if self.ulilite in ["Assemblage","Transport"]:
+            self.utilite = utilite
+        else:
+            #Faut lancer une exception
+            pass
 
     def getUtilite(self):
         """
@@ -11,9 +16,9 @@ class Atelier(Obstacle):
         """
         return self.utilite
     
-    def genereTache(self):
+    def genererTache(self):
         """
-        Génère une tâche
-        :return: Tache
+        Génère une tâche lorsqu'elle est appelée.
         """
-        pass
+        tache = Tache()
+        return tache

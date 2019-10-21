@@ -2,13 +2,14 @@ import random
 
 class Tache :
 
-    def __init__(self, enchere):
+    def __init__(self):
         self.points = random.randint(1, 1000) #Surement à changer plus tard, la c'est juste pour test
-        self.duree = random.randint(1, 180)
-        if enchere == True:
-            self.enchere = random.randint(0, 501)
-        else:
-            self.enchere = 0
+        self.duree = random.randint(50, 200) # Durée en secondes
+        self.enchere = False
+        #on dit qu'une tâche a 10% de chance d'être une enchère
+        chance = random.randint(0,100)
+        if chance <=10:
+            self.enchere = True
 
     def getPoints(self):
         pts = self.points
@@ -23,10 +24,12 @@ class Tache :
         return res
 
     def __str__(self):
-        return "Points : {0} , durée : {1} minutes".format(self.points, self.duree)
+        return "Points : {0} , durée : {1} secondes".format(self.points, self.duree)
 
+
+#TEST
 if __name__ == "__main__":
-    tache1 = Tache(False)
+    tache1 = Tache()
     print("\n")
     print(tache1)
     print(tache1.getDuree())

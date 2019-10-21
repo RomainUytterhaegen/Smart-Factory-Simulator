@@ -8,15 +8,15 @@ class Carte:
         self.listeObstacle = listeObstacle
         self.x = x
         self.y = y
-        self.plan = array()
+        self.plan = []
         # Création du plan vide
         for c in range(0,self.x):
-            plan.append([])
+            self.plan.append([])
             for d in range(0,self.y):
-                self.plan[c].append(0)
+                self.plan[c][d].append(0)
 
         for i in range(0,len(self.listeObstacle)):
-            if type(listeObstacle[i]) is in ("Atelier","Borne","Obstacle"):
+            if type(listeObstacle[i]) in ("Atelier","Borne","Obstacle"):
                 p1 = self.listeObstacle[i].getPos1()
                 x1 = p1[0]
                 y1 = p1[1]
@@ -34,3 +34,14 @@ class Carte:
 
                         elif type(listeObstacle[i]) == "Obstacle":
                             self.plan[k][l] = 1
+
+    def getObstacles(self):
+        """
+        Retourne toutes les cases qui ne sont pas traversables
+        """
+        res = []
+        for i in range(self.x):
+            for j in range(self.y):
+                if self.plan[i][j] != 0:
+                    res.append((i,j))
+        return res

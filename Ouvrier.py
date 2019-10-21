@@ -3,36 +3,10 @@ class Ouvrier():
         self.id = id            #int
         self.pos = pos          #tuple (x,y), position en temps réel, amenée à changer
         self.radius = radius    #int, rayon correspondant à la limite de déplacement de l'ouvrier
+        self.vitMarche = vitMarche = 1
 
-
-        self.vitMarche = vitMarche
-
-    def getPos(self):
+    def seDeplacer(self):
         """
-        Retourn la position de l'ouvrier
-        :return:
-        """
-        return self.pos
-
-    def getVitMarche(self):
-        """
-        Retourne la vitesse de marche de l'ouvrier
-        :return:
-        """
-        return self.vitMarche
-
-    def genereDestination(self):
-        """
-        Génère aléatoirement une destination pour l'ouvrier.
-        Celle ci ne peut se trouver au delà du radius
-        Retourne les coordonnées de sa destination
-        :return:
-        """
-        pass
-    def allerA(self,x,y):
-        """
-        Permet à l'ouvrier de se déplacer d'un endroit à un autre,
-        Modifie sa position pos mais pas posInit
-        :return:
+        A chaque appel de cette méthode , l'ouvrir se déplace d'une case, tout en restant dans sa zone de déplacement
         """
         pass

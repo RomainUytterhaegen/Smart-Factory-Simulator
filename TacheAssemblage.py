@@ -2,6 +2,7 @@ from Tache import Tache
 
 class TacheAssemblage(Tache) :
 
-    def __init__(self,points=0, duree=0,enchere = False):
-        Tache.__init__(points=self.points,duree=self.duree,enchere=self.enchere)
+    def __init__(self,dureeAss:int):
+        Tache.__init__()
+        self.dureeAss = dureeAss
         
