@@ -77,7 +77,7 @@ class Robot:
         """
         return self.getDistance(tache)*self.vitesse + tache.duree()
 
-    def isFull():
+    def isFull(self):
         """
         Retourne TRUE si la batterie du Robot est chargée , false sinon
         """
