@@ -4,11 +4,12 @@ from Obstacle import Obstacle
 
 class Carte:
 
-    def __init__(self,x:int,y:int,listeObstacle:list = []):
+    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = []):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
         """
+        self.nom = nom
         self.listeObstacle = listeObstacle
         #On supprime tout les obstacles dans la base de donnée
         self.x = x
@@ -44,7 +45,7 @@ class Carte:
         w = obstacle.getWidth()
         h = obstacle.getHeight()
 
-        if x1+w>self.x and y1+h>self.y:
+        if x1+w>self.x and y1-h>self.y:
             #On ajoute l'obstacle dans la base de donnée
             for k in range(x1,w):            #Le plan suit donc le sens bas_gauche vers haut_droit
                 for l in range(y1,h):

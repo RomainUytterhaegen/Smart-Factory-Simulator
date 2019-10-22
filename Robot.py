@@ -81,4 +81,10 @@ class Robot:
         """
         Retourne TRUE si la batterie du Robot est chargée , false sinon
         """
-        return self.batterie == 1000 
+        return self.batterie == 1000
+
+    def remplirBatterie(self,recharge:float):
+        """
+        Recharge la batterie d'une certaine quantité
+        """
+        self.batterie+=recharge
