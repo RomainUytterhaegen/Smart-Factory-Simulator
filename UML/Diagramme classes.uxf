@@ -57,6 +57,7 @@
 - points : int
 - dureeT : int
 - enchere : bool
+- enCours : bool
 --
 + getIdTache() : string
 + getDuree() : float
@@ -180,8 +181,7 @@ m1=1</panel_attributes>
 - utilite : string
 - taches : list
 --
-+getUtilite():string
-+genererTache():Tache</panel_attributes>
++getUtilite():string</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

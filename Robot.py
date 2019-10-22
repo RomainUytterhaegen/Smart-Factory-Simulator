@@ -88,3 +88,4 @@ class Robot:
         Recharge la batterie d'une certaine quantité
         """
         self.batterie+=recharge
+
