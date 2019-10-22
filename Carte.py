@@ -35,7 +35,9 @@ class Carte:
         return res
 
     def ajouterObstacle(self,obstacle:Obstacle):
-        
+        """
+        Méthode qui ajoute un obstacle de la carte.
+        """
         p1 = obstacle.getPos1()
         x1 = p1[0]
         y1 = p1[1]
@@ -59,6 +61,9 @@ class Carte:
             raise EnvironmentError("L'objet ne peut pas être placé.")
 
     def supprimerObstacle(self,idObstacle:int):
+        """
+        Méthode qui supprime un obstacle de la Carte.
+        """
         res = -1
         i = 1
         while i<len(self.listeObstacle) and res != idObstacle:

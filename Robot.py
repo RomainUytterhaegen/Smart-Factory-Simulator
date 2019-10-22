@@ -76,4 +76,9 @@ class Robot:
         le reste sera géré par la classe TacheEnchere.
         """
         return self.getDistance(tache)*self.vitesse + tache.duree()
-        
+
+    def isFull():
+        """
+        Retourne TRUE si la batterie du Robot est chargée , false sinon
+        """
+        return self.batterie == 1000 
