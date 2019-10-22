@@ -4,6 +4,12 @@ class Obstacle:
         self.pos1 = pos1  #tuple (x1,y1)
         self.pos2 = pos2  #tuple (x2,y2)
     
+    def getId(self):
+        """
+        Retourne l'id d'un obstacle
+        """
+        return self.id
+
     def getPos1(self):
         """
         Retourne les coordonnées du coin bas_gauche de l'obstacle
