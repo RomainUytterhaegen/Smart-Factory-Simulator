@@ -30,3 +30,5 @@ if __name__ == "__main__":
     print("Pos 2 : ", born1.getPos2())
     print("Hauteur : ", born1.getHeight())
     print("Largeur : ", born1.getWidth())
+    rob = Robot(2,False,True,(5,7),2)
+    born1.recharge(rob)

@@ -10,3 +10,12 @@ class Ouvrier():
         A chaque appel de cette méthode , l'ouvrir se déplace d'une case, tout en restant dans sa zone de déplacement
         """
         pass
+
+if __name__ == "__main__":
+    ouvr1 = Ouvrier(2,(10,7),5)
+
+
+
+
+
+
