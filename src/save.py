@@ -2,7 +2,8 @@ import os
 from Borne import Borne
 from Atelier import Atelier
 from Obstacle import Obstacle
-from robot import robot
+from Robot import Robot
+from Carte import Carte
 
 
 class Save:
