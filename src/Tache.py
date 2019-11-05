@@ -1,4 +1,5 @@
 import random
+from Robot import Robot
 
 class Tache :
 
@@ -25,6 +26,9 @@ class Tache :
 
     def __str__(self):
         return "Points : {0} , durée : {1} secondes".format(self.points, self.duree)
+
+    def listeEnchere(self):
+	
 
 
 #TEST
