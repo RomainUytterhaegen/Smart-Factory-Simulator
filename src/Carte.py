@@ -1,19 +1,24 @@
 from Borne import Borne
 from Atelier import Atelier
 from Obstacle import Obstacle
+from Robot import Robot
 
 class Carte:
 
-    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = []):
+    
+
+    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = [],listeRobot:list=[]):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
         """
+        self.listeRobot = listeRobot
         self.nom = nom
         self.listeObstacle = listeObstacle
         #On supprime tout les obstacles dans la base de donnée
         self.x = x
         self.y = y
+        self.listeTache = []
         self.plan = []
         # Création du plan vide
         for c in range(0,self.x):
@@ -76,6 +81,29 @@ class Carte:
             self.listeObstacle.pop(res)
         else:
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+
+    def getRobots(self):
+        """
+        Retourne la liste de tout les robots sur la carte
+        """
+        return self.listeRobot
+
+    def ajouterRobot(self,robot:Robot):
+        """
+        Ajoute un robot à la carte.
+        """
+        self.listeRobot.append(robot)
+
+    def supprimerRobot(self,idRobot:int):
+        """
+        Supprime un robot de l'environnement
+        """
+        ind=-1
+        for i in range(len(self.listeRobot)):
+            if self.listeRobot.getId() == idRobot:
+                ind = i
+        self.listeRobot.pop(ind)
+
 
         
 

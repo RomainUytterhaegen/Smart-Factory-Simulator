@@ -5,7 +5,7 @@ from Robot import Robot
 
 class Borne(Obstacle):
 
-    tauxRecharge = 10
+    tauxRecharge = 1
 
     def __init__(self,id:int,pos1:tuple,pos2:tuple):
         Obstacle.__init__(self, id, pos1, pos2)
