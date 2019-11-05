@@ -1,0 +1,27 @@
+{
+    "Robot" :[
+        {
+            "id" : 1,
+            "utilite" : false,
+            "tache" : false,
+            "pos1" : [8,25],
+            "pos2" : [2,2]
+        },
+
+        {
+            "id" : 1,
+            "utilite" : false,
+            "tache" : false,
+            "pos1" : [8,25],
+            "pos2" : [2,2]
+        },
+
+        {
+            "id" : 1,
+            "utilite" : false,
+            "tache" : false,
+            "pos1" : [8,25],
+            "pos2" : [2,2]
+        }]
+
+}

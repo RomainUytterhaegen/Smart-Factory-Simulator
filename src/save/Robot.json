@@ -1,0 +1,27 @@
+{
+    "Robot" :[
+        {
+            "id" : 1,
+            "transport" : false,
+            "assemblage" : false,
+            "pos" : [8,25],
+            "vitesse" : 222.0
+        },
+
+        {
+            "id" : 2,
+            "transport" : false,
+            "assemblage" : true,
+            "pos" : [1 ,2],
+            "vitesse" : 5.0
+        },
+
+        {
+                "id" : 3,
+                "transport" : true,
+                "assemblage" : false,
+                "pos" : [45,100],
+                "vitesse" : 0.0
+        }]
+
+}
