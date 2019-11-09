@@ -1,4 +1,5 @@
 import os
+import json
 from Borne import Borne
 from Atelier import Atelier
 from Obstacle import Obstacle
@@ -9,7 +10,7 @@ from Carte import Carte
 class Save:
 
    
-    def importer(carte:Carte):
+    def importer(self,carte:Carte):
         """
         Transformation du contenue des fichiers json compris dans le dossier 'nomCarte' en objet carte
         avec la liste des obstacles remplies , la taille et son nom definie
@@ -23,7 +24,7 @@ class Save:
                 Taille = json.load(json_data)
                 carte.x = Taille["x"]
                 carte.y = Taille["y"] 
-                Obstacle = array()
+                Obstacle = []
 
                 with open(chemin+'/borne.json','r') as json_data:
                     liste = json.load(json_data)
@@ -50,7 +51,7 @@ class Save:
                         carte.listeRobot.append(b)
         
     
-    def enregistrer(carte:Carte):
+    def enregistrer(self,carte:Carte):
         """
         Transforme une carte et une liste de robot en fichier json
         Prend en paramètre une carte  et la liste des robot dans la carte
@@ -59,8 +60,8 @@ class Save:
 
         chemin = os.path.join(curr_dir)
         if not(os.exists(chemin+carte.nom)):
-            os.mkdir(os.path.join(curr_dir , nomCarte))
-        chemin = os.path.join(curr_dir , nomCarte)
+            os.mkdir(os.path.join(curr_dir , carte.nom))
+        chemin = os.path.join(curr_dir , carte.nom)
         o = []
         b = []
         a = []

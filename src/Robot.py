@@ -41,15 +41,24 @@ class Robot:
 
     def allerBorne(self, carte:Carte):
         """
-        Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige. 
+        Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige.
+        retourne False si aucune borne n'est disponible
         """
-        
-        # Récupère l'ensemble des bornes non occupées
 
-        #Se dirige à la borne 
+        #ON RECUPERE TOUTES LES BORNES DISPONIBLES
+        bornes_dispo = {}
+        for obstacle in carte.listeObstacle:
+            if type(obstacle) == "Borne" and not(obstacle.used):
+                bornes_dispo[obstacle.id] = self.getDistance(obstacle,carte)
 
-        #Se recharge
-        pass
+        #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
+        la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
+
+        # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
+        for borne in carte.listeObstacle:
+            if la_borne[0] == borne.id:
+                self.allerA(borne,carte)
+                borne.recharge(self)
 
     def getId(self):
         """
@@ -57,15 +66,14 @@ class Robot:
         """
         return self.idRobot
 
-    def getDistance(self,obstacle):
+    def getDistance(self,obstacle:Obstacle,carte:Carte):
         """ 
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
         Instancie un Chemin puis retounne le nombre de cases à parcourir
         """
-        
-        # Etablit un chemin , compte le nombre d'étapes
-        pass
+        voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
+        return len(voie.chemin)
 
 
     def getAutonomie(self,carte:Carte):
@@ -92,19 +100,23 @@ class Robot:
         Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
         TODO algorithme pour trouver son chemin parmi les obstacles 
         """
-                
+        #INSTANCIE UN CHEMIN 
+        voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
 
-        #Instancie un chemin
-
-        #Déplace le robot une case par une jusqu'à destination
-        pass
+        #DEPLACE LE ROBOT EN SUIVANT LE CHEMIN
+        while len(voie.chemin)>1:
+            x = voie.chemin[0][0]
+            y = voie.chemin[0][1]
+            if carte.plan[x][y] == 0:
+                self.pos = voie.chemin[0]
+                voie.chemin.pop(0)
     
-    def pourCombien(self,tache:Tache):
+    def pourCombien(self,tache:Tache,carte:Carte):
         """
         Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
         le reste sera géré par la classe TacheEnchere.
         """
-        return self.getDistance(tache)*self.vitesse + tache.duree()
+        return self.getDistance(tache,carte)*self.vitesse + tache.duree()
 
     def isFull(self):
         """

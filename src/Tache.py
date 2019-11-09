@@ -1,7 +1,7 @@
 import random
 from Robot import Robot
 
-class Tache :
+class Tache:
 
     def __init__(self):
         self.points = random.randint(1, 1000) #Surement à changer plus tard, la c'est juste pour test
@@ -28,14 +28,4 @@ class Tache :
         return "Points : {0} , durée : {1} secondes".format(self.points, self.duree)
 
     def listeEnchere(self):
-	
-
-
-#TEST
-if __name__ == "__main__":
-    tache1 = Tache()
-    print("\n")
-    print(tache1)
-    print(tache1.getDuree())
-    print(tache1.getPoints())
-    print(tache1.getEnchere())
+        pass
