@@ -47,18 +47,17 @@ class Robot:
 
         #ON RECUPERE TOUTES LES BORNES DISPONIBLES
         bornes_dispo = {}
-        for obstacle in carte.listeObstacle:
-            if type(obstacle) == "Borne" and not(obstacle.used):
-                bornes_dispo[obstacle.id] = self.getDistance(obstacle,carte)
+        for borne in carte.listeBorne:
+            bornes_dispo[borne.id] = self.getDistance(borne,carte)
 
         #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
         la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
 
         # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
-        for borne in carte.listeObstacle:
-            if la_borne[0] == borne.id:
-                self.allerA(borne,carte)
-                borne.recharge(self)
+        for borne_1 in carte.listeBorne:
+            if la_borne[0] == borne_1.id:
+                self.allerA(borne_1,carte)
+                borne_1.recharge(self)
 
     def getId(self):
         """

@@ -12,10 +12,18 @@ class Carte:
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
         """
+        self.listeBorne = []
+        self.listeAtelier = []
         self.listeRobot = listeRobot
         self.nom = nom
         self.listeObstacle = listeObstacle
-        #On supprime tout les obstacles dans la base de donnée
+        for j in range(len(self.listeObstacle)):
+            if type(self.listeObstacle[j]) == "Borne":
+                self.listeBorne.append(self.listeObstacle[i])
+            if type(self.listeObstacle[j]) == "Atelier":
+                self.listeAtelier.append(self.listeObstacle[i])
+                
+        
         self.x = x
         self.y = y
         self.listeTache = []
