@@ -5,6 +5,28 @@ class CanvasUsine(Canvas):
     selected = None
     last_xy = None
 
+    def __init__(self, master=None, **kwargs):
+        Canvas.__init__(self, master=master, **kwargs)
+
+        self.height = (kwargs['height'])
+        self.width = (kwargs['width'])
+
+        print(self.winfo_reqheight())
+        # robots
+        self.create_text(60, 15, text="ROBOT", )
+        self.create_rectangle(10, 30, 110, 130, activefill="#b9de16", fill="yellow", tags='copy_and_drop')
+
+        # bornes
+        self.create_text(60, 145, text="BORNE")
+        self.create_rectangle(10, 160, 110, 260, activefill="#b9de16", fill="orange", tags='copy_and_drop')
+
+        # equipements
+        self.create_text(60, 275, text="EQUIPEMENT")
+        self.create_rectangle(10, 290, 110, 390, activefill="#b9de16", fill="grey", tags='copy_and_drop')
+
+        # sep
+        self.create_line(120, 0, 120, self.winfo_reqheight(), fill="black")
+
     def bind_item(self):
         self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
         self.tag_bind('copy_and_drop', "<Button1-Motion>", lambda e: self._move_selected(e.x, e.y))
@@ -24,6 +46,7 @@ class CanvasUsine(Canvas):
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
+        self._verif_in_usine()
 
     def _resize_item(self, xe, ye):
         x0, y0, x1, y1 = self.coords('current')
@@ -52,33 +75,73 @@ class CanvasUsine(Canvas):
             coords[1] += y1 - self.last_xy[1]
             coords[3] += y1 - self.last_xy[1]
             self.coords('current', *coords)
-            self.last_xy = x1,y1
+            self.last_xy = x1, y1
+            self._verif_in_usine()
 
     def _copy_item(self, iid):
         # type_ = self.type(iid)
         # assert type_ == 'oval'
         coords = self.coords(iid)
         kwds = self.itemconfigure(iid)
-        kwds = {k: v[-1] for k, v in kwds.items()}
-        return self.create_oval(*coords, **kwds)
+        kwds = {k: v[-1] for k, v in kwds.items() if k != 'tags'}
+        kwds['tags'] = ('move_and_drop', 'resizeable')
+        self.insert(iid, 'qkjsuhflqskhfkl', "ROBOT")
+        if self.type(iid) == 'oval':
+            return self.create_oval(*coords, **kwds)
+        elif self.type(iid) == 'rectangle':
+            return self.create_rectangle(*coords, **kwds)
+
+    def _verif_in_usine(self):
+        """
+        Verification des coordonées à droite de la ligne et dans le canvas
+
+        """
+        lx, ly1, ly2 = 120, 0, self.winfo_height()
+        x0, y0, x1, y1 = list(self.coords('current'))
+        largeur = x1-x0 if x1-x0 < self.width else self.width
+        hauteur = y1-y0 if y1-y0 < self.height else self.height
+
+        if x0 < lx and 'move_and_drop' in self.gettags('current'):
+            x0 = lx
+            x1 = x0 + largeur
+
+        elif x1 > self.width and 'move_and_drop' in self.gettags('current'):
+            x1 = self.width
+            x0 = x1-largeur
+
+        if y0 < 0 and 'move_and_drop' in self.gettags('current'):
+            y0 = 0
+            y1 = y0 + hauteur
+        elif y1 > self.height and 'move_and_drop' in self.gettags('current'):
+            y1 = self.height
+            y0 = y1 - hauteur
+
+        self.coords('current', x0, y0, x1, y1)
+
+    def enregistrer(self):
+        """
+        enregistre dans un fichier json le contenu de l'usine
+        Ce contenu est composé de tous les block situé à droite de la ligne.
+        :return:
+        """
+        pass
 
 
 class Test(Frame):
     def __init__(self, window):
-        Frame.__init__(self, window, bg='white')
+        Frame.__init__(self, window)
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, height=600, width=800)
+        self.canvas = CanvasUsine(self, height=600, width=800, highlightthickness="4", highlightcolor='black',
+                                  highlightbackground="black")
         self.canvas.pack()
 
-        self.canvas.create_rectangle(10, 10, 100, 200, activefill="blue", fill="green", tags='copy_and_drop')
-        self.canvas.create_rectangle(10,210, 100, 400, activefill="blue", fill="green", tags=('resizeable',
-                                                                                              'move_and_drop'))
         self.canvas.bind_item()
         print(self.canvas.__dict__)
 
 
-root = Tk()
-test = Test(root)
-test.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    test = Test(root)
+    test.mainloop()
