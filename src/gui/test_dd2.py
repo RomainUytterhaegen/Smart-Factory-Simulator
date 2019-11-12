@@ -27,6 +27,8 @@ class CanvasUsine(Canvas):
         # sep
         self.create_line(120, 0, 120, self.winfo_reqheight(), fill="black")
 
+        self.bind_item()
+
     def bind_item(self):
         self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
         self.tag_bind('copy_and_drop', "<Button1-Motion>", lambda e: self._move_selected(e.x, e.y))
@@ -39,6 +41,10 @@ class CanvasUsine(Canvas):
         self.tag_bind('move_and_drop', "<ButtonPress-1>", self.on_item_click)
         self.tag_bind('move_and_drop', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y, 5))
         self.tag_bind('move_and_drop', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y))
+        self.tag_bind('move_and_drop', "<KeyRelease-Delete>", self._suppr_current)
+        self.tag_bind('move_and_drop', "x", self._suppr_current)
+        self.tag_bind('move_and_drop', "<KeyRelease-q>", self._suppr_current)
+        self.tag_bind('move_and_drop', "<KeyRelease-w>", self._suppr_current)
 
     def _move_selected(self, x1, y1, min_pixels=1):
         x0, y0 = self.last_xy
@@ -46,14 +52,11 @@ class CanvasUsine(Canvas):
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
-        self._verif_in_usine()
 
     def _resize_item(self, xe, ye):
         x0, y0, x1, y1 = self.coords('current')
-        print(x0, y0, x1, y1, "\tevent ", xe, ye, "\tlast", self.last_xy)
         x1 += (xe - self.last_xy[0])
         y1 += (ye - self.last_xy[1])
-        print(x0, y0, x1, y1, "\tevent ", xe, ye, "\tlast", self.last_xy)
         self.coords('current', x0, y0, x1, y1)
 
     def on_item_click(self, event):
@@ -85,7 +88,7 @@ class CanvasUsine(Canvas):
         kwds = self.itemconfigure(iid)
         kwds = {k: v[-1] for k, v in kwds.items() if k != 'tags'}
         kwds['tags'] = ('move_and_drop', 'resizeable')
-        self.insert(iid, 'qkjsuhflqskhfkl', "ROBOT")
+        # self.insert(iid, 'qkjsuhflqskhfkl', "ROBOT")
         if self.type(iid) == 'oval':
             return self.create_oval(*coords, **kwds)
         elif self.type(iid) == 'rectangle':
@@ -126,6 +129,10 @@ class CanvasUsine(Canvas):
         """
         pass
 
+    def _suppr_current(self):
+        print("coucou")
+        self.delete('current')
+
 
 class Test(Frame):
     def __init__(self, window):
@@ -136,8 +143,6 @@ class Test(Frame):
         self.canvas = CanvasUsine(self, height=600, width=800, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
-
-        self.canvas.bind_item()
         print(self.canvas.__dict__)
 
 
