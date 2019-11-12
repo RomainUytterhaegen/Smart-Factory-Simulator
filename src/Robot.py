@@ -129,3 +129,8 @@ class Robot:
         """
         self.batterie+=recharge
 
+    def able(self, robot: Robot, atelier: Atelier, carte: Carte):
+        """
+        le robot peut-il faire la tâche?
+        """
+        pass

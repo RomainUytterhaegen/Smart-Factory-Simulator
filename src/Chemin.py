@@ -208,3 +208,5 @@ class Chemin:
 
     def __int__(self):
         return self.distance
+
+# Chemin(taille, debut, fin).distance
