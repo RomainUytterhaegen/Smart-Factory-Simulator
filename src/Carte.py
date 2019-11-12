@@ -1,5 +1,6 @@
 from Borne import Borne
 from Atelier import Atelier
+from Ouvrier import Ouvrier
 from Obstacle import Obstacle
 from Robot import Robot
 
@@ -7,7 +8,7 @@ class Carte:
 
     
 
-    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = [],listeRobot:list=[]):
+    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = [],listeRobot:list=[],listeOuvrier:list=[]):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
@@ -17,62 +18,39 @@ class Carte:
         self.listeRobot = listeRobot
         self.nom = nom
         self.listeObstacle = listeObstacle
-        for j in range(len(self.listeObstacle)):
-            if type(self.listeObstacle[j]) == "Borne":
-                self.listeBorne.append(self.listeObstacle[i])
-            if type(self.listeObstacle[j]) == "Atelier":
-                self.listeAtelier.append(self.listeObstacle[i])
-                
+        self.listeOuvrier= listeOuvrier
+        self.listeTache = []
         
         self.x = x
         self.y = y
-        self.listeTache = []
-        self.plan = []
-        # Création du plan vide
-        for c in range(0,self.x):
-            self.plan.append([])
-            for d in range(0,self.y):
-                self.plan[c][d].append(0)
 
         for i in range(0,len(self.listeObstacle)):
             self.ajouterObstacle(listeObstacle[i])
 
     def getObstacles(self):
         """
-        Retourne toutes les cases qui ne sont pas traversables
+        Retourne tout les obstacles
+        """
+        return self.listeObstacle
+
+    def getPosObstacles(self):
+        """
+        Retourne l'ensemble des cases prises par les Obstacles.
         """
         res = []
-        for i in range(self.x):
-            for j in range(self.y):
-                if self.plan[i][j] != 0:
+        for obstacle in self.listeObstacle:
+            for i in range(obstacle.getPos1()[1],obstacle.getPos2()[1]):
+                for j in range(obstacle.getPos1()[0],obstacle.getPos2()[0]):
                     res.append((i,j))
         return res
 
+        
+
     def ajouterObstacle(self,obstacle:Obstacle):
         """
-        Méthode qui ajoute un obstacle de la carte.
+        Méthode qui ajoute un obstacle à la Carte.
         """
-        p1 = obstacle.getPos1()
-        x1 = p1[0]
-        y1 = p1[1]
-        w = obstacle.getWidth()
-        h = obstacle.getHeight()
-
-        if x1+w>self.x and y1-h>self.y:
-            #On ajoute l'obstacle dans la base de donnée
-            for k in range(x1,w):            #Le plan suit donc le sens bas_gauche vers haut_droit
-                for l in range(y1,h):
-
-                    if type(obstacle) == "Atelier":
-                        self.plan[k][l] = 2
-
-                    elif type(obstacle) == "Borne":
-                        self.plan[k][l] = 3
-
-                    elif type(obstacle) == "Obstacle":
-                        self.plan[k][l] = 1
-        else:
-            raise EnvironmentError("L'objet ne peut pas être placé.")
+        #GERER LE CAS OU 2 OBSTACLES SONT SUPERPOSES
 
     def supprimerObstacle(self,idObstacle:int):
         """
@@ -80,14 +58,16 @@ class Carte:
         """
         res = -1
         i = 1
+        #ON CHERCHE L'OBSTACLE DANS LA CARTE
         while i<len(self.listeObstacle) and res != idObstacle:
             if self.listeObstacle[i].getId() == idObstacle:
                 res = i
             i+=1
         if i != -1:
-            #On delete l'obstacle de la base de donnée
+            #ON SUPPRIME L'OBSTACLE DE LA CARTE
             self.listeObstacle.pop(res)
         else:
+            #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
     def getRobots(self):
@@ -96,21 +76,132 @@ class Carte:
         """
         return self.listeRobot
 
+    def getPosRobots(self):
+        """
+        Retourne l'ensemble des cases prises par les robots
+        """
+        res = []
+        for robot in self.listeRobot:
+            res.append(robot.pos)
+        return res
+
     def ajouterRobot(self,robot:Robot):
         """
         Ajoute un robot à la carte.
         """
-        self.listeRobot.append(robot)
+        #GERER LE CAS OÙ LE ROBOT NE PEUT ÊTRE POSÉ
+
 
     def supprimerRobot(self,idRobot:int):
         """
         Supprime un robot de l'environnement
         """
-        ind=-1
-        for i in range(len(self.listeRobot)):
-            if self.listeRobot.getId() == idRobot:
-                ind = i
-        self.listeRobot.pop(ind)
+        res = -1
+        i = 1
+        #ON CHERCHE LE ROBOT DANS LA CARTE
+        while i<len(self.listeRobot) and res != idRobot:
+            if self.listeRobot[i].getId() == idRobot:
+                res = i
+            i+=1
+        if i != -1:
+            #ON SUPPRIME LE ROBOT DE LA CARTE
+            self.listeRobot.pop(res)
+        else:
+            #CAS OÙ LE ROBOT N'EST PAS DANS LA CARTE
+            raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+
+    def getAteliers(self):
+        """
+        Retourne la liste des ateliers
+        """
+        return self.listeAtelier
+
+    def getPosAteliers(self):
+        """
+        Retourne l'ensemble des positions prises par les ateliers
+        """
+        res = []
+        for atelier in self.listeAtelier:
+            for i in range(atelier.getPos1()[1],atelier.getPos2()[1]):
+                for j in range(atelier.getPos1()[0],atelier.getPos2()[0]):
+                    res.append((i,j))
+        return res
+
+    def ajouterAtelier(self,atelier:Atelier):
+        """
+        Ajoute un atelier à la Carte
+        """
+        #GERER LE CAS OÙ L'ATELIER NE PEUT PAS ÊTRE POSÉ
+
+    def supprimerAtelier(self,idAtelier:int):
+        """
+        Supprime un robot de l'environnement
+        """
+        res = -1
+        i = 1
+        #ON CHERCHE L'OBSTACLE DANS LA CARTE
+        while i<len(self.listeAtelier) and res != idAtelier:
+            if self.listeAtelier[i].getId() == idAtelier:
+                res = i
+            i+=1
+        if i != -1:
+            #ON SUPPRIME L'OBSTACLE DE LA CARTE
+            self.listeAtelier.pop(res)
+        else:
+            #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
+            raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+    
+    def getBornes(self):
+        """
+        retourne les Bornes de la Carte
+        """
+        return self.listeBorne
+
+    def getPosBornes(self):
+        """
+        Retourne l'ensemble des positions prises par les bornes.
+        """
+        res = []
+        for borne in self.listeBorne:
+            res.append(borne.getPos1())
+        return res
+
+
+    def ajouterBorne(self,borne:Borne):
+        """
+        Ajoute une Borne dans la Carte
+        """
+        #GERER SI ON PEUT POSER LA BORNE 
+        pass
+
+    def supprimerBorne(self,idBorne:int):
+        """
+        Supprime une Borne de la Carte
+        """
+        res = -1
+        i = 1
+        #ON CHERCHE LA BORNE DANS LA CARTE
+        while i<len(self.listeBorne) and res != idBorne:
+            if self.listeBorne[i].getId() == idBorne:
+                res = i
+            i+=1
+        if i != -1:
+            #ON SUPPRIME LA BORNE DE LA CARTE
+            self.listeBorne.pop(res)
+        else:
+            #CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
+            raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+
+    def getPosImpossible(self):
+        """
+        Retourne l'ensemble des cases de l'usines non traversables
+        """
+        return self.getPosAteliers + self.getPosObstacles + self.getPosRobots + self.getPosBornes 
+
+    def tourSimulation():
+        pass
+
+    def deplacerRobot(self,robot:Robot,)
 
 
         

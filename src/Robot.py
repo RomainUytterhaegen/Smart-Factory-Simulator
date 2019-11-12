@@ -1,6 +1,4 @@
 from Tache import Tache
-from Carte import Carte
-from Obstacle import Obstacle
 from Chemin import Chemin
 
 
@@ -14,8 +12,10 @@ class Robot:
         self.batterie = 1000 # chaque case parcourue, 1 de batterie en moins
         self.pos = pos # (x2,y2)
         self.points = 0
+        self.tache = -1
+        self.chemin = []
     
-    def choixTache(self,carte:Carte):
+    def choixTache(self):
         """
         Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
         (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
@@ -29,17 +29,17 @@ class Robot:
 
 
 
-    #def faireTache(self,tache:Tache):
-    #    """
-    #    Va à l'endroit de la tâche.
-    #
-    #    Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
-    #    Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
-    #    TODO ALgorithme pour trouver son chemin parmi les obstacles
-    #    """
-    #    pass
+    def faireTache(self):
+        """
+        Va à l'endroit de la tâche.
+    
+        Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
+        Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
+        TODO ALgorithme pour trouver son chemin parmi les obstacles
+        """
+        pass
 
-    def allerBorne(self, carte:Carte):
+    def allerBorne(self):
         """
         Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige.
         retourne False si aucune borne n'est disponible
@@ -65,7 +65,7 @@ class Robot:
         """
         return self.idRobot
 
-    def getDistance(self,obstacle:Obstacle,carte:Carte):
+    def getDistance(self):
         """ 
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
@@ -75,7 +75,7 @@ class Robot:
         return len(voie.chemin)
 
 
-    def getAutonomie(self,carte:Carte):
+    def getAutonomie(self):
         """
         Retourne la distance que peut faire le robot avant de tomber en panne
         """
@@ -94,7 +94,7 @@ class Robot:
         """
         return self.vitesse
 
-    def allerA(self,obstacle:Obstacle,carte:Carte):
+    def allerA(self):
         """
         Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
         TODO algorithme pour trouver son chemin parmi les obstacles 
@@ -110,7 +110,7 @@ class Robot:
                 self.pos = voie.chemin[0]
                 voie.chemin.pop(0)
     
-    def pourCombien(self,tache:Tache,carte:Carte):
+    def pourCombien(self):
         """
         Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
         le reste sera géré par la classe TacheEnchere.

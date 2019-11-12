@@ -12,14 +12,14 @@ class Obstacle:
 
     def getPos1(self):
         """
-        Retourne les coordonnées du coin bas_gauche de l'obstacle
+        Retourne les coordonnées du coin haut_gauche de l'obstacle
         :return: Tuple
         """
         return self.pos1
 
     def getPos2(self):
         """
-        Retourne les coordonnées du coin haut_droit de l'obstacle
+        Retourne les coordonnées du coin bas_droit de l'obstacle
         :return: Tuple
         """
         return self.pos2
