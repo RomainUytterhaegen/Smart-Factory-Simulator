@@ -1,6 +1,40 @@
 from tkinter import *
 
 
+class FormulaireRobot(Frame):
+
+    def __init__(self, master=None, **kwargs):
+        # bg='#faf7f2'
+        Frame.__init__(self, master=master, **kwargs)
+        self .rowconfigure(0)
+        self .rowconfigure(1)
+        self .rowconfigure(2)
+        self .rowconfigure(3)
+        self .rowconfigure(4)
+        self .rowconfigure(5)
+        self .rowconfigure(6)
+        self .columnconfigure(0, weight=1)
+        self .grid(row=1, column=0, sticky='news')
+
+        self .label_numero_robot = Label(self, text="n°1")  # texte bidon, à charger depuis carte
+        self .label_transport = Label(self, text="Tranport (O/N)?")
+        self .entry_transport = Entry(self)
+        self .label_assemblage = Label(self, text="Assemblage (O/N)?")
+        self .entry_assemblage = Entry(self)
+        self .label_vitesse = Label(self, text="Vitesse (1-10)?")
+        self .entry_vitesse = Entry(self)
+
+        self .label_transport.grid(row=0, column=0, padx=5, pady=5, sticky='new')
+        self .entry_transport.grid(row=1, column=0, padx=5, pady=5, sticky='new')
+        self .label_assemblage.grid(row=2, column=0, padx=5, pady=5, sticky='new')
+        self .entry_assemblage.grid(row=3, column=0, padx=5, pady=5, sticky='new')
+        self .label_vitesse.grid(row=4, column=0, padx=5, pady=5, sticky='new')
+        self .entry_vitesse.grid(row=5, column=0, padx=5, pady=5, sticky='new')
+
+        self .bouton_soumettre = Button(self, text="Ajouter ce robot", activebackground='green')
+        self .bouton_soumettre.grid(row=6, column=0, padx=20, pady=20, sticky='new')
+
+
 class GuiUsine(Frame):
     def __init__(self, window):
         Frame.__init__(self, window, bg='white')

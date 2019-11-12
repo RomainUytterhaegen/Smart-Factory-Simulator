@@ -1,4 +1,5 @@
 from tkinter import *
+from sys import stderr
 
 
 class CanvasUsine(Canvas):
@@ -14,15 +15,18 @@ class CanvasUsine(Canvas):
         print(self.winfo_reqheight())
         # robots
         self.create_text(60, 15, text="ROBOT", )
-        self.create_rectangle(10, 30, 110, 130, activefill="#b9de16", fill="yellow", tags='copy_and_drop')
+        self.create_rectangle(10, 30, 110, 130, activefill="#b9de16", fill="yellow",
+                              tags=('copy_and_drop', 'robot_spawn'))
 
         # bornes
         self.create_text(60, 145, text="BORNE")
-        self.create_rectangle(10, 160, 110, 260, activefill="#b9de16", fill="orange", tags='copy_and_drop')
+        self.create_rectangle(10, 160, 110, 260, activefill="#b9de16", fill="orange",
+                              tags=('copy_and_drop', 'borne_spawn'))
 
         # equipements
         self.create_text(60, 275, text="EQUIPEMENT")
-        self.create_rectangle(10, 290, 110, 390, activefill="#b9de16", fill="grey", tags='copy_and_drop')
+        self.create_rectangle(10, 290, 110, 390, activefill="#b9de16", fill="grey",
+                              tags=('copy_and_drop', 'equipement_spawn'))
 
         # sep
         self.create_line(120, 0, 120, self.winfo_reqheight(), fill="black")
@@ -38,13 +42,10 @@ class CanvasUsine(Canvas):
         #  self.tag_bind('resizeable', "<Button3-Motion>", lambda e: self._resize_item(e.x, e.y))
         self.tag_bind('resizeable', "<ButtonRelease-3>", lambda e: self._resize_item(e.x, e.y))
 
-        self.tag_bind('move_and_drop', "<ButtonPress-1>", self.on_item_click)
-        self.tag_bind('move_and_drop', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y, 5))
-        self.tag_bind('move_and_drop', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y))
-        self.tag_bind('move_and_drop', "<KeyRelease-Delete>", self._suppr_current)
-        self.tag_bind('move_and_drop', "x", self._suppr_current)
-        self.tag_bind('move_and_drop', "<KeyRelease-q>", self._suppr_current)
-        self.tag_bind('move_and_drop', "<KeyRelease-w>", self._suppr_current)
+        self.tag_bind('movable', "<ButtonPress-1>", self.on_item_click)
+        self.tag_bind('movable', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y, 5))
+        self.tag_bind('movable', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y))
+        self.master.master.bind("<KeyRelease-Delete>", lambda e: self._suppr_current())
 
     def _move_selected(self, x1, y1, min_pixels=1):
         x0, y0 = self.last_xy
@@ -71,6 +72,7 @@ class CanvasUsine(Canvas):
         self.selected = self._copy_item(iid)
 
     def _move_item(self, x1, y1, mini=0):
+
         if abs(self.last_xy[0]-x1 + self.last_xy[1]-y1) > mini:
             coords = list(self.coords('current'))
             coords[0] += x1 - self.last_xy[0]
@@ -85,10 +87,21 @@ class CanvasUsine(Canvas):
         # type_ = self.type(iid)
         # assert type_ == 'oval'
         coords = self.coords(iid)
+
         kwds = self.itemconfigure(iid)
+        bak_tags = kwds['tags'][-1].split()
         kwds = {k: v[-1] for k, v in kwds.items() if k != 'tags'}
-        kwds['tags'] = ('move_and_drop', 'resizeable')
-        # self.insert(iid, 'qkjsuhflqskhfkl', "ROBOT")
+
+        if 'robot_spawn' in bak_tags:
+            kwds['tags'] = 'movable robot'
+            self._create_robot()
+        elif 'equipement_spawn' in bak_tags:
+            kwds['tags'] = 'movable resizeable equipement'
+        elif 'borne_spawn' in bak_tags:
+            kwds['tags'] = 'movable resizeable base'
+        else:
+            print(bak_tags, file=stderr)
+
         if self.type(iid) == 'oval':
             return self.create_oval(*coords, **kwds)
         elif self.type(iid) == 'rectangle':
@@ -104,22 +117,32 @@ class CanvasUsine(Canvas):
         largeur = x1-x0 if x1-x0 < self.width else self.width
         hauteur = y1-y0 if y1-y0 < self.height else self.height
 
-        if x0 < lx and 'move_and_drop' in self.gettags('current'):
+        if x0 < lx and 'movable' in self.gettags('current'):
             x0 = lx
             x1 = x0 + largeur
 
-        elif x1 > self.width and 'move_and_drop' in self.gettags('current'):
+        elif x1 > self.width and 'movable' in self.gettags('current'):
             x1 = self.width
             x0 = x1-largeur
 
-        if y0 < 0 and 'move_and_drop' in self.gettags('current'):
+        if y0 < 0 and 'movable' in self.gettags('current'):
             y0 = 0
             y1 = y0 + hauteur
-        elif y1 > self.height and 'move_and_drop' in self.gettags('current'):
+        elif y1 > self.height and 'movable' in self.gettags('current'):
             y1 = self.height
             y0 = y1 - hauteur
 
         self.coords('current', x0, y0, x1, y1)
+
+    def _create_robot(self):
+        """
+        action à effectuer à la création d'un robot
+        Affiche une fenêtre de saisie des données
+        :return:
+        """
+        top = Toplevel(self.master, bg="red")
+        top_lab = Label(top, text="COUC0U")
+        top_lab.pack()
 
     def enregistrer(self):
         """
@@ -130,8 +153,8 @@ class CanvasUsine(Canvas):
         pass
 
     def _suppr_current(self):
-        print("coucou")
-        self.delete('current')
+        if 'movable' in self.gettags('current'):
+            self.delete('current')
 
 
 class Test(Frame):
