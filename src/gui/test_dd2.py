@@ -40,7 +40,7 @@ class CanvasUsine(Canvas):
         self.tag_bind('move_and_drop', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y, 5))
         self.tag_bind('move_and_drop', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y))
 
-    def _move_selected(self, x1, y1, min_pixels=5):
+    def _move_selected(self, x1, y1, min_pixels=1):
         x0, y0 = self.last_xy
         dx, dy = x1 - x0, y1 - y0
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
