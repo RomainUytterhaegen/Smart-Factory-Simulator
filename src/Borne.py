@@ -11,17 +11,33 @@ class Borne(Obstacle):
         Obstacle.__init__(self, id, pos1, pos1)
         self.used = False
 
-    def recharge(self, robot:Robot):
-        if robot.isFull():
-            raise EnvironmentError('Le robot est déjà rechargé')
+    def recharge(self,robot:Robot):
+        """
+        Recharge le robot jusqu'à ce que sa batterie soit pleine
+        :param:
+        :return:
+        """
+        while not(robot.isFull()):
+            self.used = True
+            robot.remplirBatterie(Borne.tauxRecharge)
+        self.used = False
+
+    def valideCharge(self, robot:Robot):
+        """
+        Méthode vérifiant que la borne est disponible et que la batterie du robot
+        n'est pas déjà remplie
+        Retourne True si elle peut charger le robot,false sinon
+        :return:
+        """
+        b = False
         if self.used == False:
-            #On update la base de donnée pour dire que la borne est occupée
-            while not(robot.isFull()):
-                self.used = True
-                #time.sleep(1) # simule le temps pour recharger
-                robot.remplirBatterie(Borne.tauxRecharge)
-            self.used = False
-            #On update la base de donnée pour dire que la borne est libre
+            if robot.isFull():
+                raise EnvironmentError('Le robot est déjà rechargé')
+            else:
+                b = True
+        return b
+
+
         
 if __name__ == "__main__":
     born1 = Borne(1,(4,3),(5,6))

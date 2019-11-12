@@ -3,6 +3,8 @@ from Atelier import Atelier
 from Ouvrier import Ouvrier
 from Obstacle import Obstacle
 from Robot import Robot
+from Ouvrier import Ouvrier
+from random import choice
 
 class Carte:
 
@@ -202,6 +204,28 @@ class Carte:
         pass
 
     def deplacerRobot(self,robot:Robot,)
+
+    def get_voisins(self, pos):
+        """
+        Retourne la liste des cases voisines d'une case
+        :param pos:
+        :return:
+        """
+        x, y = pos
+        return [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
+
+    def case_occupee(self, pos):
+        return pos in self.getObstacles()
+
+    def deplaceOuvrier(self,ouv:Ouvrier):
+        """
+        Déplace l'ouvrier d'une case disponible, à sa portée et dans son rayon de déplacement
+        :param ouv: Ouvrier que l'on souhaite déplacer
+        """
+        ouv.seDeplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.getPos()))))))
+
+
+
 
 
         
