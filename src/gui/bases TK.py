@@ -17,10 +17,11 @@ class FormulaireRobot(Frame):
         self .grid(row=1, column=0, sticky='news')
 
         self .label_numero_robot = Label(self, text="n°1")  # texte bidon, à charger depuis carte
-        self .label_transport = Label(self, text="Tranport (O/N)?")
+        self .label_transport = Label(self, text="Tranport")
         self .entry_transport = Entry(self)
-        self .label_assemblage = Label(self, text="Assemblage (O/N)?")
-        self .entry_assemblage = Entry(self)
+        self .label_assemblage = Label(self, text="Assemblage")
+        self.assemblage_value = BooleanVar()
+        self .entry_assemblage = Checkbutton(self, )  # todo
         self .label_vitesse = Label(self, text="Vitesse (1-10)?")
         self .entry_vitesse = Entry(self)
 
@@ -33,6 +34,10 @@ class FormulaireRobot(Frame):
 
         self .bouton_soumettre = Button(self, text="Ajouter ce robot", activebackground='green')
         self .bouton_soumettre.grid(row=6, column=0, padx=20, pady=20, sticky='new')
+
+    def retourner_valeurs(self):
+        """"""
+        return {"transport": self.entry_transport.get(), "assemblage": self.entry_assemblage}
 
 
 class GuiUsine(Frame):
@@ -126,35 +131,7 @@ class GuiUsine(Frame):
         :return:
         """
         self.contenu.destroy()
-
-        self.contenu = Frame(self, bg='#faf7f2')
-        self.contenu.rowconfigure(0)
-        self.contenu.rowconfigure(1)
-        self.contenu.rowconfigure(2)
-        self.contenu.rowconfigure(3)
-        self.contenu.rowconfigure(4)
-        self.contenu.rowconfigure(5)
-        self.contenu.rowconfigure(6)
-        self.contenu.columnconfigure(0, weight=1)
-        self.contenu.grid(row=1, column=0, sticky='news')
-
-        self.contenu.label_numero_robot = Label(self.contenu, text="n°1")  # texte bidon, à charger depuis carte
-        self.contenu.label_transport = Label(self.contenu, text="Tranport (O/N)?")
-        self.contenu.entry_transport = Entry(self.contenu)
-        self.contenu.label_assemblage = Label(self.contenu, text="Assemblage (O/N)?")
-        self.contenu.entry_assemblage = Entry(self.contenu)
-        self.contenu.label_vitesse = Label(self.contenu, text="Vitesse (1-10)?")
-        self.contenu.entry_vitesse = Entry(self.contenu)
-
-        self.contenu.label_transport.grid(row=0, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.entry_transport.grid(row=1, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.label_assemblage.grid(row=2, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.entry_assemblage.grid(row=3, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.label_vitesse.grid(row=4, column=0, padx=5, pady=5, sticky='new')
-        self.contenu.entry_vitesse.grid(row=5, column=0, padx=5, pady=5, sticky='new')
-
-        self.contenu.bouton_soumettre = Button(self.contenu, text="Ajouter ce robot", activebackground='green')
-        self.contenu.bouton_soumettre.grid(row=6, column=0, padx=20, pady=20, sticky='new')
+        self.contenu = FormulaireRobot(self, bg='#faf7f2')
 
     def voir_ateliers(self):
         """

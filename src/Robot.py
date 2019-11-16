@@ -8,7 +8,7 @@ class Robot:
         self.idRobot = idRobot # int
         self.transport = transport #booléen
         self.assemblage = assemblage #booléen
-        self.vitesse = vitesse #float
+        self.vitesse = vitesse #int
         self.batterie = 1000 # chaque case parcourue, 1 de batterie en moins
         self.pos = pos # (x2,y2)
         self.points = 0

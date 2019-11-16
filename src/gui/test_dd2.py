@@ -7,31 +7,41 @@ class CanvasUsine(Canvas):
     last_xy = None
 
     def __init__(self, master=None, **kwargs):
+
+        self.taille_case = 20
+        self.height = kwargs['nlignes'] * self.taille_case
+        self.width = kwargs['ncolones'] * self.taille_case + 100
+
+        print(kwargs)
+        kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
+        print(kwargs)
+
+        kwargs['height'] = self.height
+        kwargs['width'] = self.width
+
         Canvas.__init__(self, master=master, **kwargs)
 
-        self.height = (kwargs['height'])
-        self.width = (kwargs['width'])
-
-        print(self.winfo_reqheight())
         # robots
-        self.create_text(60, 15, text="ROBOT", )
-        self.create_rectangle(10, 30, 110, 130, activefill="#b9de16", fill="yellow",
+        self.create_text(50, 15, text="ROBOT", )
+        self.create_rectangle(10, 30, 90, 110, activefill="#b9de16", fill="yellow",
                               tags=('copy_and_drop', 'robot_spawn'))
 
         # bornes
-        self.create_text(60, 145, text="BORNE")
-        self.create_rectangle(10, 160, 110, 260, activefill="#b9de16", fill="orange",
+        self.create_text(50, 125, text="BORNE")
+        self.create_rectangle(10, 140, 90, 220, activefill="#b9de16", fill="orange",
                               tags=('copy_and_drop', 'borne_spawn'))
 
         # equipements
-        self.create_text(60, 275, text="EQUIPEMENT")
-        self.create_rectangle(10, 290, 110, 390, activefill="#b9de16", fill="grey",
+        self.create_text(50, 235, text="EQUIPEMENT")
+        self.create_rectangle(10, 250, 90, 330, activefill="#b9de16", fill="grey",
                               tags=('copy_and_drop', 'equipement_spawn'))
 
         # sep
-        self.create_line(120, 0, 120, self.winfo_reqheight(), fill="black")
+        self.create_line(100, 0, 100, self.winfo_reqheight(), fill="black")
 
         self.bind_item()
+
+        self._create_grid()
 
     def bind_item(self):
         self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
@@ -112,7 +122,7 @@ class CanvasUsine(Canvas):
         Verification des coordonées à droite de la ligne et dans le canvas
 
         """
-        lx, ly1, ly2 = 120, 0, self.winfo_height()
+        lx, ly1, ly2 = 100, 0, self.winfo_height()
         x0, y0, x1, y1 = list(self.coords('current'))
         largeur = x1-x0 if x1-x0 < self.width else self.width
         hauteur = y1-y0 if y1-y0 < self.height else self.height
@@ -152,9 +162,28 @@ class CanvasUsine(Canvas):
         """
         pass
 
+    def _create_grid(self):
+        print(list(range(100+self.taille_case, self.width, self.taille_case)), self.width)
+
+        for i in range(100+self.taille_case, self.width, self.taille_case):
+            self.create_line(i, 0, i, self.height, fill="grey")
+        self.create_line(self.width, 0, self.width, self.height, fill="black")
+
+        for i in range(self.taille_case, self.height, self.taille_case):
+            self.create_line(100, i, self.width, i, fill="grey")
+        self.create_line(100, self.height, self.width, self.height, fill="black")
+
     def _suppr_current(self):
         if 'movable' in self.gettags('current'):
             self.delete('current')
+
+    @staticmethod
+    def _point_plus_proche(start, points_grille):
+        """
+        Algorithme trouvant l'objectif le plus proche
+        :param start: tuple (x, y) de départ
+        :param points_grille: Liste des tuples d'objectifs
+        """
 
 
 class Test(Frame):
@@ -163,7 +192,7 @@ class Test(Frame):
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, height=600, width=800, highlightthickness="4", highlightcolor='black',
+        self.canvas = CanvasUsine(self, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
         print(self.canvas.__dict__)
