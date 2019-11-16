@@ -177,13 +177,31 @@ class CanvasUsine(Canvas):
         if 'movable' in self.gettags('current'):
             self.delete('current')
 
-    @staticmethod
-    def _point_plus_proche(start, points_grille):
+    def magnetisme(self, pos: tuple):
         """
         Algorithme trouvant l'objectif le plus proche
-        :param start: tuple (x, y) de départ
-        :param points_grille: Liste des tuples d'objectifs
-        """
+        :param pos: tuple (x, y) de départ
+       """
+        x, y = pos
+        x += 100
+
+        for i in range(20):
+            if x-i % self.taille_case == 0:
+                x -= i
+                break
+            if x+i % self.taille_case == 0:
+                x += i
+                break
+
+        for i in range(20):
+            if y-i % self.taille_case == 0:
+                y -= i
+                break
+            if y+i % self.taille_case == 0:
+                y += i
+                break
+
+        return x, y
 
 
 class Test(Frame):
