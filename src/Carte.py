@@ -10,21 +10,21 @@ from random import choice
 class Carte:
 
     def __init__(self, nom:str, x:int, y:int,
-                 listeObstacle:list=None, listeRobot:list=None, listeOuvrier:list=None):
+                 listeObstacle:list=None, liste_robot:list=None, listeOuvrier:list=None):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
         """
         if not listeObstacle:
             listeObstacle = []
-        if not listeRobot:
-            listeRobot = []
+        if not liste_robot:
+            liste_robot = []
         if not listeOuvrier:
             listeOuvrier = []
 
         self.listeBorne = []
         self.listeAtelier = []
-        self.listeRobot = listeRobot
+        self.liste_robot = liste_robot
         self.nom = nom
         self.listeObstacle = listeObstacle
         self.listeOuvrier= listeOuvrier
@@ -81,14 +81,14 @@ class Carte:
         """
         Retourne la liste de tout les robots sur la carte
         """
-        return self.listeRobot
+        return self.liste_robot
 
     def getPosRobots(self):
         """
         Retourne l'ensemble des cases prises par les robots
         """
         res = []
-        for robot in self.listeRobot:
+        for robot in self.liste_robot:
             res.append(robot.pos)
         return res
 
@@ -96,8 +96,8 @@ class Carte:
         """
         Ajoute un robot à la carte.
         """
-        idRobot = len(self.listeRobot)
-        self.listeRobot.append(Robot(idRobot, transport , assemblage, pos, vitesse))
+        id_robot = len(self.liste_robot)
+        self.liste_robot.append(Robot(id_robot, transport , assemblage, pos, (self.x, self.y), vitesse))
 
     def supprimerRobot(self,idRobot:int):
         """
@@ -106,13 +106,13 @@ class Carte:
         res = -1
         i = 1
         #ON CHERCHE LE ROBOT DANS LA CARTE
-        while i<len(self.listeRobot) and res != idRobot:
-            if self.listeRobot[i].getId() == idRobot:
+        while i<len(self.liste_robot) and res != idRobot:
+            if self.liste_robot[i].getId() == idRobot:
                 res = i
             i+=1
         if i != -1:
             #ON SUPPRIME LE ROBOT DE LA CARTE
-            self.listeRobot.pop(res)
+            self.liste_robot.pop(res)
         else:
             #CAS OÙ LE ROBOT N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
@@ -211,13 +211,13 @@ class Carte:
         """
         nb_afk = 0
 
-        for robot in self.listeRobot:
+        for robot in self.liste_robot:
             if robot == -1:
-                nb_afk += robot.choixTache()
+                nb_afk += robot.choix_taches()
             else:
                 robot.faireTache()
 
-        return nb_afk == len(self.listeRobot)
+        return nb_afk == len(self.liste_robot)
 
 
     def deplacerRobot(self,robot:Robot,):

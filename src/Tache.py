@@ -2,11 +2,12 @@ import random
 
 class Tache:
 
-    def __init__(self):
+    def __init__(self, pos_depart:tuple):
         self.points = random.randint(1, 1000) #Surement à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200) # Durée en secondes
         self.enchere = False
         self.Tfin = 0
+        self.depart = pos_depart
         #on dit qu'une tâche a 10% de chance d'être une enchère
         if random.randint(0,100) <=10:
             self.enchere = True
@@ -28,7 +29,7 @@ class Tache:
         return self.type
 
     def __str__(self):
-        return "Points : {0} , durée : {1} secondes , type : {3}".format(self.points, self.duree, self.type)
+        return f"Points : {self.points} , durée : {self.duree} secondes , type : {self.type}"
 
     def listeEnchere(self):
         pass
@@ -36,11 +37,11 @@ class Tache:
     def getTfin(self):
         return self.Tfin
 
-    def setTfin(selfself, tdebut: int):
+    def setTfin(self, tdebut: int):
         self.Tfin = tdebut + self.duree
 
     def getAmende(self):
-        Tfin = getTfin()
+        Tfin = self.getTfin()
         Tdebut = 0
         amende = 0
         while (Tdebut <= Tfin):

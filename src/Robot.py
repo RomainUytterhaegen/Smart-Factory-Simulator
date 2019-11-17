@@ -1,32 +1,36 @@
-from Chemin import Chemin
+from Chemin import Chemin, heuristic
 
 
 class Robot:
 
-    def __init__(self,idRobot:int,transport:bool,assemblage:bool,pos:tuple,vitesse = 2):
+    def __init__(self,idRobot:int,transport:bool,assemblage:bool,pos:tuple, limite:tuple, vitesse=2):
         self.idRobot = idRobot # int
         self.transport = transport #booléen
         self.assemblage = assemblage #booléen
         self.vitesse = vitesse #int
         self.batterie = 1000 # chaque case parcourue, 1 de batterie en moins
         self.pos = pos # (x2,y2)
+        self.limites = limite  # Limite de la carte pour ne pas avoir à l'importer
         self.points = 0
         self.tache = -1
         self.chemin = []
     
-    def choixTache(self):
+    def choix_taches(self, liste_taches, liste_obstacles):
         """
         Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
         (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
         TODO méthode allerA()
         """
         
-        #Récupère les tâches faisables par le robot.(compétence et autonomie) S'il peut en faire une , il la choisit. Retourne false si aucune tache n'est disponible
+        #  Récupère les tâches faisables par le robot.(compétence et autonomie)
+        #  S'il peut en faire une , il la choisit. Retourne false si aucune tache n'est disponible
+        liste_taches = sorted(liste_taches, key= lambda a: heuristic(a.depart, self.pos))
+        choix = True
 
-        #Détermine le chemin pour aller 
-        pass
-
-
+        # Détermine le chemin pour y aller
+        while choix:
+            cur_tache = liste_taches.pop()
+            self.getDistance(self.limites, self.pos, cur_tache.depart, liste_obstacles)
 
     def faireTache(self):
         """
@@ -64,14 +68,14 @@ class Robot:
         """
         return self.idRobot
 
-    def getDistance(self):
+    def getDistance(self, taille, debut, fin, list_obstacle):
         """ 
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
         Instancie un Chemin puis retounne le nombre de cases à parcourir
         """
-        voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
-        return len(voie.chemin)
+        voie = Chemin(taille, debut, fin, list_obstacle)
+        return int(voie)
 
 
     def getAutonomie(self):
