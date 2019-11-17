@@ -92,11 +92,12 @@ class Carte:
             res.append(robot.pos)
         return res
 
-    def ajouterRobot(self,robot:Robot):
+    def ajouterRobot(self, transport:bool, assemblage:bool, pos: tuple, vitesse: int):
         """
         Ajoute un robot à la carte.
         """
-        #GERER LE CAS OÙ LE ROBOT NE PEUT ÊTRE POSÉ
+        idRobot = len(self.listeRobot)
+        self.listeRobot.append(Robot(idRobot, transport , assemblage, pos, vitesse))
 
     def supprimerRobot(self,idRobot:int):
         """
