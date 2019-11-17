@@ -53,8 +53,6 @@ class Carte:
                     res.append((i,j))
         return res
 
-        
-
     def ajouterObstacle(self,obstacle:Obstacle):
         """
         Méthode qui ajoute un obstacle à la Carte.
@@ -99,7 +97,6 @@ class Carte:
         Ajoute un robot à la carte.
         """
         #GERER LE CAS OÙ LE ROBOT NE PEUT ÊTRE POSÉ
-
 
     def supprimerRobot(self,idRobot:int):
         """
@@ -175,7 +172,6 @@ class Carte:
             res.append(borne.getPos1())
         return res
 
-
     def ajouterBorne(self,borne:Borne):
         """
         Ajoute une Borne dans la Carte
@@ -207,8 +203,21 @@ class Carte:
         """
         return self.getPosAteliers() + self.getPosObstacles() + self.getPosRobots() + self.getPosBornes()
 
-    def tourSimulation(self):
-        pass
+    def tour_simulation(self):
+        """
+        Réalise un tour de simulation
+        :return: True si les robots n'ont tous plus rien à faire
+        """
+        nb_afk = 0
+
+        for robot in self.listeRobot:
+            if robot == -1:
+                nb_afk += robot.choixTache()
+            else:
+                robot.faireTache()
+
+        return nb_afk == len(self.listeRobot)
+
 
     def deplacerRobot(self,robot:Robot,):
         pass

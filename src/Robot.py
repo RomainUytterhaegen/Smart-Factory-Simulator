@@ -1,4 +1,3 @@
-from Tache import Tache
 from Chemin import Chemin
 
 
@@ -129,8 +128,11 @@ class Robot:
         """
         self.batterie+=recharge
 
-    def able(self, robot: Robot, atelier: Atelier, carte: Carte):
+    def able(self, robot, atelier):  #, carte: Carte):
         """
         le robot peut-il faire la tâche?
+        :param robot:
+        :param atelier:
+        :return:
         """
         pass

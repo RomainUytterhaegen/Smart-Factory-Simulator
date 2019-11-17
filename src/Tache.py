@@ -1,6 +1,4 @@
 import random
-from Robot import Robot
-from Atelier import Atelier
 
 class Tache:
 
