@@ -12,9 +12,7 @@ class CanvasUsine(Canvas):
         self.height = kwargs['nlignes'] * self.taille_case
         self.width = kwargs['ncolones'] * self.taille_case + 100
 
-        print(kwargs)
         kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
-        print(kwargs)
 
         kwargs['height'] = self.height
         kwargs['width'] = self.width
@@ -46,28 +44,55 @@ class CanvasUsine(Canvas):
     def bind_item(self):
         self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
         self.tag_bind('copy_and_drop', "<Button1-Motion>", lambda e: self._move_selected(e.x, e.y))
-        self.tag_bind('copy_and_drop', "<ButtonRelease-1>", lambda e: self._move_selected(e.x, e.y, 0))
+        self.tag_bind('copy_and_drop', "<ButtonRelease-1>", lambda e: self._move_selected(e.x, e.y, 0, True))
 
         self.tag_bind('resizeable', "<ButtonPress-3>", self.on_item_click)
         #  self.tag_bind('resizeable', "<Button3-Motion>", lambda e: self._resize_item(e.x, e.y))
-        self.tag_bind('resizeable', "<ButtonRelease-3>", lambda e: self._resize_item(e.x, e.y))
+        self.tag_bind('resizeable', "<ButtonRelease-3>", lambda e: self._resize_item(e.x, e.y, True))
 
         self.tag_bind('movable', "<ButtonPress-1>", self.on_item_click)
-        self.tag_bind('movable', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y, 5))
-        self.tag_bind('movable', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y))
+        self.tag_bind('movable', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y))
+        self.tag_bind('movable', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y, 0, True))
         self.master.master.bind("<KeyRelease-Delete>", lambda e: self._suppr_current())
 
-    def _move_selected(self, x1, y1, min_pixels=1):
+    def _move_selected(self, x1, y1, min_pixels=1, magnetisme=False):
         x0, y0 = self.last_xy
         dx, dy = x1 - x0, y1 - y0
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
+            #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
 
-    def _resize_item(self, xe, ye):
+    def _move_item(self, ex1, ey1, mini=5, magnetisme=False):
+
+        if abs(self.last_xy[0] - ex1 + self.last_xy[1] - ey1) > mini:
+            coords = list(self.coords('current'))
+            x0 = coords[0] + ex1 - self.last_xy[0]
+            x1 = coords[2] + ex1 - self.last_xy[0]
+            y0 = coords[1] + ey1 - self.last_xy[1]
+            y1 = coords[3] + ey1 - self.last_xy[1]
+
+            if magnetisme:
+                x0, y0 = self.magnetisme((x0, y0))
+                x1, y1 = self.magnetisme((x1, y1))
+
+            self.coords('current', x0, y0, x1, y1)
+            self.last_xy = ex1, ey1
+            self._verif_in_usine()
+
+    def _resize_item(self, xe, ye, magnetisme=False):
         x0, y0, x1, y1 = self.coords('current')
         x1 += (xe - self.last_xy[0])
         y1 += (ye - self.last_xy[1])
+        diffx = x1-x0
+        diffy = y1-y0
+
+        if magnetisme:
+            x0, y0 = self.magnetisme((x0, y0))
+            x1 = x0 + diffx
+            y1 = y0 + diffy
+            x1, y1 = self.magnetisme((x1, y1))
+
         self.coords('current', x0, y0, x1, y1)
 
     def on_item_click(self, event):
@@ -80,18 +105,6 @@ class CanvasUsine(Canvas):
     def _copy_curent(self):
         iid = self.find_withtag('current')
         self.selected = self._copy_item(iid)
-
-    def _move_item(self, x1, y1, mini=0):
-
-        if abs(self.last_xy[0]-x1 + self.last_xy[1]-y1) > mini:
-            coords = list(self.coords('current'))
-            coords[0] += x1 - self.last_xy[0]
-            coords[2] += x1 - self.last_xy[0]
-            coords[1] += y1 - self.last_xy[1]
-            coords[3] += y1 - self.last_xy[1]
-            self.coords('current', *coords)
-            self.last_xy = x1, y1
-            self._verif_in_usine()
 
     def _copy_item(self, iid):
         # type_ = self.type(iid)
@@ -163,8 +176,6 @@ class CanvasUsine(Canvas):
         pass
 
     def _create_grid(self):
-        print(list(range(100+self.taille_case, self.width, self.taille_case)), self.width)
-
         for i in range(100+self.taille_case, self.width, self.taille_case):
             self.create_line(i, 0, i, self.height, fill="grey")
         self.create_line(self.width, 0, self.width, self.height, fill="black")
@@ -183,23 +194,26 @@ class CanvasUsine(Canvas):
         :param pos: tuple (x, y) de départ
        """
         x, y = pos
-        x += 100
 
-        for i in range(20):
-            if x-i % self.taille_case == 0:
+        print("deb", x, y)
+
+        for i in range(self.taille_case):
+            if (x-i) % self.taille_case == 0:
                 x -= i
                 break
-            if x+i % self.taille_case == 0:
+            if (x+i) % self.taille_case == 0:
                 x += i
                 break
 
-        for i in range(20):
-            if y-i % self.taille_case == 0:
+        for i in range(self.taille_case):
+            if (y-i) % self.taille_case == 0:
                 y -= i
                 break
-            if y+i % self.taille_case == 0:
+            if (y+i) % self.taille_case == 0:
                 y += i
                 break
+
+        print("res", x, y, "\n")
 
         return x, y
 
@@ -213,7 +227,6 @@ class Test(Frame):
         self.canvas = CanvasUsine(self, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
-        print(self.canvas.__dict__)
 
 
 if __name__ == '__main__':
