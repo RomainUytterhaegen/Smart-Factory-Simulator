@@ -6,15 +6,22 @@ from Robot import Robot
 from Ouvrier import Ouvrier
 from random import choice
 
+
 class Carte:
 
-    
-
-    def __init__(self,nom:str,x:int,y:int,listeObstacle:list = [],listeRobot:list=[],listeOuvrier:list=[]):
+    def __init__(self, nom:str, x:int, y:int,
+                 listeObstacle:list=None, listeRobot:list=None, listeOuvrier:list=None):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
         """
+        if not listeObstacle:
+            listeObstacle = []
+        if not listeRobot:
+            listeRobot = []
+        if not listeOuvrier:
+            listeOuvrier = []
+
         self.listeBorne = []
         self.listeAtelier = []
         self.listeRobot = listeRobot
@@ -198,12 +205,13 @@ class Carte:
         """
         Retourne l'ensemble des cases de l'usines non traversables
         """
-        return self.getPosAteliers + self.getPosObstacles + self.getPosRobots + self.getPosBornes 
+        return self.getPosAteliers() + self.getPosObstacles() + self.getPosRobots() + self.getPosBornes()
 
-    def tourSimulation():
+    def tourSimulation(self):
         pass
 
-    def deplacerRobot(self,robot:Robot,)
+    def deplacerRobot(self,robot:Robot,):
+        pass
 
     def get_voisins(self, pos):
         """
