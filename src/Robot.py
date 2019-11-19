@@ -14,23 +14,6 @@ class Robot:
         self.points = 0
         self.tache = -1
         self.chemin = []
-    
-    def choix_taches(self, liste_taches, liste_obstacles):
-        """
-        Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
-        (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
-        TODO méthode allerA()
-        """
-        
-        #  Récupère les tâches faisables par le robot.(compétence et autonomie)
-        #  S'il peut en faire une , il la choisit. Retourne false si aucune tache n'est disponible
-        liste_taches = sorted(liste_taches, key= lambda a: heuristic(a.depart, self.pos))
-        choix = True
-
-        # Détermine le chemin pour y aller
-        while choix:
-            cur_tache = liste_taches.pop()
-            self.getDistance(self.limites, self.pos, cur_tache.depart, liste_obstacles)
 
     def faireTache(self):
         """
@@ -67,16 +50,6 @@ class Robot:
         Retourne l'indice du Robot
         """
         return self.idRobot
-
-    def getDistance(self, taille, debut, fin, list_obstacle):
-        """ 
-        Retourne le nombre de cases à parcourir pour aller à un équipement
-        ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
-        Instancie un Chemin puis retounne le nombre de cases à parcourir
-        """
-        voie = Chemin(taille, debut, fin, list_obstacle)
-        return int(voie)
-
 
     def getAutonomie(self):
         """

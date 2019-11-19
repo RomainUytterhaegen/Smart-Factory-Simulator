@@ -5,12 +5,13 @@ from Obstacle import Obstacle
 from Robot import Robot
 from Ouvrier import Ouvrier
 from random import choice
-
+from Chemin import Chemin, heuristic
+from sys import stderr
 
 class Carte:
 
-    def __init__(self, nom:str, x:int, y:int,
-                 listeObstacle:list=None, liste_robot:list=None, listeOuvrier:list=None):
+    def __init__(self, nom: str, x: int, y: int,
+                 listeObstacle: list=None, liste_robot: list=None, listeOuvrier: list=None):
         """
         Crée un tableau de dimension x par y.
         Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
@@ -77,7 +78,7 @@ class Carte:
             #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
-    def getRobots(self):
+    def get_robots(self):
         """
         Retourne la liste de tout les robots sur la carte
         """
@@ -92,7 +93,7 @@ class Carte:
             res.append(robot.pos)
         return res
 
-    def ajouterRobot(self, transport:bool, assemblage:bool, pos: tuple, vitesse: int):
+    def ajouter_robot(self, transport:bool, assemblage:bool, pos: tuple, vitesse: int = 2):
         """
         Ajoute un robot à la carte.
         """
@@ -198,7 +199,7 @@ class Carte:
             #CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
-    def getPosImpossible(self):
+    def get_pos_impossible(self):
         """
         Retourne l'ensemble des cases de l'usines non traversables
         """
@@ -213,6 +214,7 @@ class Carte:
 
         for robot in self.liste_robot:
             if robot == -1:
+                #  Robot.choix_taches retourne 1 si il est en atente
                 nb_afk += robot.choix_taches()
             else:
                 robot.faireTache()
@@ -220,7 +222,7 @@ class Carte:
         return nb_afk == len(self.liste_robot)
 
 
-    def deplacerRobot(self,robot:Robot,):
+    def deplacer_robot(self, robot:Robot, ):
         pass
 
     def get_voisins(self, pos):
@@ -242,9 +244,52 @@ class Carte:
         """
         ouv.seDeplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.getPos()))))))
 
+    def cheminement(self, debut, fin):
+        """
+        Renvoie un chemin entre deux points
+        :param debut: Position de départ en (x, y)
+        :param fin: Position de fin en (x, y)
+        :return: voie de type chemin entre debut et fin
+        """
+        bloques = self.get_pos_impossible()
+        if debut in bloques:
+            bloques.remove(debut)
+        if fin in bloques:
+            bloques.remove(fin)
 
+        voie = Chemin((self.x, self.y), debut, fin, bloques)
+        return voie
 
+    def choix_taches(self, liste_taches, liste_obstacles):
+        """
+        Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
+        (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
+        TODO méthode allerA()
+        """
 
+        #  Récupère les tâches faisables par le robot.(compétence et autonomie)
+        #  S'il peut en faire une , il la choisit. Retourne false si aucune tache n'est disponible
+        liste_taches = sorted(liste_taches, key=lambda a: heuristic(a.depart, self.pos))
+        choix = True
 
-        
+        # Détermine le chemin pour y aller
+        while choix:
+            cur_tache = liste_taches.pop()
+            self.getDistance(self.limites, self.pos, cur_tache.depart, liste_obstacles)
+
+    def getDistance(self, taille, debut, fin, list_obstacle):
+        """
+        Retourne le nombre de cases à parcourir pour aller à un équipement
+        ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
+        Instancie un Chemin puis retounne le nombre de cases à parcourir
+        """
+        voie = Chemin(taille, debut, fin, list_obstacle)
+        return int(voie)
+
+if __name__ == '__main__':
+    carte_test = Carte("Carte test", 10, 10)
+    carte_test.ajouter_robot(True, True, (1, 1), 2)
+    chemin = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
+    chemin2 = carte_test.cheminement((5, 5), (1, 1))
+
 
