@@ -1,6 +1,6 @@
 from tkinter import *
 from Formulaire import Formulaire
-
+from CanevasUsine import CanvasUsine
 
 class GuiUsine(Frame):
     def __init__(self, window):
@@ -89,8 +89,11 @@ class GuiUsine(Frame):
 
     def popup(self, frame, *args, **kwargs):
         top = Toplevel(self.master)
+        top.rowconfigure(0, weight=1)
+        top.columnconfigure(0, weight=1)
         topup = frame(top, *args, **kwargs)
-        topup.pack()
+
+        topup.grid(row=0, column=0, sticky='new')
 
     def com_ajout_robot(self):
 
@@ -109,11 +112,13 @@ class GuiUsine(Frame):
         """
         self.contenu.destroy()
         self.contenu = Frame(self, bg='#faf7f2')
+        self.contenu.rowconfigure(0, weight=1)
+        self.contenu.columnconfigure(0, weight=1)
         self.contenu.grid(row=1, column=0, sticky='news')
 
         self.contenu.bouton_ajouter_robot = Button(self.contenu, text="Ajouter un robot",
                                                    command=self.com_ajout_robot)
-        self.contenu.bouton_ajouter_robot.pack()
+        self.contenu.bouton_ajouter_robot.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
     def voir_ateliers(self):
         """

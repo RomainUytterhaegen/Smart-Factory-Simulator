@@ -21,23 +21,24 @@ class CanvasUsine(Canvas):
 
         Canvas.__init__(self, master=master, **kwargs)
 
-        # robots
-        self.create_text(50, 15, text="ROBOT", )
-        self.create_rectangle(10, 30, 90, 110, activefill="#b9de16", fill="yellow",
-                              tags=('copy_and_drop', 'robot_spawn'))
+        if self.construct:
+            # robots
+            self.create_text(50, 15, text="ROBOT", )
+            self.create_rectangle(10, 30, 90, 110, activefill="#b9de16", fill="yellow",
+                                  tags=('copy_and_drop', 'robot_spawn'))
 
-        # bornes
-        self.create_text(50, 125, text="BORNE")
-        self.create_rectangle(10, 140, 90, 220, activefill="#b9de16", fill="orange",
-                              tags=('copy_and_drop', 'borne_spawn'))
+            # bornes
+            self.create_text(50, 125, text="BORNE")
+            self.create_rectangle(10, 140, 90, 220, activefill="#b9de16", fill="orange",
+                                  tags=('copy_and_drop', 'borne_spawn'))
 
-        # equipements
-        self.create_text(50, 235, text="EQUIPEMENT")
-        self.create_rectangle(10, 250, 90, 330, activefill="#b9de16", fill="grey",
-                              tags=('copy_and_drop', 'equipement_spawn'))
+            # equipements
+            self.create_text(50, 235, text="EQUIPEMENT")
+            self.create_rectangle(10, 250, 90, 330, activefill="#b9de16", fill="grey",
+                                  tags=('copy_and_drop', 'equipement_spawn'))
 
-        # sep
-        self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
+            # sep
+            self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
 
         self.bind_item()
 
@@ -228,7 +229,7 @@ class Test(Frame):
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, True, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
+        self.canvas = CanvasUsine(self, False, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
 
