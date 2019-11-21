@@ -6,11 +6,13 @@ class CanvasUsine(Canvas):
     selected = None
     last_xy = None
 
-    def __init__(self, master=None, **kwargs):
-
+    def __init__(self, master=None, construct=False, **kwargs):
+        
         self.taille_case = 20
+        self.construct = construct
+
         self.height = kwargs['nlignes'] * self.taille_case
-        self.width = kwargs['ncolones'] * self.taille_case + 100
+        self.width = kwargs['ncolones'] * self.taille_case + 100 * self.construct
 
         kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
 
@@ -35,7 +37,7 @@ class CanvasUsine(Canvas):
                               tags=('copy_and_drop', 'equipement_spawn'))
 
         # sep
-        self.create_line(100, 0, 100, self.winfo_reqheight(), fill="black")
+        self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
 
         self.bind_item()
 
@@ -59,7 +61,9 @@ class CanvasUsine(Canvas):
         x0, y0 = self.last_xy
         dx, dy = x1 - x0, y1 - y0
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
-            #  rajouter le mgnétisme ici?
+            if magnetisme:
+                pass
+                #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
 
@@ -135,7 +139,7 @@ class CanvasUsine(Canvas):
         Verification des coordonées à droite de la ligne et dans le canvas
 
         """
-        lx, ly1, ly2 = 100, 0, self.winfo_height()
+        lx, ly1, ly2 = 100 * self.construct, 0, self.winfo_height()
         x0, y0, x1, y1 = list(self.coords('current'))
         largeur = x1-x0 if x1-x0 < self.width else self.width
         hauteur = y1-y0 if y1-y0 < self.height else self.height
@@ -176,13 +180,13 @@ class CanvasUsine(Canvas):
         pass
 
     def _create_grid(self):
-        for i in range(100+self.taille_case, self.width, self.taille_case):
+        for i in range(100 * self.construct+self.taille_case, self.width, self.taille_case):
             self.create_line(i, 0, i, self.height, fill="grey")
         self.create_line(self.width, 0, self.width, self.height, fill="black")
 
         for i in range(self.taille_case, self.height, self.taille_case):
-            self.create_line(100, i, self.width, i, fill="grey")
-        self.create_line(100, self.height, self.width, self.height, fill="black")
+            self.create_line(100 * self.construct, i, self.width, i, fill="grey")
+        self.create_line(100 * self.construct, self.height, self.width, self.height, fill="black")
 
     def _suppr_current(self):
         if 'movable' in self.gettags('current'):
@@ -224,7 +228,7 @@ class Test(Frame):
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
+        self.canvas = CanvasUsine(self, True, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
 
