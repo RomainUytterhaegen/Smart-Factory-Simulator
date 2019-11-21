@@ -87,18 +87,33 @@ class GuiUsine(Frame):
         """
         self.mode_visuel()
 
+    def popup(self, frame, *args, **kwargs):
+        top = Toplevel(self.master)
+        topup = frame(top, *args, **kwargs)
+        topup.pack()
+
+    def com_ajout_robot(self):
+
+        donnees = {
+            "Assemblage": (BooleanVar, "Oui", "Non"),
+            "Transport": (BooleanVar, "Oui", "Non"),
+            "Vitesse": (IntVar, 1, 2, 3, 4, 5)
+        }
+
+        self.popup(Formulaire, donnees, bg='#faf7f2')
+
     def modifier_robot(self):
         """
         Permet d'afficher l'écran qui ajoute un robot à la simulation
         :return:
         """
         self.contenu.destroy()
-        donnees = {
-            "Assemblage": (BooleanVar, "Oui", "Non"),
-            "Transport": (BooleanVar, "Oui", "Non"),
-            "Vitesse": (IntVar, "1", "2", "3", "4")
-        }
-        self.contenu = Formulaire(self, donnees, bg='#faf7f2')
+        self.contenu = Frame(self, bg='#faf7f2')
+        self.contenu.grid(row=1, column=0, sticky='news')
+
+        self.contenu.bouton_ajouter_robot = Button(self.contenu, text="Ajouter un robot",
+                                                   command=self.com_ajout_robot)
+        self.contenu.bouton_ajouter_robot.pack()
 
     def voir_ateliers(self):
         """
