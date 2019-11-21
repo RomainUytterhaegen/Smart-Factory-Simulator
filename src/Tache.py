@@ -8,10 +8,6 @@ class Tache:
         Les arguments passent en kwargs pour éviter de faire des héritages pour 2 attributs
         :param kwargs: "valid", "pos_fin", "pos_depart"
         """
-        if "valide" in kwargs:
-            self.valide = kwargs["valide"]  # Si la tâche est utilisable ou non (initialisation du robot)
-        else:
-            self.valide = False
 
         if "pos_fin" in kwargs:
             self.fin = kwargs["pos_fin"]
@@ -24,7 +20,7 @@ class Tache:
             self.depart = kwargs["pos_depart"]  # Si la tâche est utilisable ou non (initialisation du robot)
         else:
             self.depart = (0, 0)
-
+            self.valide = False # Si la tâche est utilisable ou non (initialisation du robot)
 
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200)  # Durée en secondes

@@ -3,28 +3,32 @@ from Tache import Tache
 
 class Robot:
 
-    def __init__(self,idRobot:int,transport:bool,assemblage:bool,pos:tuple, limite:tuple, vitesse=2):
-        self.idRobot = idRobot # int
-        self.transport = transport #booléen
-        self.assemblage = assemblage #booléen
-        self.vitesse = vitesse #int
-        self.batterie = 1000 # chaque case parcourue, 1 de batterie en moins
-        self.pos = pos # (x2,y2)
+    RECHARGEMENT = 1
+    DEPLACEMENT = 2
+    ASSEMBLAGE = 3
+    TRANSPORT = 4
+
+    def __init__(self, id_robot: int, transport: bool, assemblage: bool, pos: tuple, limite: tuple, vitesse=2):
+        self.id_robot = id_robot  # int
+        self.transport = transport  # booléen
+        self.assemblage = assemblage  # booléen
+        self.vitesse = vitesse  # int
+        self.batterie = 1000  # chaque case parcourue, 1 de batterie en moins
+        self.pos = pos  # (x2,y2)
         self.limites = limite  # Limite de la carte pour ne pas avoir à l'importer
         self.points = 0
-        self.tache = Tache(pos, False)
+        self.tache = Tache()
         self.chemin = []
 
-    def faireTache(self):
-        """
-        Va à l'endroit de la tâche.
-    
-        Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
-        Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
-        """
-
-        if self.pos == self.tache.depart:
-            pass
+    def faire_tache(self):
+        if self.tache:
+            if self.tache.depart == self.pos:
+                if self.tache.type == "Assemblage":
+                    return Robot.ASSEMBLAGE, self.pos
+                elif self.tache.type == "Transport":
+                    return Robot.TRANSPORT, self.pos, self.tache.fin
+        else:
+            return Robot.RECHARGEMENT, self.pos
 
     def allerBorne(self):
         """
@@ -50,7 +54,7 @@ class Robot:
         """
         Retourne l'indice du Robot
         """
-        return self.idRobot
+        return self.id_robot
 
     def getAutonomie(self):
         """
