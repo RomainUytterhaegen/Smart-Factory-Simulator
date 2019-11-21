@@ -171,6 +171,7 @@ class PlusProche:
 class Chemin:
     """
     Classe qui trouve un chemin entre deux position.
+    Si il n'y a pas de chemin, self.chemin sera vide
     """
 
     distance = 0
@@ -195,7 +196,7 @@ class Chemin:
             if debut != fin:
                 self.chemin = a_star(taille_grille, debut, fin, murs)
             else:
-                self.chemin = [debut]
+                self.chemin = []
             self.distance = len(self.chemin)
         except KeyError:
             # l'objet est inateignable
