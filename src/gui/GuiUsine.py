@@ -2,6 +2,7 @@ from tkinter import *
 from Formulaire import Formulaire
 from CanevasUsine import CanvasUsine
 
+
 class GuiUsine(Frame):
     def __init__(self, window):
         Frame.__init__(self, window, bg='white')
@@ -147,7 +148,7 @@ class GuiUsine(Frame):
         self.contenu.columnconfigure(0, weight=1)
         self.contenu.grid(row=1, column=0, sticky='news')
 
-        self.canvas_usine = Canvas(self.contenu)
+        self.canvas_usine = CanvasUsine(self.contenu, nlignes=20, ncolones=20)
         self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
         self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left',

@@ -204,7 +204,11 @@ class Carte:
         liste_bornes = sorted(self.get_bornes_vides(), key=lambda a: heuristic(a.depart, pos))
         choix = True
 
-        plus_proche = liste_bornes[0].pos1
+        try:
+            plus_proche = liste_bornes[0].pos1
+        except IndexError:
+            print("La liste des bornes est vide", file=stderr)
+            return (0, 0)
 
         while choix and len(liste_bornes) > 0:
             borne = liste_bornes.pop()
