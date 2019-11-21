@@ -1,4 +1,4 @@
-from Chemin import Chemin, heuristic
+from Tache import Tache
 
 
 class Robot:
@@ -12,7 +12,7 @@ class Robot:
         self.pos = pos # (x2,y2)
         self.limites = limite  # Limite de la carte pour ne pas avoir à l'importer
         self.points = 0
-        self.tache = -1
+        self.tache = Tache(pos, False)
         self.chemin = []
 
     def faireTache(self):
@@ -21,9 +21,10 @@ class Robot:
     
         Effectue la tâche en paramètre. Récupère le temps requis pour faire un assemblage, ou le temps pour le transporter. Simule cette période.
         Retourne True si la tâche a été effectuée dans les temps, False sinon. (Peut être instancier un objet chronomètre ?)
-        TODO ALgorithme pour trouver son chemin parmi les obstacles
         """
-        pass
+
+        if self.pos == self.tache.depart:
+            pass
 
     def allerBorne(self):
         """
