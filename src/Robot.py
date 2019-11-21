@@ -23,34 +23,37 @@ class Robot:
     def faire_tache(self):
         if self.tache:
             if self.tache.depart == self.pos:
-                if self.tache.type == "Assemblage":
+                if len(self.chemin)*2 > self.batterie:
+                    # On peut modifier ce facteur *2 pour représenter l'aller jusqu'a la tache + le rechargement.
+                    return Robot.RECHARGEMENT, self.pos
+                elif self.tache.type == "Assemblage":
                     return Robot.ASSEMBLAGE, self.pos
                 elif self.tache.type == "Transport":
                     return Robot.TRANSPORT, self.pos, self.tache.fin
         else:
             return Robot.RECHARGEMENT, self.pos
 
-    def allerBorne(self):
-        """
-        Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige.
-        retourne False si aucune borne n'est disponible
-        """
+    # def aller_borne(self):
+    #     """
+    #     Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige.
+    #     retourne False si aucune borne n'est disponible
+    #     """
+    #
+    #     #  ON RECUPERE TOUTES LES BORNES DISPONIBLES
+    #     bornes_dispo = {}
+    #     for borne in carte.listeBorne:
+    #         bornes_dispo[borne.id] = self.getDistance(borne,carte)
+    #
+    #     #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
+    #     la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
+    #
+    #     # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
+    #     for borne_1 in carte.listeBorne:
+    #         if la_borne[0] == borne_1.id:
+    #             self.allerA(borne_1,carte)
+    #             borne_1.recharge(self)
 
-        #ON RECUPERE TOUTES LES BORNES DISPONIBLES
-        bornes_dispo = {}
-        for borne in carte.listeBorne:
-            bornes_dispo[borne.id] = self.getDistance(borne,carte)
-
-        #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
-        la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
-
-        # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
-        for borne_1 in carte.listeBorne:
-            if la_borne[0] == borne_1.id:
-                self.allerA(borne_1,carte)
-                borne_1.recharge(self)
-
-    def getId(self):
+    def get_id(self):
         """
         Retourne l'indice du Robot
         """

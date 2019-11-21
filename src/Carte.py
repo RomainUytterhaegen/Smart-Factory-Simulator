@@ -8,6 +8,7 @@ from random import choice
 from Chemin import Chemin, heuristic
 from sys import stderr
 
+
 class Carte:
 
     def __init__(self, nom: str, x: int, y: int,
@@ -68,7 +69,7 @@ class Carte:
         i = 1
         #ON CHERCHE L'OBSTACLE DANS LA CARTE
         while i<len(self.listeObstacle) and res != idObstacle:
-            if self.listeObstacle[i].getId() == idObstacle:
+            if self.listeObstacle[i].get_id() == idObstacle:
                 res = i
             i+=1
         if i != -1:
@@ -108,7 +109,7 @@ class Carte:
         i = 1
         #ON CHERCHE LE ROBOT DANS LA CARTE
         while i<len(self.liste_robot) and res != idRobot:
-            if self.liste_robot[i].getId() == idRobot:
+            if self.liste_robot[i].get_id() == idRobot:
                 res = i
             i+=1
         if i != -1:
@@ -149,7 +150,7 @@ class Carte:
         i = 1
         #ON CHERCHE L'OBSTACLE DANS LA CARTE
         while i<len(self.listeAtelier) and res != idAtelier:
-            if self.listeAtelier[i].getId() == idAtelier:
+            if self.listeAtelier[i].get_id() == idAtelier:
                 res = i
             i+=1
         if i != -1:
@@ -159,11 +160,11 @@ class Carte:
             #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
     
-    def getBornes(self):
+    def get_bornes_vides(self):
         """
         retourne les Bornes de la Carte
         """
-        return self.listeBorne
+        return list(filter(lambda a: a.used, self.listeBorne))
 
     def getPosBornes(self):
         """
@@ -181,23 +182,36 @@ class Carte:
         #GERER SI ON PEUT POSER LA BORNE 
         pass
 
-    def supprimerBorne(self,idBorne:int):
+    def supprimer_borne(self, idBorne:int):
         """
         Supprime une Borne de la Carte
         """
         res = -1
         i = 1
-        #ON CHERCHE LA BORNE DANS LA CARTE
+        # on CHERCHE LA BORNE DANS LA CARTE
         while i<len(self.listeBorne) and res != idBorne:
-            if self.listeBorne[i].getId() == idBorne:
+            if self.listeBorne[i].get_id() == idBorne:
                 res = i
             i+=1
         if i != -1:
-            #ON SUPPRIME LA BORNE DE LA CARTE
+            # ON SUPPRIME LA BORNE DE LA CARTE
             self.listeBorne.pop(res)
         else:
-            #CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
+            # CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+
+    def chemin_borne_proche(self, pos):
+        liste_bornes = sorted(self.get_bornes_vides(), key=lambda a: heuristic(a.depart, pos))
+        choix = True
+
+        plus_proche = liste_bornes[0].pos1
+
+        while choix and len(liste_bornes) > 0:
+            borne = liste_bornes.pop()
+            chemin = self.cheminement(pos, borne.pos1)
+            if int(chemin) >= 1:
+                return chemin
+        return self.cheminement(pos, plus_proche)  # todo modifier pour mettre une case voisine
 
     def get_pos_impossible(self):
         """
@@ -213,19 +227,26 @@ class Carte:
         nb_afk = 0
 
         for robot in self.liste_robot:
-            if robot == -1:
-                #  Robot.choix_taches retourne 1 si il est en atente
-                nb_afk += robot.choix_taches()
-            else:
-                robot.faireTache()
+            if robot.tache == -1:
+                #  choix_taches retourne 1 si il est en atente
+                nb_afk += self.choix_taches(robot)
+            action = robot.faire_tache()
+
+            if action[0] == Robot.RECHARGEMENT:
+
+                robot.chemin = self.chemin_borne_proche(action[1])
+            elif action[0] == Robot.ASSEMBLAGE:
+                pass
+            elif action[0] == Robot.TRANSPORT:
+                pass
 
         return nb_afk == len(self.liste_robot)
 
-
-    def deplacer_robot(self, robot:Robot, ):
+    def deplacer_robot(self, robot: Robot):
         pass
 
-    def get_voisins(self, pos):
+    @staticmethod
+    def get_voisins(pos):
         """
         Retourne la liste des cases voisines d'une case
         :param pos:
@@ -237,7 +258,7 @@ class Carte:
     def case_occupee(self, pos):
         return pos in self.getObstacles()
 
-    def deplaceOuvrier(self,ouv:Ouvrier):
+    def deplaceOuvrier(self, ouv:Ouvrier):
         """
         Déplace l'ouvrier d'une case disponible, à sa portée et dans son rayon de déplacement
         :param ouv: Ouvrier que l'on souhaite déplacer
@@ -260,36 +281,34 @@ class Carte:
         voie = Chemin((self.x, self.y), debut, fin, bloques)
         return voie
 
-    def choix_taches(self, liste_taches, liste_obstacles):
+    def choix_taches(self, robot):
         """
-        Le robot cherche dans la base de donnée une tâche qu'il peut faire avec ses compétences. Si c'est une tâche simple, premier arrivée , premier servi.
-        (Pour le moment on s'occupe pas d'enchère , on voit après). Retourne une tâche, si aucune tâche n'est disponible/accessible, retourne False.
-        TODO méthode allerA()
+        Choisi une tâche et l'affecte au robot
+        :param robot: Robot à qui affecter une tache
+        :return: 0 si l'opération a été effectuée 1 sinon
         """
-
-        #  Récupère les tâches faisables par le robot.(compétence et autonomie)
-        #  S'il peut en faire une , il la choisit. Retourne false si aucune tache n'est disponible
-        liste_taches = sorted(liste_taches, key=lambda a: heuristic(a.depart, self.pos))
+        liste_taches = sorted(self.listeTache, key=lambda a: heuristic(a.depart, robot.pos))
         choix = True
 
-        # Détermine le chemin pour y aller
-        while choix:
+        while choix and len(liste_taches) > 0:
             cur_tache = liste_taches.pop()
-            self.getDistance(self.limites, self.pos, cur_tache.depart, liste_obstacles)
+            dist = self.get_distance(robot.pos, cur_tache.depart)
+            if dist >= 1:
+                robot.tache = cur_tache
+                choix = False
+        return int(choix)
 
-    def getDistance(self, taille, debut, fin, list_obstacle):
+    def get_distance(self, debut, fin):
         """
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
         Instancie un Chemin puis retounne le nombre de cases à parcourir
         """
-        voie = Chemin(taille, debut, fin, list_obstacle)
-        return int(voie)
+        return int(self.cheminement(debut, fin))
+
 
 if __name__ == '__main__':
     carte_test = Carte("Carte test", 10, 10)
     carte_test.ajouter_robot(True, True, (1, 1), 2)
     chemin = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
     chemin2 = carte_test.cheminement((5, 5), (1, 1))
-
-
