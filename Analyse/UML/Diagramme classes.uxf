@@ -7,16 +7,19 @@
       <x>140</x>
       <y>280</y>
       <w>210</w>
-      <h>160</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>Carte
 --
+-nom : string
 -x : int
 -y : int
--plan : list
+-listeRobot : list = []
 -listeObstacle : list = []
+-listeBorne : list = []
+-listeTache : list = []
+-listeAtelier : list = []
 --
-+getObstacles():list[tuple]
 +ajouterObstacle(Obstacle):void
 +supprimerObstacle(id:int):void</panel_attributes>
     <additional_attributes/>
@@ -306,12 +309,12 @@ modifier &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>220</x>
-      <y>430</y>
+      <y>500</y>
       <w>100</w>
-      <h>320</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 modifier ^</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;300.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;230.0</additional_attributes>
   </element>
 </diagram>

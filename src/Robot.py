@@ -42,7 +42,7 @@ class Robot:
     #     #  ON RECUPERE TOUTES LES BORNES DISPONIBLES
     #     bornes_dispo = {}
     #     for borne in carte.listeBorne:
-    #         bornes_dispo[borne.id] = self.getDistance(borne,carte)
+    #         bornes_dispo[borne.id] = self.get_distance(borne,carte)
     #
     #     #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
     #     la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
@@ -50,7 +50,7 @@ class Robot:
     #     # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
     #     for borne_1 in carte.listeBorne:
     #         if la_borne[0] == borne_1.id:
-    #             self.allerA(borne_1,carte)
+    #             self.aller_a(borne_1,carte)
     #             borne_1.recharge(self)
 
     def get_id(self):
@@ -59,26 +59,26 @@ class Robot:
         """
         return self.id_robot
 
-    def getAutonomie(self):
+    def get_autonomie(self):
         """
         Retourne la distance que peut faire le robot avant de tomber en panne
         """
         return self.batterie
     
-    def getCompetences(self):
+    def get_competences(self):
         """
         Retourne les compétences du robot sous forme d'un tableau booléen
         suivant : [transport,assemblage]
         """
         return [self.transport,self.assemblage]
 
-    def getVitesse(self):
+    def get_vitesse(self):
         """
         Retourne la vitesse du robot
         """
         return self.vitesse
 
-    def allerA(self):
+    def aller_a(self):
         """
         Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
         TODO algorithme pour trouver son chemin parmi les obstacles 
@@ -94,20 +94,20 @@ class Robot:
                 self.pos = voie.chemin[0]
                 voie.chemin.pop(0)
     
-    def pourCombien(self):
+    def pour_combien(self):
         """
         Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
         le reste sera géré par la classe TacheEnchere.
         """
-        return self.getDistance(tache,carte)*self.vitesse + tache.duree()
+        return self.get_distance(tache,carte)*self.vitesse + tache.duree()
 
-    def isFull(self):
+    def is_full(self):
         """
         Retourne TRUE si la batterie du Robot est chargée , false sinon
         """
         return self.batterie == 1000
 
-    def remplirBatterie(self,recharge:float):
+    def remplir_batterie(self,recharge:float):
         """
         Recharge la batterie d'une certaine quantité
         """

@@ -5,7 +5,7 @@ from Robot import Robot
 
 class Borne(Obstacle):
 
-    tauxRecharge = 1
+    TAUX_RECHARGE = 1
 
     def __init__(self,id:int,pos1:tuple,pos2:tuple):
         Obstacle.__init__(self, id, pos1, pos1)
@@ -19,10 +19,10 @@ class Borne(Obstacle):
         """
         while not(robot.isFull()):
             self.used = True
-            robot.remplirBatterie(Borne.tauxRecharge)
+            robot.remplir_batterie(Borne.TAUX_RECHARGE)
         self.used = False
 
-    def valideCharge(self, robot:Robot):
+    def valide_charge(self, robot:Robot):
         """
         Méthode vérifiant que la borne est disponible et que la batterie du robot
         n'est pas déjà remplie
@@ -31,20 +31,9 @@ class Borne(Obstacle):
         """
         b = False
         if self.used == False:
-            if robot.isFull():
+            if robot.is_full():
                 raise EnvironmentError('Le robot est déjà rechargé')
             else:
                 b = True
         return b
 
-
-        
-if __name__ == "__main__":
-    born1 = Borne(1,(4,3),(5,6))
-    print("ID : ", born1.getId())
-    print("Pos 1 :", born1.getPos1())
-    print("Pos 2 : ", born1.getPos2())
-    print("Hauteur : ", born1.getHeight())
-    print("Largeur : ", born1.getWidth())
-    rob = Robot(2,False,True,(5,7),2)
-    born1.recharge(rob)
