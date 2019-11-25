@@ -6,7 +6,7 @@ class Atelier(Obstacle):
         self.utilite = utilite
         self.taches = taches
 
-    def getUtilite(self):
+    def get_utilite(self):
         """
         Retourne l'utilité de l'atelier
         """

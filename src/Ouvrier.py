@@ -1,26 +1,26 @@
 class Ouvrier():
-    def __init__(self,id,posInit,radius):
+    def __init__(self,id,pos_init,radius):
         self.id = id            #int
-        self.posInit = posInit  #tuple (x,y), position initiale (fixe)
-        self.pos = posInit      #tuple (x,y), position en temps réel, amenée à changer
+        self.pos_init = pos_init  #tuple (x,y), position initiale (fixe)
+        self.pos = pos_init      #tuple (x,y), position en temps réel, amenée à changer
         self.radius = radius    #int, rayon correspondant à la limite de déplacement de l'ouvrier
-        self.vitMarche = 1
+        self.vit_marche = 1
 
-    def getPosInit(self):
+    def get_pos_init(self):
         """
         Retourne la position initiale de l'ouvrier (tuple)
         :return:
         """
-        return self.posInit
+        return self.pos_init
 
-    def getPos(self):
+    def get_pos(self):
         """
         Retourne la position actuelle de l'ouvrier (tuple)
         :return:
         """
         return self.pos
 
-    def getRadius(self):
+    def get_radius(self):
         """
         Retourne le rayon de déplacement de l'ouvrier (int)
         :return:
@@ -33,22 +33,18 @@ class Ouvrier():
         :param pos:
         :return:
         """
-        return ((self.getPosInit()[0] - self.getRadius() <= self.getPos[0] + pos[0] <= self.getPosInit()[0] + self.getRadius())\
-               and self.getPosInit()[1] - self.getRadius() <= self.getPos[1] + pos[1] <= self.getPosInit()[1] + self.getRadius())
+        return ((self.get_pos_init()[0] - self.get_radius() <= self.get_pos()[0] + pos[0] <= self.get_pos_init()[0] + self.get_radius())\
+               and self.get_pos_init()[1] - self.get_radius() <= self.get_pos()[1] + pos[1] <= self.get_pos_init()[1] + self.get_radius())
 
 
 
-    def seDeplacer(self,tup):
+    def se_deplacer(self,tup):
         """
         Déplace l'ouvrier à la position passée en paramètre
         """
         self.pos = tup
 
 
-
-
-if __name__ == "__main__":
-    ouvr1 = Ouvrier(2,(10,7),5)
 
 
 
