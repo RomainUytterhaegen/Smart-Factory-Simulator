@@ -1,5 +1,6 @@
 from tkinter import *
 from sys import stderr
+from Formulaire import Formulaire
 
 
 class CanvasUsine(Canvas):
@@ -7,7 +8,7 @@ class CanvasUsine(Canvas):
     last_xy = None
 
     def __init__(self, master=None, construct=False, **kwargs):
-        
+
         self.taille_case = 20
         self.construct = construct
 
@@ -24,12 +25,14 @@ class CanvasUsine(Canvas):
         if self.construct:
             # robots
             self.create_text(50, 15, text="ROBOT", )
-            self.create_rectangle(10, 30, 90, 110, activefill="#b9de16", fill="yellow",
-                                  tags=('copy_and_drop', 'robot_spawn'))
+            self.create_oval(40, 30, 40 + self.taille_case, 30 + self.taille_case,
+                             activefill="#b9de16", fill="yellow",
+                             tags=('copy_and_drop', 'robot_spawn'))
 
             # bornes
             self.create_text(50, 125, text="BORNE")
-            self.create_rectangle(10, 140, 90, 220, activefill="#b9de16", fill="orange",
+            self.create_rectangle(40, 140, 40 + self.taille_case, 140 + self.taille_case,
+                                  activefill="#b9de16", fill="orange",
                                   tags=('copy_and_drop', 'borne_spawn'))
 
             # equipements
@@ -89,8 +92,8 @@ class CanvasUsine(Canvas):
         x0, y0, x1, y1 = self.coords('current')
         x1 += (xe - self.last_xy[0])
         y1 += (ye - self.last_xy[1])
-        diffx = x1-x0
-        diffy = y1-y0
+        diffx = x1 - x0
+        diffy = y1 - y0
 
         if magnetisme:
             x0, y0 = self.magnetisme((x0, y0))
@@ -126,7 +129,7 @@ class CanvasUsine(Canvas):
         elif 'equipement_spawn' in bak_tags:
             kwds['tags'] = 'movable resizeable equipement'
         elif 'borne_spawn' in bak_tags:
-            kwds['tags'] = 'movable resizeable base'
+            kwds['tags'] = 'movable base'
         else:
             print(bak_tags, file=stderr)
 
@@ -142,8 +145,8 @@ class CanvasUsine(Canvas):
         """
         lx, ly1, ly2 = 100 * self.construct, 0, self.winfo_height()
         x0, y0, x1, y1 = list(self.coords('current'))
-        largeur = x1-x0 if x1-x0 < self.width else self.width
-        hauteur = y1-y0 if y1-y0 < self.height else self.height
+        largeur = x1 - x0 if x1 - x0 < self.width else self.width
+        hauteur = y1 - y0 if y1 - y0 < self.height else self.height
 
         if x0 < lx and 'movable' in self.gettags('current'):
             x0 = lx
@@ -151,7 +154,7 @@ class CanvasUsine(Canvas):
 
         elif x1 > self.width and 'movable' in self.gettags('current'):
             x1 = self.width
-            x0 = x1-largeur
+            x0 = x1 - largeur
 
         if y0 < 0 and 'movable' in self.gettags('current'):
             y0 = 0
@@ -168,9 +171,19 @@ class CanvasUsine(Canvas):
         Affiche une fenêtre de saisie des données
         :return:
         """
-        top = Toplevel(self.master, bg="red")
-        top_lab = Label(top, text="COUC0U")
-        top_lab.pack()
+        donnees = {
+            "Assemblage": (BooleanVar, "Oui", "Non"),
+            "Transport": (BooleanVar, "Oui", "Non"),
+            "Vitesse": (IntVar, 1, 2, 3, 4, 5)
+        }
+
+        top = Toplevel(self.master)
+        top.transient(self.master)
+        top.rowconfigure(0, weight=1)
+        top.columnconfigure(0, weight=1)
+        topup = Formulaire(top, donnees, bg='#faf7f2')
+
+        topup.grid(row=0, column=0, sticky='new')
 
     def enregistrer(self):
         """
@@ -181,7 +194,7 @@ class CanvasUsine(Canvas):
         pass
 
     def _create_grid(self):
-        for i in range(100 * self.construct+self.taille_case, self.width, self.taille_case):
+        for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):
             self.create_line(i, 0, i, self.height, fill="grey")
         self.create_line(self.width, 0, self.width, self.height, fill="black")
 
@@ -203,18 +216,18 @@ class CanvasUsine(Canvas):
         print("deb", x, y)
 
         for i in range(self.taille_case):
-            if (x-i) % self.taille_case == 0:
+            if (x - i) % self.taille_case == 0:
                 x -= i
                 break
-            if (x+i) % self.taille_case == 0:
+            if (x + i) % self.taille_case == 0:
                 x += i
                 break
 
         for i in range(self.taille_case):
-            if (y-i) % self.taille_case == 0:
+            if (y - i) % self.taille_case == 0:
                 y -= i
                 break
-            if (y+i) % self.taille_case == 0:
+            if (y + i) % self.taille_case == 0:
                 y += i
                 break
 

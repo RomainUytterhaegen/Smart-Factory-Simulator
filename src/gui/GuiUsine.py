@@ -133,7 +133,20 @@ class GuiUsine(Frame):
         Permet d'afficher l'écran qui permet de modifier l'usine
         :return:
         """
-        self.contenu_non_implemente()
+        self.contenu.destroy()
+
+        self.contenu = Frame(self, bg='#faf7f2')
+        self.contenu.rowconfigure(0, weight=2)
+        self.contenu.rowconfigure(1, weight=1)
+        self.contenu.columnconfigure(0, weight=1)
+        self.contenu.grid(row=1, column=0, sticky='news')
+
+        self.canvas_usine = CanvasUsine(self.contenu, True, nlignes=20, ncolones=20)
+        self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
+
+        self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left',
+                                        highlightcolor='blue')
+        self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
 
     def mode_visuel(self):
         """
