@@ -20,44 +20,44 @@ class Tache:
             self.depart = kwargs["pos_depart"]  # Si la tâche est utilisable ou non (initialisation du robot)
         else:
             self.depart = (0, 0)
-            self.valide = False # Si la tâche est utilisable ou non (initialisation du robot)
+            self.valide = False  # Si la tâche est utilisable ou non (initialisation du robot)
 
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200)  # Durée en secondes
         self.enchere = False
         self.Tfin = 0
         # on dit qu'une tâche a 10% de chance d'être une enchère
-        if random.randint(0,100) <= 10:
+        if random.randint(0, 100) <= 10:
             self.enchere = True
 
-    def getPoints(self):
+    def get_points(self):
         return self.points
 
-    def getDuree(self):
+    def get_duree(self):
         return self.duree
 
-    def getEnchere(self):
+    def get_enchere(self):
         return self.enchere
     
-    def getType(self):
+    def get_type(self):
         return self.type
 
-    def listeEnchere(self):
+    def liste_enchere(self):
         pass
 
-    def getTfin(self):
+    def get_tfin(self):
         return self.Tfin
 
-    def setTfin(self, tdebut: int):
+    def set_tfin(self, tdebut: int):
         self.Tfin = tdebut + self.duree
 
-    def getAmende(self):
-        Tfin = self.getTfin()
-        Tdebut = 0
+    def get_amende(self):
+        tfin = self.get_tfin()
+        tdebut = 0
         amende = 0
-        while Tdebut <= Tfin:
-            Tdebut += 1
-            if Tdebut == Tfin:
+        while tdebut <= tfin:
+            tdebut += 1
+            if tdebut == tfin:
                 amende = self.points / 2
         return amende
 

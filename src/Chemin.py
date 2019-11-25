@@ -85,7 +85,7 @@ def a_star_search(graph: SquareGrid, start: tuple, goal: tuple):
     return path
 
 
-def a_star(tgrille: list, depart: tuple, fin: tuple, pos_murs: list)->list:
+def a_star(tgrille: list, depart: tuple, fin: tuple, pos_murs: list) -> list:
     """
     Algorithme à utiliser pour une recherche de chemin. Trouve l'un des plus court chemins sur un plateau.
     La Partie recherche se trouve dans a_star_search()

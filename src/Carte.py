@@ -1,6 +1,6 @@
 from Borne import Borne
 from Atelier import Atelier
-from Ouvrier import Ouvrier
+# from Ouvrier import Ouvrier
 from Obstacle import Obstacle
 from Robot import Robot
 from Ouvrier import Ouvrier
@@ -12,10 +12,16 @@ from sys import stderr
 class Carte:
 
     def __init__(self, nom: str, x: int, y: int,
-                 liste_obstacle: list=None, liste_robot: list=None, liste_ouvrier: list=None):
+                 liste_obstacle: list = None, liste_robot: list = None, liste_ouvrier: list = None):
         """
-        Crée un tableau de dimension x par y.
-        Pour chaque Obstacle, le mettre dans le tableau (0 pour un espace vide, 1 pour un obstacle, 2 pour un atelier, 3 pour une borne).
+        Objet carte enregistrable et instancié dans simulateur. Ne doit pas être importé dans les autres classes
+        :param nom: Nom de la carte par défault lors de l'enregistrement
+        :param x: taille sur l'axe x (width)
+        :param y: taille sur l'axe y (height)
+        :param liste_obstacle: Liste contenant les objets obstacles
+        #  Je suggère de faire des listes ateliers et autres
+        :param liste_robot: Liste des robots
+        :param liste_ouvrier: liste des ouvriers
         """
         if not liste_obstacle:
             liste_obstacle = []
@@ -29,13 +35,13 @@ class Carte:
         self.liste_robot = liste_robot
         self.nom = nom
         self.liste_obstacle = liste_obstacle
-        self.liste_ouvrier= liste_ouvrier
+        self.liste_ouvrier = liste_ouvrier
         self.liste_tache = []
         
         self.x = x
         self.y = y
 
-        for i in range(0,len(self.liste_obstacle)):
+        for i in range(0, len(self.liste_obstacle)):
             self.ajouter_obstacle(liste_obstacle[i])
 
     def get_obstacles(self):
@@ -50,33 +56,33 @@ class Carte:
         """
         res = []
         for obstacle in self.liste_obstacle:
-            for i in range(obstacle.getPos1()[1],obstacle.getPos2()[1]):
-                for j in range(obstacle.getPos1()[0],obstacle.getPos2()[0]):
-                    res.append((i,j))
+            for i in range(obstacle.get_pos1()[1], obstacle.get_pos2()[1]):
+                for j in range(obstacle.get_pos1()[0], obstacle.get_pos2()[0]):
+                    res.append((i, j))
         return res
 
-    def ajouter_obstacle(self,obstacle:Obstacle):
+    def ajouter_obstacle(self, obstacle: Obstacle):
         """
         Méthode qui ajoute un obstacle à la Carte.
         """
-        #GERER LE CAS OU 2 OBSTACLES SONT SUPERPOSES
+        pass
 
-    def supprimer_obstacle(self,id_obstacle:int):
+    def supprimer_obstacle(self, id_obstacle: int):
         """
         Méthode qui supprime un obstacle de la Carte.
         """
         res = -1
         i = 1
-        #ON CHERCHE L'OBSTACLE DANS LA CARTE
-        while i<len(self.liste_obstacle) and res != id_obstacle:
+        # ON CHERCHE L'OBSTACLE DANS LA CARTE
+        while i < len(self.liste_obstacle) and res != id_obstacle:
             if self.liste_obstacle[i].get_id() == id_obstacle:
                 res = i
-            i+=1
+            i += 1
         if i != -1:
-            #ON SUPPRIME L'OBSTACLE DE LA CARTE
+            # ON SUPPRIME L'OBSTACLE DE LA CARTE
             self.liste_obstacle.pop(res)
         else:
-            #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
+            # CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
     def get_robots(self):
@@ -94,29 +100,29 @@ class Carte:
             res.append(robot.pos)
         return res
 
-    def ajouter_robot(self, transport:bool, assemblage:bool, pos: tuple, vitesse: int = 2):
+    def ajouter_robot(self, transport: bool, assemblage: bool, pos: tuple, vitesse: int = 2):
         """
         Ajoute un robot à la carte.
         """
         id_robot = len(self.liste_robot)
-        self.liste_robot.append(Robot(id_robot, transport , assemblage, pos, (self.x, self.y), vitesse))
+        self.liste_robot.append(Robot(id_robot, transport, assemblage, pos, (self.x, self.y), vitesse))
 
-    def supprimer_robot(self,id_robot:int):
+    def supprimer_robot(self, id_robot: int):
         """
         Supprime un robot de l'environnement
         """
         res = -1
         i = 1
-        #ON CHERCHE LE ROBOT DANS LA CARTE
-        while i<len(self.liste_robot) and res != id_robot:
+        # ON CHERCHE LE ROBOT DANS LA CARTE
+        while i < len(self.liste_robot) and res != id_robot:
             if self.liste_robot[i].get_id() == id_robot:
                 res = i
-            i+=1
+            i += 1
         if i != -1:
-            #ON SUPPRIME LE ROBOT DE LA CARTE
+            # ON SUPPRIME LE ROBOT DE LA CARTE
             self.liste_robot.pop(res)
         else:
-            #CAS OÙ LE ROBOT N'EST PAS DANS LA CARTE
+            # CAS OÙ LE ROBOT N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
     def get_ateliers(self):
@@ -131,33 +137,33 @@ class Carte:
         """
         res = []
         for atelier in self.liste_atelier:
-            for i in range(atelier.getPos1()[1],atelier.getPos2()[1]):
-                for j in range(atelier.getPos1()[0],atelier.getPos2()[0]):
-                    res.append((i,j))
+            for i in range(atelier.getPos1()[1], atelier.getPos2()[1]):
+                for j in range(atelier.getPos1()[0], atelier.getPos2()[0]):
+                    res.append((i, j))
         return res
 
-    def ajouter_atelier(self,atelier:Atelier):
+    def ajouter_atelier(self, atelier: Atelier):
         """
         Ajoute un atelier à la Carte
         """
-        #GERER LE CAS OÙ L'ATELIER NE PEUT PAS ÊTRE POSÉ
+        # GERER LE CAS OÙ L'ATELIER NE PEUT PAS ÊTRE POSÉ
 
-    def supprimer_atelier(self,id_atelier:int):
+    def supprimer_atelier(self, id_atelier: int):
         """
         Supprime un robot de l'environnement
         """
         res = -1
         i = 1
-        #ON CHERCHE L'OBSTACLE DANS LA CARTE
-        while i<len(self.liste_atelier) and res != id_atelier:
+        # ON CHERCHE L'OBSTACLE DANS LA CARTE
+        while i < len(self.liste_atelier) and res != id_atelier:
             if self.liste_atelier[i].get_id() == id_atelier:
                 res = i
-            i+=1
+            i += 1
         if i != -1:
-            #ON SUPPRIME L'OBSTACLE DE LA CARTE
+            # ON SUPPRIME L'OBSTACLE DE LA CARTE
             self.liste_atelier.pop(res)
         else:
-            #CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
+            # CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
     
     def get_bornes_vides(self):
@@ -175,24 +181,24 @@ class Carte:
             res.append(borne.getPos1())
         return res
 
-    def ajouter_borne(self,borne:Borne):
+    def ajouter_borne(self, borne: Borne):
         """
         Ajoute une Borne dans la Carte
         """
-        #GERER SI ON PEUT POSER LA BORNE 
+        # GERER SI ON PEUT POSER LA BORNE
         pass
 
-    def supprimer_borne(self, idBorne:int):
+    def supprimer_borne(self, id_borne: int):
         """
         Supprime une Borne de la Carte
         """
         res = -1
         i = 1
         # on CHERCHE LA BORNE DANS LA CARTE
-        while i<len(self.liste_borne) and res != idBorne:
-            if self.liste_borne[i].get_id() == idBorne:
+        while i < len(self.liste_borne) and res != id_borne:
+            if self.liste_borne[i].get_id() == id_borne:
                 res = i
-            i+=1
+            i += 1
         if i != -1:
             # ON SUPPRIME LA BORNE DE LA CARTE
             self.liste_borne.pop(res)
@@ -208,7 +214,7 @@ class Carte:
             plus_proche = liste_bornes[0].pos1
         except IndexError:
             print("La liste des bornes est vide", file=stderr)
-            return (0, 0)
+            return 0, 0
 
         while choix and len(liste_bornes) > 0:
             borne = liste_bornes.pop()
@@ -262,12 +268,12 @@ class Carte:
     def case_occupee(self, pos):
         return pos in self.get_obstacles()
 
-    def deplace_ouvrier(self, ouv:Ouvrier):
+    def deplace_ouvrier(self, ouv: Ouvrier):
         """
         Déplace l'ouvrier d'une case disponible, à sa portée et dans son rayon de déplacement
         :param ouv: Ouvrier que l'on souhaite déplacer
         """
-        ouv.seDeplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.getPos()))))))
+        ouv.se_deplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos()))))))
 
     def cheminement(self, debut, fin):
         """
@@ -314,5 +320,5 @@ class Carte:
 if __name__ == '__main__':
     carte_test = Carte("Carte test", 10, 10)
     carte_test.ajouter_robot(True, True, (1, 1), 2)
-    chemin = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
-    chemin2 = carte_test.cheminement((5, 5), (1, 1))
+    chemin_t = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
+    chemin2_t = carte_test.cheminement((5, 5), (1, 1))

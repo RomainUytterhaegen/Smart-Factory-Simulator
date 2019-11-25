@@ -70,7 +70,7 @@ class Robot:
         Retourne les compétences du robot sous forme d'un tableau booléen
         suivant : [transport,assemblage]
         """
-        return [self.transport,self.assemblage]
+        return [self.transport, self.assemblage]
 
     def get_vitesse(self):
         """
@@ -78,28 +78,29 @@ class Robot:
         """
         return self.vitesse
 
-    def aller_a(self):
-        """
-        Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
-        TODO algorithme pour trouver son chemin parmi les obstacles 
-        """
-        #INSTANCIE UN CHEMIN 
-        voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
-
-        #DEPLACE LE ROBOT EN SUIVANT LE CHEMIN
-        while len(voie.chemin)>1:
-            x = voie.chemin[0][0]
-            y = voie.chemin[0][1]
-            if carte.plan[x][y] == 0:
-                self.pos = voie.chemin[0]
-                voie.chemin.pop(0)
-    
-    def pour_combien(self):
-        """
-        Le robot estime son prix minimal pour être payé(en fonction de sa distance, ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
-        le reste sera géré par la classe TacheEnchere.
-        """
-        return self.get_distance(tache,carte)*self.vitesse + tache.duree()
+    # def aller_a(self):
+    #     """
+    #     Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
+    #
+    #     """
+    #     #INSTANCIE UN CHEMIN
+    #     voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
+    #
+    #     #DEPLACE LE ROBOT EN SUIVANT LE CHEMIN
+    #     while len(voie.chemin)>1:
+    #         x = voie.chemin[0][0]
+    #         y = voie.chemin[0][1]
+    #         if carte.plan[x][y] == 0:
+    #             self.pos = voie.chemin[0]
+    #             voie.chemin.pop(0)
+    #
+    # def pour_combien(self):
+    #     """
+    #     Le robot estime son prix minimal pour être payé(en fonction de sa distance,
+    #     ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
+    #     le reste sera géré par la classe TacheEnchere.
+    #     """
+    #     return self.get_distance(tache, carte)*self.vitesse + tache.duree()
 
     def is_full(self):
         """
@@ -107,13 +108,13 @@ class Robot:
         """
         return self.batterie == 1000
 
-    def remplir_batterie(self,recharge:float):
+    def remplir_batterie(self, recharge: float):
         """
         Recharge la batterie d'une certaine quantité
         """
-        self.batterie+=recharge
+        self.batterie += recharge
 
-    def able(self, robot, atelier):  #, carte: Carte):
+    def able(self, robot, atelier):  # , carte: Carte):
         """
         le robot peut-il faire la tâche?
         :param robot:

@@ -1,9 +1,9 @@
-class Ouvrier():
-    def __init__(self,id,pos_init,radius):
-        self.id = id            #int
-        self.pos_init = pos_init  #tuple (x,y), position initiale (fixe)
-        self.pos = pos_init      #tuple (x,y), position en temps réel, amenée à changer
-        self.radius = radius    #int, rayon correspondant à la limite de déplacement de l'ouvrier
+class Ouvrier:
+    def __init__(self, id_ouvrier, pos_init, radius):
+        self.id = id_ouvrier  # int
+        self.pos_init = pos_init  # tuple (x,y), position initiale (fixe)
+        self.pos = pos_init  # tuple (x,y), position en temps réel, amenée à changer
+        self.radius = radius  # int, rayon correspondant à la limite de déplacement de l'ouvrier
         self.vit_marche = 1
 
     def get_pos_init(self):
@@ -33,21 +33,13 @@ class Ouvrier():
         :param pos:
         :return:
         """
-        return ((self.get_pos_init()[0] - self.get_radius() <= self.get_pos()[0] + pos[0] <= self.get_pos_init()[0] + self.get_radius())\
-               and self.get_pos_init()[1] - self.get_radius() <= self.get_pos()[1] + pos[1] <= self.get_pos_init()[1] + self.get_radius())
+        return ((self.get_pos_init()[0] - self.get_radius() <=
+                 self.get_pos()[0] + pos[0] <= self.get_pos_init()[0] + self.get_radius())
+                and self.get_pos_init()[1] - self.get_radius() <=
+                self.get_pos()[1] + pos[1] <= self.get_pos_init()[1] + self.get_radius())
 
-
-
-    def se_deplacer(self,tup):
+    def se_deplacer(self, tup):
         """
         Déplace l'ouvrier à la position passée en paramètre
         """
         self.pos = tup
-
-
-
-
-
-
-
-
