@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Checkbutton, Button, BooleanVar
+from tkinter import Tk, Frame, Label, Checkbutton, Button, BooleanVar, IntVar
 
 
 class Formulaire(Frame):
@@ -16,6 +16,7 @@ class Formulaire(Frame):
         self.grid(row=1, column=0, sticky='news')
 
         self.retour = {}
+        self.fini = False
 
         self.labels = []
         self.check_buttons = []
@@ -57,6 +58,24 @@ class Formulaire(Frame):
 
         for cb in self.check_buttons:
             cb.deselect()
-        print(dic)
 
         self.retour = dic
+        self.fini = True
+        self.quit()
+
+
+if __name__ == '__main__':
+
+    donnees = {
+        "Assemblage": (BooleanVar, "Oui", "Non"),
+        "Transport": (BooleanVar, "Oui", "Non"),
+        "Vitesse": (IntVar, 1, 2, 3, 4, 5)
+    }
+
+    root = Tk()
+    test = Formulaire(root, donnees)
+    test.mainloop()
+
+    while not test.fini:
+        continue
+    print(test.retour)

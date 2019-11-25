@@ -2,6 +2,7 @@ from tkinter import *
 from sys import stderr
 from Formulaire import Formulaire
 from Robot import Robot
+from time import sleep
 
 
 class CanvasUsine(Canvas):
@@ -18,6 +19,11 @@ class CanvasUsine(Canvas):
 
         self.height = self.nblignes * self.taille_case
         self.width = self.nbcolones * self.taille_case + 100 * self.construct
+
+        self.liste_robots = []
+        self.liste_ateliers = []
+        self.liste_bornes = []
+        self.liste_obstacle = []
 
         kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
 
@@ -188,6 +194,16 @@ class CanvasUsine(Canvas):
         topup = Formulaire(top, donnees, bg='#faf7f2')
 
         topup.grid(row=0, column=0, sticky='new')
+        top.mainloop()
+
+        while not topup.fini:
+            print("aaaaa")
+            sleep(0.5)
+
+        dic = topup.retour
+
+        self.liste_robots.append(Robot(len(self.liste_robots), dic["Transport"], dic["Assemblage"], (0, 0),
+                                       (self.nbcolones, self.nblignes), dic["Vitesse"]))
 
     def enregistrer(self):
         """
@@ -195,6 +211,7 @@ class CanvasUsine(Canvas):
         Ce contenu est composé de tous les block situé à droite de la ligne.
         :return:
         """
+        return self.liste_robots, self.liste_bornes, self.liste_ateliers, self.liste_obstacle
         # todo ajouter les instaces dans des listes à leur création
         # lr = self.find_withtag('robot')
         # liste_robot = []
@@ -270,7 +287,7 @@ class Test(Frame):
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, False, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
+        self.canvas = CanvasUsine(self, True, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
 
