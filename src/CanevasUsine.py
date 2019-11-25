@@ -1,6 +1,7 @@
 from tkinter import *
 from sys import stderr
 from Formulaire import Formulaire
+from Robot import Robot
 
 
 class CanvasUsine(Canvas):
@@ -12,8 +13,11 @@ class CanvasUsine(Canvas):
         self.taille_case = 20
         self.construct = construct
 
-        self.height = kwargs['nlignes'] * self.taille_case
-        self.width = kwargs['ncolones'] * self.taille_case + 100 * self.construct
+        self.nblignes = kwargs['nlignes']
+        self.nbcolones = kwargs['ncolones']
+
+        self.height = self.nblignes * self.taille_case
+        self.width = self.nbcolones * self.taille_case + 100 * self.construct
 
         kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
 
@@ -35,10 +39,10 @@ class CanvasUsine(Canvas):
                                   activefill="#b9de16", fill="orange",
                                   tags=('copy_and_drop', 'borne_spawn'))
 
-            # equipements
-            self.create_text(50, 235, text="EQUIPEMENT")
+            # ateliers
+            self.create_text(50, 235, text="ATELIER")
             self.create_rectangle(10, 250, 90, 330, activefill="#b9de16", fill="grey",
-                                  tags=('copy_and_drop', 'equipement_spawn'))
+                                  tags=('copy_and_drop', 'atelier_spawn'))
 
             # sep
             self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
@@ -126,8 +130,8 @@ class CanvasUsine(Canvas):
         if 'robot_spawn' in bak_tags:
             kwds['tags'] = 'movable robot'
             self._create_robot()
-        elif 'equipement_spawn' in bak_tags:
-            kwds['tags'] = 'movable resizeable equipement'
+        elif 'atelier_spawn' in bak_tags:
+            kwds['tags'] = 'movable resizeable atelier'
         elif 'borne_spawn' in bak_tags:
             kwds['tags'] = 'movable base'
         else:
@@ -191,7 +195,31 @@ class CanvasUsine(Canvas):
         Ce contenu est composé de tous les block situé à droite de la ligne.
         :return:
         """
-        pass
+        # todo ajouter les instaces dans des listes à leur création
+        # lr = self.find_withtag('robot')
+        # liste_robot = []
+        # for irobot in range(len(lr)):
+        #     tags = self.gettags(lr[irobot])
+        #     x1, y1, *r = self.coords(lr[irobot])
+        #     x1 /= self.taille_case
+        #     y1 /= self.taille_case
+        #     assemb = 'assemblage' in tags
+        #     transp = 'transport' in tags
+        #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
+
+    def chargement(self, liste_robots, liste_ateliers, liste_bornes, liste_obstacle):
+        for rob in liste_robots:
+            x, y = [i * self.taille_case for i in rob.pos]
+            self.create_oval(x, y, tags=('movable', 'robot'), fill='yellow')
+        for atelier in liste_ateliers:
+            x, y = [i * self.taille_case for i in atelier.pos]
+            self.create_oval(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
+        for borne in liste_bornes:
+            x, y = [i * self.taille_case for i in borne.pos]
+            self.create_oval(x, y, tags=('movable', 'base'), fill='orange')
+        for obstacle in liste_obstacle:
+            x, y = [i * self.taille_case for i in obstacle.pos]
+            self.create_oval(x, y, tags=('movable', 'resizeable', 'obstacle'), fill='black')
 
     def _create_grid(self):
         for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):

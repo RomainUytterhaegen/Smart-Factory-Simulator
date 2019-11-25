@@ -18,9 +18,9 @@
 # # Lancement de la «boucle principale»
 # root.mainloop()
 
-l = list(range(5))
+l = (3, 4)
 
-v, *r = l
+x, y = [i * 20 for i in l]
 
-print(v, r, l)
+print(x, y, l)
 
