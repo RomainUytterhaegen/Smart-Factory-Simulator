@@ -61,7 +61,6 @@ class Formulaire(Frame):
 
         self.retour = dic
         self.fini = True
-        self.quit()
 
 
 if __name__ == '__main__':

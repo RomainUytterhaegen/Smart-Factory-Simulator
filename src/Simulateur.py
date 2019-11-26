@@ -52,8 +52,8 @@ if __name__ == '__main__':
     sim_test = Simulateur()
     sim_test.carte_main.ajouter_robot(True, True, (0, 0), 2)
 
-    main_t = Thread(target=sim_test.lancer, args=(sim_test.etat, sim_test.vitesse))
-    main_t.run = sim_test.lancer
+    main_t = Thread(target=sim_test.lancer)  # , args=(sim_test.etat, sim_test.vitesse))
+    # main_t.run = sim_test.lancer
 
     print(sim_test.val_test)
     main_t.start()

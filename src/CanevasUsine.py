@@ -76,7 +76,10 @@ class CanvasUsine(Canvas):
         dx, dy = x1 - x0, y1 - y0
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
             if magnetisme:
-                pass
+                if 'robot' in self.gettags(self.selected):
+                    dic = self._create_robot()
+                    self.liste_robots.append(Robot(len(self.liste_robots), dic["Transport"], dic["Assemblage"], (0, 0),
+                                                   (self.nbcolones, self.nblignes), dic["Vitesse"]))
                 #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
@@ -135,7 +138,6 @@ class CanvasUsine(Canvas):
 
         if 'robot_spawn' in bak_tags:
             kwds['tags'] = 'movable robot'
-            self._create_robot()
         elif 'atelier_spawn' in bak_tags:
             kwds['tags'] = 'movable resizeable atelier'
         elif 'borne_spawn' in bak_tags:
@@ -194,16 +196,18 @@ class CanvasUsine(Canvas):
         topup = Formulaire(top, donnees, bg='#faf7f2')
 
         topup.grid(row=0, column=0, sticky='new')
+
         top.mainloop()
 
         while not topup.fini:
-            print("aaaaa")
+            print("aaa")
             sleep(0.5)
-
         dic = topup.retour
+        top.destroy()
+        top.update()
+        print("c'est destrui")
 
-        self.liste_robots.append(Robot(len(self.liste_robots), dic["Transport"], dic["Assemblage"], (0, 0),
-                                       (self.nbcolones, self.nblignes), dic["Vitesse"]))
+        return dic
 
     def enregistrer(self):
         """
