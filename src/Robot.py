@@ -7,9 +7,12 @@ class Robot:
     DEPLACEMENT = 2
     ASSEMBLAGE = 3
     TRANSPORT = 4
+    ID_ROBOT = 1
 
-    def __init__(self, id_robot: int, transport: bool, assemblage: bool, pos: tuple, limite: tuple, vitesse=2):
-        self.id_robot = id_robot  # int
+    def __init__(self, transport: bool, assemblage: bool, pos: tuple, limite: tuple, vitesse=2):
+        #TODO AUTO INCREMENTATION ID ROBOT
+        self.id_robot = self.ID_ROBOT
+        self.ID_ROBOT += 1 
         self.transport = transport  # booléen
         self.assemblage = assemblage  # booléen
         self.vitesse = vitesse  # int

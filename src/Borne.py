@@ -7,8 +7,8 @@ class Borne(Obstacle):
 
     TAUX_RECHARGE = 1
 
-    def __init__(self, id_borne: int, pos1: tuple):  # , pos2: tuple):
-        Obstacle.__init__(self, id_borne, pos1, pos1)
+    def __init__(self, pos: tuple):  # , pos2: tuple):
+        Obstacle.__init__(self, pos1, pos1)
         self.used = False
 
     def recharge(self, robot: Robot):

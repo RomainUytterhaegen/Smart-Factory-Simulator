@@ -1,6 +1,8 @@
 class Obstacle:
-    def __init__(self, id_obstacle: int,  pos1: tuple, pos2: tuple):
-        self.id = id_obstacle  # int
+
+    ID_OBSTACLE = 1
+    def __init__(self, pos1: tuple, pos2: tuple):
+        #TODO AUTO INCREMENTATION ID OBSTACLE
         self.pos1 = pos1  # tuple (x1,y1)
         self.pos2 = pos2  # tuple (x2,y2)
     
@@ -8,7 +10,7 @@ class Obstacle:
         """
         Retourne l'id d'un obstacle
         """
-        return self.id
+        return self.id_obstacle
 
     def get_pos1(self):
         """

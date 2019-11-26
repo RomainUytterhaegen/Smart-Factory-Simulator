@@ -61,7 +61,7 @@ class Carte:
                     res.append((i, j))
         return res
 
-    def ajouter_obstacle(self, obstacle: Obstacle):
+    def ajouter_obstacle(self, pos1: tuple, pos2: tuple):
         """
         Méthode qui ajoute un obstacle à la Carte.
         """
@@ -104,8 +104,8 @@ class Carte:
         """
         Ajoute un robot à la carte.
         """
-        id_robot = len(self.liste_robot)
-        self.liste_robot.append(Robot(id_robot, transport, assemblage, pos, (self.x, self.y), vitesse))
+        #id_robot = len(self.liste_robot)
+        self.liste_robot.append(Robot(transport, assemblage, pos, (self.x, self.y), vitesse))
 
     def supprimer_robot(self, id_robot: int):
         """
@@ -206,7 +206,7 @@ class Carte:
             # CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
-    def chemin_borne_proche(self, pos):
+    def chemin_borne_proche(self, pos:tuple):
         liste_bornes = sorted(self.get_bornes_vides(), key=lambda a: heuristic(a.depart, pos))
         choix = True
 
@@ -256,7 +256,7 @@ class Carte:
         pass
 
     @staticmethod
-    def get_voisins(pos):
+    def get_voisins(pos:tuple):
         """
         Retourne la liste des cases voisines d'une case
         :param pos:
@@ -265,7 +265,7 @@ class Carte:
         x, y = pos
         return [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
 
-    def case_occupee(self, pos):
+    def case_occupee(self, pos:tuple):
         return pos in self.get_obstacles()
 
     def deplace_ouvrier(self, ouv: Ouvrier):
@@ -275,7 +275,7 @@ class Carte:
         """
         ouv.se_deplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos()))))))
 
-    def cheminement(self, debut, fin):
+    def cheminement(self, debut:tuple, fin:tuple):
         """
         Renvoie un chemin entre deux points
         :param debut: Position de départ en (x, y)
@@ -291,7 +291,7 @@ class Carte:
         voie = Chemin((self.x, self.y), debut, fin, bloques)
         return voie
 
-    def choix_taches(self, robot):
+    def choix_taches(self, robot: Robot):
         """
         Choisi une tâche et l'affecte au robot
         :param robot: Robot à qui affecter une tache
@@ -308,7 +308,7 @@ class Carte:
                 choix = False
         return int(choix)
 
-    def get_distance(self, debut, fin):
+    def get_distance(self, debut:tuple, fin:tuple):
         """
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
@@ -322,3 +322,5 @@ if __name__ == '__main__':
     carte_test.ajouter_robot(True, True, (1, 1), 2)
     chemin_t = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
     chemin2_t = carte_test.cheminement((5, 5), (1, 1))
+    print(chemin_t)
+    print(chemin2_t)
