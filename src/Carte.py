@@ -56,16 +56,18 @@ class Carte:
         """
         res = []
         for obstacle in self.liste_obstacle:
-            for i in range(obstacle.get_pos1()[1], obstacle.get_pos2()[1]):
-                for j in range(obstacle.get_pos1()[0], obstacle.get_pos2()[0]):
+            for i in range(obstacle.get_pos1()[1], obstacle.get_pos2()[1] + 1):
+                for j in range(obstacle.get_pos1()[0], obstacle.get_pos2()[0] + 1):
                     res.append((i, j))
         return res
 
     def ajouter_obstacle(self, pos1: tuple, pos2: tuple):
         """
         Méthode qui ajoute un obstacle à la Carte.
+        :param pos1: coin en haut à gauche
+        :param pos2: coin en bas à droite
         """
-        pass
+        self.liste_obstacle.append(Obstacle(len(self.liste_obstacle), pos1, pos2))
 
     def supprimer_obstacle(self, id_obstacle: int):
         """
@@ -321,6 +323,9 @@ if __name__ == '__main__':
     carte_test = Carte("Carte test", 10, 10)
     carte_test.ajouter_robot(True, True, (1, 1), 2)
     chemin_t = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
-    chemin2_t = carte_test.cheminement((5, 5), (1, 1))
-    print(chemin_t)
-    print(chemin2_t)
+    carte_test.ajouter_obstacle((2, 1), (4, 1))
+    chemin2_t = carte_test.cheminement((1, 1), (5, 5))
+    print(chemin_t.chemin)
+    print(chemin2_t.chemin)
+
+
