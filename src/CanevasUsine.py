@@ -5,6 +5,7 @@ from Robot import Robot
 from time import sleep
 from Carte import Carte
 
+
 class CanvasUsine(Canvas):
     selected = None
     last_xy = None
@@ -29,11 +30,6 @@ class CanvasUsine(Canvas):
 
         self.height = self.nblignes * self.taille_case
         self.width = self.nbcolones * self.taille_case + 100 * self.construct
-
-        self.liste_robots = []
-        self.liste_ateliers = []
-        self.liste_bornes = []
-        self.liste_obstacle = []
 
         kwargs = {k: v for k, v in kwargs.items() if k not in ('nlignes', 'ncolones')}
 
@@ -88,8 +84,7 @@ class CanvasUsine(Canvas):
             if magnetisme:
                 if 'robot' in self.gettags(self.selected):
                     dic = self._create_robot()
-                    self.liste_robots.append(Robot(dic["Transport"], dic["Assemblage"], (0, 0),
-                                                   (self.nbcolones, self.nblignes), dic["Vitesse"]))
+                    self.carte.ajouter_robot(dic["Transport"], dic["Assemblage"], (0, 0), dic["Vitesse"])
                 #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
@@ -123,7 +118,7 @@ class CanvasUsine(Canvas):
             x1 = x0 + diffx
             y1 = y0 + diffy
             x1, y1 = self.magnetisme((x1, y1))
-        if diffx >=self.taille_case-5 and diffy>=self.taille_case-5:
+        if diffx >= self.taille_case-5 and diffy >= self.taille_case-5:
             self.coords('current', x0, y0, x1, y1)
 
     def on_item_click(self, event):
@@ -225,7 +220,7 @@ class CanvasUsine(Canvas):
         Ce contenu est composé de tous les block situé à droite de la ligne.
         :return:
         """
-        return self.liste_robots, self.liste_bornes, self.liste_ateliers, self.liste_obstacle
+        return self.carte
         # todo ajouter les instaces dans des listes à leur création
         # lr = self.find_withtag('robot')
         # liste_robot = []
@@ -238,19 +233,19 @@ class CanvasUsine(Canvas):
         #     transp = 'transport' in tags
         #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
 
-    def chargement(self, liste_robots, liste_ateliers, liste_bornes, liste_obstacle):
-        for rob in liste_robots:
+    def chargement(self, carte: Carte):
+        for rob in carte.liste_robot:
             print(rob, rob.pos)
             x, y = [i * self.taille_case for i in rob.pos]
             self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
                              y+self.taille_case , tags=('movable', 'robot'), fill='yellow')
-        for atelier in liste_ateliers:
+        for atelier in carte.liste_atelier:
             x, y = [i * self.taille_case for i in atelier.pos]
             self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
-        for borne in liste_bornes:
+        for borne in carte.liste_borne:
             x, y = [i * self.taille_case for i in borne.pos]
             self.create_rectangle(x, y, tags=('movable', 'base'), fill='orange')
-        for obstacle in liste_obstacle:
+        for obstacle in carte.liste_obstacle:
             x1, y1 = [i * self.taille_case for i in obstacle.pos1]
             x2, y2 = [i * self.taille_case for i in obstacle.pos2]
             self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct, y2,

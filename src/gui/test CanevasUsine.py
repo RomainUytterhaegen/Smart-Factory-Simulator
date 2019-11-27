@@ -18,7 +18,7 @@ class Test(Frame):
         self.canvas.pack()
 
     def charger(self, carte):
-        self.canvas.chargement(carte.liste_robot, carte.liste_atelier, carte.liste_borne, carte.liste_obstacle)
+        self.canvas.chargement(carte)
 
 
 if __name__ == '__main__':
