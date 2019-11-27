@@ -17,13 +17,16 @@ class Test(Frame):
                                   highlightbackground="black")
         self.canvas.pack()
 
-    def charger(self, carte):
-        self.canvas.chargement(carte)
+        self.canvas.chargement(cartet)
+        a =self.canvas.after(200, self.canvas.carte.tour_simulation)
+        b = self.canvas.after(100, self.canvas.test_coucou)
+        c = self.canvas.after(500, self.canvas.chargement, self.canvas.carte)
+
 
 
 if __name__ == '__main__':
 
     fenetre = Tk()
     usine = Test(window=fenetre)
-    usine.charger(cartet)
+    fenetre.after(10, fenetre.bell)
     usine.mainloop()

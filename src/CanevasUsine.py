@@ -46,14 +46,14 @@ class CanvasUsine(Canvas):
                              tags=('copy_and_drop', 'robot_spawn'))
 
             # bornes
-            self.create_text(50, 125, text="BORNE")
-            self.create_rectangle(40, 140, 40 + self.taille_case, 140 + self.taille_case,
+            self.create_text(50, 80, text="BORNE")
+            self.create_rectangle(40, 95, 40 + self.taille_case, 95 + self.taille_case,
                                   activefill="#b9de16", fill="orange",
                                   tags=('copy_and_drop', 'borne_spawn'))
 
             # ateliers
-            self.create_text(50, 235, text="ATELIER")
-            self.create_rectangle(10, 250, 90, 330, activefill="#b9de16", fill="grey",
+            self.create_text(50, 140, text="ATELIER")
+            self.create_rectangle(40, 145, 40 + self.taille_case , 145 + self.taille_case, activefill="#b9de16", fill="grey",
                                   tags=('copy_and_drop', 'atelier_spawn'))
 
             # sep
@@ -206,7 +206,6 @@ class CanvasUsine(Canvas):
 
         while not topup.fini:
             print("aaa")
-            sleep(0.5)
         dic = topup.retour
         top.destroy()
         top.update()
@@ -292,6 +291,9 @@ class CanvasUsine(Canvas):
         print("res", x, y, "\n")
 
         return x, y
+
+    def test_coucou(self):
+        print("coucou")
 
 
 class Test(Frame):
