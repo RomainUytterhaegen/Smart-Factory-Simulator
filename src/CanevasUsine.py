@@ -78,7 +78,7 @@ class CanvasUsine(Canvas):
             if magnetisme:
                 if 'robot' in self.gettags(self.selected):
                     dic = self._create_robot()
-                    self.liste_robots.append(Robot(len(self.liste_robots), dic["Transport"], dic["Assemblage"], (0, 0),
+                    self.liste_robots.append(Robot(dic["Transport"], dic["Assemblage"], (0, 0),
                                                    (self.nbcolones, self.nblignes), dic["Vitesse"]))
                 #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
@@ -113,8 +113,8 @@ class CanvasUsine(Canvas):
             x1 = x0 + diffx
             y1 = y0 + diffy
             x1, y1 = self.magnetisme((x1, y1))
-
-        self.coords('current', x0, y0, x1, y1)
+        if diffx >=self.taille_case-5 and diffy>=self.taille_case-5:
+            self.coords('current', x0, y0, x1, y1)
 
     def on_item_click(self, event):
         self.last_xy = event.x, event.y
