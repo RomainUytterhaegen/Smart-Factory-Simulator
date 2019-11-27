@@ -7,18 +7,14 @@ class Robot:
     DEPLACEMENT = 2
     ASSEMBLAGE = 3
     TRANSPORT = 4
-    ID_ROBOT = 1
 
-    def __init__(self, transport: bool, assemblage: bool, pos: tuple, limite: tuple, vitesse=2):
-        #TODO AUTO INCREMENTATION ID ROBOT
-        self.id_robot = self.ID_ROBOT
-        self.ID_ROBOT += 1 
+    def __init__(self, id_robot: int, transport: bool, assemblage: bool, pos: tuple, vitesse=2):
+        self.id = id_robot
         self.transport = transport  # booléen
         self.assemblage = assemblage  # booléen
         self.vitesse = vitesse  # int
         self.batterie = 1000  # chaque case parcourue, 1 de batterie en moins
         self.pos = pos  # (x2,y2)
-        self.limites = limite  # Limite de la carte pour ne pas avoir à l'importer
         self.points = 0
         self.tache = Tache()
         self.chemin = []
@@ -60,7 +56,7 @@ class Robot:
         """
         Retourne l'indice du Robot
         """
-        return self.id_robot
+        return self.id
 
     def get_autonomie(self):
         """

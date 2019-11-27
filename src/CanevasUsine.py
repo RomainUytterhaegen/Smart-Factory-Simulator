@@ -3,7 +3,7 @@ from sys import stderr
 from Formulaire import Formulaire
 from Robot import Robot
 from time import sleep
-
+from Carte import Carte
 
 class CanvasUsine(Canvas):
     selected = None
@@ -14,8 +14,18 @@ class CanvasUsine(Canvas):
         self.taille_case = 20
         self.construct = construct
 
-        self.nblignes = kwargs['nlignes']
-        self.nbcolones = kwargs['ncolones']
+        try:
+            self.nblignes = kwargs['nlignes']
+            self.nbcolones = kwargs['ncolones']
+        except KeyError:
+            print("nblignes ou nbcolones a été mal défini lors de l'appel de Canevas Usine", file=stderr)
+            self.nblignes = 20
+            self.nbcolones = 20
+
+        if 'carte' in kwargs.keys():
+            self.carte = kwargs["carte"]
+        else :
+            self.carte = Carte("Default", self.nbcolones, self.nblignes)
 
         self.height = self.nblignes * self.taille_case
         self.width = self.nbcolones * self.taille_case + 100 * self.construct
@@ -223,24 +233,28 @@ class CanvasUsine(Canvas):
         #     tags = self.gettags(lr[irobot])
         #     x1, y1, *r = self.coords(lr[irobot])
         #     x1 /= self.taille_case
-        #     y1 /= self.taille_case
+        #     y1 /= self.taille_casnbcolonese
         #     assemb = 'assemblage' in tags
         #     transp = 'transport' in tags
         #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
 
     def chargement(self, liste_robots, liste_ateliers, liste_bornes, liste_obstacle):
         for rob in liste_robots:
+            print(rob, rob.pos)
             x, y = [i * self.taille_case for i in rob.pos]
-            self.create_oval(x, y, tags=('movable', 'robot'), fill='yellow')
+            self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
+                             y+self.taille_case , tags=('movable', 'robot'), fill='yellow')
         for atelier in liste_ateliers:
             x, y = [i * self.taille_case for i in atelier.pos]
-            self.create_oval(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
+            self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
         for borne in liste_bornes:
             x, y = [i * self.taille_case for i in borne.pos]
-            self.create_oval(x, y, tags=('movable', 'base'), fill='orange')
+            self.create_rectangle(x, y, tags=('movable', 'base'), fill='orange')
         for obstacle in liste_obstacle:
-            x, y = [i * self.taille_case for i in obstacle.pos]
-            self.create_oval(x, y, tags=('movable', 'resizeable', 'obstacle'), fill='black')
+            x1, y1 = [i * self.taille_case for i in obstacle.pos1]
+            x2, y2 = [i * self.taille_case for i in obstacle.pos2]
+            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct, y2,
+                                  tags=('movable', 'resizeable', 'obstacle'), fill='black')
 
     def _create_grid(self):
         for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):

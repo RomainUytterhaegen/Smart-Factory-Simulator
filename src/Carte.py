@@ -106,8 +106,8 @@ class Carte:
         """
         Ajoute un robot à la carte.
         """
-        #id_robot = len(self.liste_robot)
-        self.liste_robot.append(Robot(transport, assemblage, pos, (self.x, self.y), vitesse))
+        id_robot = len(self.liste_robot)
+        self.liste_robot.append(Robot(id_robot, transport, assemblage, pos, vitesse))
 
     def supprimer_robot(self, id_robot: int):
         """
