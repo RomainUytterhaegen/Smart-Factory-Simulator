@@ -53,7 +53,7 @@ class CanvasUsine(Canvas):
 
             # ateliers
             self.create_text(50, 140, text="ATELIER")
-            self.create_rectangle(40, 145, 40 + self.taille_case , 145 + self.taille_case, activefill="#b9de16", fill="grey",
+            self.create_rectangle(40, 155, 40 + self.taille_case , 155 + self.taille_case, activefill="#b9de16", fill="grey",
                                   tags=('copy_and_drop', 'atelier_spawn'))
 
             # sep
@@ -181,6 +181,9 @@ class CanvasUsine(Canvas):
             y0 = y1 - hauteur
 
         self.coords('current', x0, y0, x1, y1)
+
+    def verif_fin_formulaire(self):
+        pass
 
     def _create_robot(self):
         """
