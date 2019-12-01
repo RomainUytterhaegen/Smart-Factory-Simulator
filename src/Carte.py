@@ -4,9 +4,9 @@ from Atelier import Atelier
 from Obstacle import Obstacle
 from Robot import Robot
 from Ouvrier import Ouvrier
-from random import choice
+# from random import choice
 from Chemin import Chemin, heuristic
-from sys import stderr
+# from sys import stderr
 
 
 class Carte:
@@ -175,16 +175,13 @@ class Carte:
         """
         retourne les Bornes de la Carte
         """
-        return list(filter(lambda a: a.used, self.liste_borne))
+        return list(filter(lambda a: not a.used, self.liste_borne))
 
     def get_pos_bornes(self):
         """
         Retourne l'ensemble des positions prises par les bornes.
         """
-        res = []
-        for borne in self.liste_borne:
-            res.append(borne.getPos1())
-        return res
+        return [p.pos1 for p in self.liste_borne]
 
     def ajouter_borne(self, pos: tuple):
         """
@@ -211,14 +208,13 @@ class Carte:
             # CAS OÙ LA BORNE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
 
-    def chemin_borne_proche(self, pos:tuple):
-        liste_bornes = sorted(self.get_bornes_vides(), key=lambda a: heuristic(a.depart, pos))
+    def chemin_borne_proche(self, pos: tuple):
+        liste_bornes = sorted(self.get_bornes_vides(), key=lambda a: heuristic(a.pos1, pos))
         choix = True
-
         try:
             plus_proche = liste_bornes[0].pos1
         except IndexError:
-            print("La liste des bornes est vide", file=stderr)
+            print("La liste des bornes est vide")
             return 0, 0
 
         while choix and len(liste_bornes) > 0:
@@ -250,7 +246,8 @@ class Carte:
 
             if action[0] == Robot.RECHARGEMENT:
 
-                robot.chemin = self.chemin_borne_proche(action[1])
+                robot.chemin = self.chemin_borne_proche(action[1]).chemin
+                robot.avancer()
             elif action[0] == Robot.ASSEMBLAGE:
                 pass
             elif action[0] == Robot.TRANSPORT:
@@ -262,7 +259,7 @@ class Carte:
         pass
 
     @staticmethod
-    def get_voisins(pos:tuple):
+    def get_voisins(pos: tuple):
         """
         Retourne la liste des cases voisines d'une case
         :param pos:
@@ -271,7 +268,7 @@ class Carte:
         x, y = pos
         return [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
 
-    def case_occupee(self, pos:tuple):
+    def case_occupee(self, pos: tuple):
         return pos in self.get_obstacles()
 
     def deplace_ouvrier(self, ouv: Ouvrier):
@@ -279,9 +276,10 @@ class Carte:
         Déplace l'ouvrier d'une case disponible, à sa portée et dans son rayon de déplacement
         :param ouv: Ouvrier que l'on souhaite déplacer
         """
-        ouv.se_deplacer(choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos()))))))
+        ouv.se_deplacer()
+        # choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos()))))))
 
-    def cheminement(self, debut:tuple, fin:tuple):
+    def cheminement(self, debut: tuple, fin: tuple):
         """
         Renvoie un chemin entre deux points
         :param debut: Position de départ en (x, y)
@@ -314,7 +312,7 @@ class Carte:
                 choix = False
         return int(choix)
 
-    def get_distance(self, debut:tuple, fin:tuple):
+    def get_distance(self, debut: tuple, fin: tuple):
         """
         Retourne le nombre de cases à parcourir pour aller à un équipement
         ou une borne. Attention, juste le nombre , pas le chemin à parcourir.
@@ -331,5 +329,3 @@ if __name__ == '__main__':
     chemin2_t = carte_test.cheminement((1, 1), (5, 5))
     print(chemin_t.chemin)
     print(chemin2_t.chemin)
-
-

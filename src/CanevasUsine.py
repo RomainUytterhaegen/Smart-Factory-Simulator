@@ -1,8 +1,6 @@
 from tkinter import *
 from sys import stderr
 from Formulaire import Formulaire
-from Robot import Robot
-from time import sleep
 from Carte import Carte
 
 
@@ -25,7 +23,7 @@ class CanvasUsine(Canvas):
 
         if 'carte' in kwargs.keys():
             self.carte = kwargs["carte"]
-        else :
+        else:
             self.carte = Carte("Default", self.nbcolones, self.nblignes)
 
         self.height = self.nblignes * self.taille_case
@@ -53,8 +51,8 @@ class CanvasUsine(Canvas):
 
             # ateliers
             self.create_text(50, 140, text="ATELIER")
-            self.create_rectangle(40, 155, 40 + self.taille_case , 155 + self.taille_case, activefill="#b9de16", fill="grey",
-                                  tags=('copy_and_drop', 'atelier_spawn'))
+            self.create_rectangle(40, 155, 40 + self.taille_case, 155 + self.taille_case, activefill="#b9de16",
+                                  fill="grey", tags=('copy_and_drop', 'atelier_spawn'))
 
             # sep
             self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
@@ -238,17 +236,16 @@ class CanvasUsine(Canvas):
     def chargement(self, carte: Carte):
         self.carte = carte
         for rob in self.carte.liste_robot:
-            print(rob, rob.pos)
             x, y = [i * self.taille_case for i in rob.pos]
             self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
-                             y+self.taille_case , tags=('movable', 'robot'), fill='yellow')
+                             y+self.taille_case, tags=('movable', 'robot'), fill='yellow')
         for atelier in self.carte.liste_atelier:
             x, y = [i * self.taille_case for i in atelier.pos]
             self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
         for borne in self.carte.liste_borne:
             x, y = [i * self.taille_case for i in borne.pos1]
             self.create_rectangle(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
-                             y+self.taille_case, tags=('movable', 'base'), fill='orange')
+                                  y+self.taille_case, tags=('movable', 'base'), fill='orange')
         for obstacle in self.carte.liste_obstacle:
             x1, y1 = [i * self.taille_case for i in obstacle.pos1]
             x2, y2 = [i * self.taille_case for i in obstacle.pos2]
@@ -275,8 +272,6 @@ class CanvasUsine(Canvas):
        """
         x, y = pos
 
-        print("deb", x, y)
-
         for i in range(self.taille_case):
             if (x - i) % self.taille_case == 0:
                 x -= i
@@ -293,11 +288,10 @@ class CanvasUsine(Canvas):
                 y += i
                 break
 
-        print("res", x, y, "\n")
-
         return x, y
 
-    def test_coucou(self):
+    @staticmethod
+    def test_coucou():
         print("coucou")
 
 

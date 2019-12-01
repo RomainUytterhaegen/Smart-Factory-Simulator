@@ -71,6 +71,9 @@ class Robot:
         """
         return [self.transport, self.assemblage]
 
+    def avancer(self):
+        self.pos = self.chemin[0]
+
     def get_vitesse(self):
         """
         Retourne la vitesse du robot

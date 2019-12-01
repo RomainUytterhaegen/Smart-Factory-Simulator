@@ -37,5 +37,5 @@ if __name__ == '__main__':
     usine = Test(window=fenetre)
     usine.canvas.chargement(cartet)
     usine.boucle_chargement()
-    usine.after(5000, usine.toggle_etat)
+    usine.after(200, usine.toggle_etat)
     usine.mainloop()
