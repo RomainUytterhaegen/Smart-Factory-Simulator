@@ -49,6 +49,7 @@ class Formulaire(Frame):
         self .bouton_soumettre.grid(row=6, column=0, padx=20, pady=20, sticky='new')
 
     def _retourner_valeurs(self):
+
         dic = {}
 
         for l in range(len(self.labels)):

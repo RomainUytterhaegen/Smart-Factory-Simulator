@@ -236,18 +236,20 @@ class CanvasUsine(Canvas):
         #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
 
     def chargement(self, carte: Carte):
-        for rob in carte.liste_robot:
+        self.carte = carte
+        for rob in self.carte.liste_robot:
             print(rob, rob.pos)
             x, y = [i * self.taille_case for i in rob.pos]
             self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
                              y+self.taille_case , tags=('movable', 'robot'), fill='yellow')
-        for atelier in carte.liste_atelier:
+        for atelier in self.carte.liste_atelier:
             x, y = [i * self.taille_case for i in atelier.pos]
             self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
-        for borne in carte.liste_borne:
-            x, y = [i * self.taille_case for i in borne.pos]
-            self.create_rectangle(x, y, tags=('movable', 'base'), fill='orange')
-        for obstacle in carte.liste_obstacle:
+        for borne in self.carte.liste_borne:
+            x, y = [i * self.taille_case for i in borne.pos1]
+            self.create_rectangle(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
+                             y+self.taille_case, tags=('movable', 'base'), fill='orange')
+        for obstacle in self.carte.liste_obstacle:
             x1, y1 = [i * self.taille_case for i in obstacle.pos1]
             x2, y2 = [i * self.taille_case for i in obstacle.pos2]
             self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct, y2,

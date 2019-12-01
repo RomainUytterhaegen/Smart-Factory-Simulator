@@ -186,12 +186,12 @@ class Carte:
             res.append(borne.getPos1())
         return res
 
-    def ajouter_borne(self, borne: Borne):
+    def ajouter_borne(self, pos: tuple):
         """
         Ajoute une Borne dans la Carte
         """
-        # GERER SI ON PEUT POSER LA BORNE
-        pass
+        id_borne = len(self.liste_borne)
+        self.liste_borne.append(Borne(id_borne, pos))
 
     def supprimer_borne(self, id_borne: int):
         """
@@ -240,6 +240,7 @@ class Carte:
         :return: True si les robots n'ont tous plus rien à faire
         """
         nb_afk = 0
+        print("DEBUG tour simulation")
 
         for robot in self.liste_robot:
             if robot.tache == -1:
