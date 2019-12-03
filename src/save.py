@@ -8,9 +8,8 @@ from Carte import Carte
 
 
 class Save:
-
    
-    def importer(self,carte:Carte):
+    def importer(self, carte: Carte):
         """
         Transformation du contenue des fichiers json compris dans le dossier 'nomCarte' en objet carte
         avec la liste des obstacles remplies , la taille et son nom definie
@@ -18,8 +17,8 @@ class Save:
         :return: un objet carte remplit
         """
 
-        chemin = os.path.join(curr_dir , carte.nom)
-        if (os.exists(chemin)):
+        chemin = os.path.join(__file__ , carte.nom)
+        if (os.path.exists(chemin)):
             with open(chemin+'/taille.json' , 'r') as json_data:
                 Taille = json.load(json_data)
                 carte.x = Taille["x"]
@@ -30,7 +29,7 @@ class Save:
                     liste = json.load(json_data)
                     for j in liste["Borne"]:
                         b = Borne(j["id"] , j["pos1"] , j["pos2"])
-                        carte.listeObstacle.append(b)
+                        carte.liste_obstacle.append(b)
 
                 with open(chemin+'/atelier.json','r') as json_data:
                     liste = json.load(json_data)
@@ -58,10 +57,10 @@ class Save:
         :parametre: un objet carte 
         """
 
-        chemin = os.path.join(curr_dir)
-        if not(os.exists(chemin+carte.nom)):
-            os.mkdir(os.path.join(curr_dir , carte.nom))
-        chemin = os.path.join(curr_dir , carte.nom)
+        chemin = os.path.join(__file__)
+        if not(os.path.exists(chemin+carte.nom)):
+            os.mkdir(os.path.join(__file__ , carte.nom))
+        chemin = os.path.join(__file__ , carte.nom)
         o = []
         b = []
         a = []
