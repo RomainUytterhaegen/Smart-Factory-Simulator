@@ -5,6 +5,7 @@ cartet = Carte("Coucou", 20, 20)
 cartet.ajouter_robot(True, True, (1, 1), 1)
 cartet.ajouter_obstacle((1, 2), (2 , 4))
 cartet.ajouter_obstacle((5, 6), (10, 11))
+# cartet.ajouter_obstacle((5, 6), (10, 11))
 cartet.ajouter_borne((15, 15))
 
 class Test(Frame):
@@ -48,8 +49,7 @@ if __name__ == '__main__':
     usine.boucle_chargement()
     usine.after(10, usine.test_fin)
     # usine.after(5000, usine.toggle_etat)
-    usine.after(500, lambda : print("Position Robot:", usine.canvas.carte.liste_robot[0].pos))
-    usine.after(500, lambda : print("Position Robot cartet:", cartet.liste_robot[0].pos))
-    usine.after(600, lambda : usine.canvas.chargement(cartet))
+    usine.after(500, lambda: print("Position Robot:", usine.canvas.carte.liste_robot[0].pos))
+    usine.after(500, lambda: print("Position Robot cartet:", cartet.liste_robot[0].pos))
+    usine.after(600, lambda: usine.canvas.chargement(cartet))
     usine.mainloop()
-

@@ -53,6 +53,10 @@ class CanvasUsine(Canvas):
             self.create_text(50, 140, text="ATELIER")
             self.create_rectangle(40, 155, 40 + self.taille_case, 155 + self.taille_case, activefill="#b9de16",
                                   fill="grey", tags=('copy_and_drop', 'atelier_spawn'))
+            # obstacle
+            self.create_text(50, 195, text="OBSTACLE")
+            self.create_rectangle(40, 210, 40 + self.taille_case, 210 + self.taille_case, activefill="#b9de16",
+                                  fill="black", tags=('copy_and_drop', 'obstacle_spawn'))
 
             # sep
             self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
@@ -145,8 +149,10 @@ class CanvasUsine(Canvas):
             kwds['tags'] = 'movable resizeable atelier'
         elif 'borne_spawn' in bak_tags:
             kwds['tags'] = 'movable base'
+        elif 'obstacle_spawn' in bak_tags:
+            kwds['tags'] = 'movable resizeable base'
         else:
-            print(bak_tags, file=stderr)
+            print("Erreur de tags :", bak_tags, file=stderr)
 
         if self.type(iid) == 'oval':
             return self.create_oval(*coords, **kwds)
