@@ -6,7 +6,7 @@ from Robot import Robot
 from Ouvrier import Ouvrier
 # from random import choice
 from Chemin import Chemin, heuristic
-# from sys import stderr
+from sys import stderr
 
 
 class Carte:
@@ -19,7 +19,7 @@ class Carte:
         :param x: taille sur l'axe x (width)
         :param y: taille sur l'axe y (height)
         :param liste_obstacle: Liste contenant les objets obstacles
-        #  Je suggère de faire des listes ateliers et autres
+        :param liste_atelier: Liste contenant les ateliers
         :param liste_robot: Liste des robots
         :param liste_ouvrier: liste des ouvriers
         """
@@ -88,7 +88,7 @@ class Carte:
             self.liste_obstacle.pop(res)
         else:
             # CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
-            raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
+            print(f"Il n'y a pas l'obstacle {id_obstacle}  sur la carte.", file=stderr)
 
     def get_robots(self):
         """
@@ -170,7 +170,6 @@ class Carte:
         else:
             # CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
-    
 
     def get_bornes_vides(self):
         """

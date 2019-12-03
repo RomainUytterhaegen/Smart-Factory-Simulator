@@ -61,7 +61,7 @@ class CanvasUsine(Canvas):
             # sep
             self.create_line(100 * self.construct, 0, 100 * self.construct, self.winfo_reqheight(), fill="black")
 
-        self.bind_item()
+            self.bind_item()
 
         self._create_grid()
 
@@ -304,10 +304,6 @@ class CanvasUsine(Canvas):
         #     assemb = 'assemblage' in tags
         #     transp = 'transport' in tags
         #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
-
-
-    def vider_robots(self):
-        self.delete('robot')
 
     @staticmethod
     def test_coucou():

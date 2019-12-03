@@ -17,7 +17,7 @@ class Save:
         :return: un objet carte remplit
         """
 
-        chemin = os.path.join(__file__ , carte.nom)
+        chemin = os.path.join(__file__, carte.nom)
         if (os.path.exists(chemin)):
             with open(chemin+'/taille.json' , 'r') as json_data:
                 Taille = json.load(json_data)

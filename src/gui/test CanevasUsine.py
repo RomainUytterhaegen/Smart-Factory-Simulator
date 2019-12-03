@@ -3,12 +3,13 @@ from Carte import Carte
 
 cartet = Carte("Coucou", 20, 20)
 cartet.ajouter_robot(True, True, (1, 1), 1)
-cartet.ajouter_obstacle((1, 2), (2 , 4))
+cartet.ajouter_obstacle((1, 2), (2, 4))
 cartet.ajouter_obstacle((5, 6), (10, 11))
 cartet.ajouter_obstacle((3, 11), (4, 15))
 cartet.ajouter_obstacle((13, 13), (14, 16))
 cartet.ajouter_obstacle((11, 11), (16,12))
 cartet.ajouter_borne((15, 15))
+
 
 class Test(Frame):
     def __init__(self, window):
@@ -16,7 +17,7 @@ class Test(Frame):
         window.title("Changement de couleur")
         self.pack()
 
-        self.canvas = CanvasUsine(self, True, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
+        self.canvas = CanvasUsine(self, False, nlignes=20, ncolones=20, highlightthickness="4", highlightcolor='black',
                                   highlightbackground="black")
         self.canvas.pack()
         # a =self.canvas.after(200, self.canvas.carte.tour_simulation)
@@ -52,8 +53,8 @@ if __name__ == '__main__':
     usine.boucle_chargement()
     usine.after(10, usine.test_fin)
     # usine.after(5000, usine.toggle_etat)
-    usine.after(500, lambda : print("Position Robot:", usine.canvas.carte.liste_robot[0].pos))
-    usine.after(500, lambda : print("Position Robot cartet:", cartet.liste_robot[0].pos))
-    usine.after(600, lambda : usine.canvas.chargement(cartet))
+    usine.after(500, lambda: print("Position Robot:", usine.canvas.carte.liste_robot[0].pos))
+    usine.after(500, lambda: print("Position Robot cartet:", cartet.liste_robot[0].pos))
+    usine.after(600, lambda: usine.canvas.chargement(cartet))
     usine.mainloop()
 
