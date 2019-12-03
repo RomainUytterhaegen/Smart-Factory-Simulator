@@ -235,10 +235,6 @@ class CanvasUsine(Canvas):
 
     def chargement(self, carte: Carte):
         self.carte = carte
-        for rob in self.carte.liste_robot:
-            x, y = [i * self.taille_case for i in rob.pos]
-            self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
-                             y+self.taille_case, tags=('movable', 'robot'), fill='yellow')
         for atelier in self.carte.liste_atelier:
             x, y = [i * self.taille_case for i in atelier.pos]
             self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
@@ -251,6 +247,14 @@ class CanvasUsine(Canvas):
             x2, y2 = [i * self.taille_case for i in obstacle.pos2]
             self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct, y2,
                                   tags=('movable', 'resizeable', 'obstacle'), fill='black')
+        self.delete('robot')
+        for rob in self.carte.liste_robot:
+            x, y = [i * self.taille_case for i in rob.pos]
+            self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
+                             y+self.taille_case, tags=('movable', 'robot'), fill='yellow')
+
+    def vider_robots(self):
+        self.delete('robot')
 
     def _create_grid(self):
         for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):

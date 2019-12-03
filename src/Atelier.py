@@ -1,5 +1,6 @@
 from Obstacle import Obstacle
 from Tache import Tache
+from random import *
 
 
 class Atelier(Obstacle):
@@ -7,6 +8,7 @@ class Atelier(Obstacle):
         Obstacle.__init__(self, pos1, pos2)
         self.utilite = utilite
         self.taches = taches
+        self.temps_avant_tache = random.randint(30,300)
 
     def get_utilite(self):
         """

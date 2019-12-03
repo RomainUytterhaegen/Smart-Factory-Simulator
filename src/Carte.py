@@ -61,7 +61,7 @@ class Carte:
         for obstacle in self.liste_obstacle:
             for i in range(obstacle.get_pos1()[1], obstacle.get_pos2()[1] + 1):
                 for j in range(obstacle.get_pos1()[0], obstacle.get_pos2()[0] + 1):
-                    res.append((i, j))
+                    res.append((j, i))
         return res
 
     def ajouter_obstacle(self, pos1: tuple, pos2: tuple):
@@ -171,6 +171,7 @@ class Carte:
             # CAS OÙ L'OBSTACLE N'EST PAS DANS LA CARTE
             raise EnvironmentError("Il n'y a pas cet objet sur la carte.")
     
+
     def get_bornes_vides(self):
         """
         retourne les Bornes de la Carte
@@ -235,13 +236,13 @@ class Carte:
         Réalise un tour de simulation
         :return: True si les robots n'ont tous plus rien à faire
         """
-        nb_afk = 0
+        nb_robot_afk = 0
         print("DEBUG tour simulation")
 
         for robot in self.liste_robot:
             if robot.tache == -1:
                 #  choix_taches retourne 1 si il est en atente
-                nb_afk += self.choix_taches(robot)
+                nb_robot_afk += self.choix_taches(robot)
             action = robot.faire_tache()
 
             if action[0] == Robot.RECHARGEMENT:
@@ -253,7 +254,7 @@ class Carte:
             elif action[0] == Robot.TRANSPORT:
                 pass
 
-        return nb_afk == len(self.liste_robot)
+        return nb_robot_afk == len(self.liste_robot)
 
     def deplacer_robot(self, robot: Robot):
         pass
@@ -299,7 +300,7 @@ class Carte:
         """
         Choisi une tâche et l'affecte au robot
         :param robot: Robot à qui affecter une tache
-        :return: 0 si l'opération a été effectuée 1 sinon
+        :return: 0 si une tache a été choisie 1 sinon
         """
         liste_taches = sorted(self.liste_tache, key=lambda a: heuristic(a.depart, robot.pos))
         choix = True
@@ -320,6 +321,10 @@ class Carte:
         """
         return int(self.cheminement(debut, fin))
 
+    def visu_text(self):
+        grid = []
+
+
 
 if __name__ == '__main__':
     carte_test = Carte("Carte test", 10, 10)
@@ -327,5 +332,12 @@ if __name__ == '__main__':
     chemin_t = carte_test.cheminement(carte_test.get_robots()[0].pos, (5, 5))
     carte_test.ajouter_obstacle((2, 1), (4, 1))
     chemin2_t = carte_test.cheminement((1, 1), (5, 5))
-    print(chemin_t.chemin)
-    print(chemin2_t.chemin)
+    carte_test.ajouter_borne((8, 8))
+    print(carte_test.liste_robot[0].pos)
+    carte_test.tour_simulation()
+    print(carte_test.liste_robot[0].pos)
+    carte_test.tour_simulation()
+    print(carte_test.liste_robot[0].pos)
+    carte_test.tour_simulation()
+    print(carte_test.liste_robot[0].pos)
+    print(carte_test.liste_robot[0].chemin)
