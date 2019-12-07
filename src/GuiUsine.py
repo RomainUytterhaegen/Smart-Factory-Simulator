@@ -1,6 +1,6 @@
 from tkinter import *
 from Formulaire import Formulaire
-from CanevasUsine import CanvasUsine
+from CanevasUsine import CanvasUsine, Carte
 
 
 class GuiUsine(Frame):
@@ -38,9 +38,6 @@ class GuiUsine(Frame):
         self.contenu.columnconfigure(0, weight=1)
         self.contenu.grid(row=1, column=0, sticky='news')
 
-        # contenu du contenu
-        self.mode_visuel()
-
         self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left',
                                         highlightcolor='blue')
         self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
@@ -65,6 +62,11 @@ class GuiUsine(Frame):
         self.bouton_modifier_usine.grid(row=0, column=5, padx=2, pady=2, sticky='news')
         self.bouton_mode_visuel.grid(row=0, column=6, padx=2, pady=2, sticky='news')
         self.bouton_mode_text.grid(row=0, column=7, padx=2, pady=2, sticky='news')
+
+        self.carte = Carte("Carte 1", 20, 20)
+
+        # contenu du contenu
+        self.mode_visuel()
 
     def lancer(self):
         """
@@ -161,6 +163,7 @@ class GuiUsine(Frame):
         self.contenu.grid(row=1, column=0, sticky='news')
 
         self.canvas_usine = CanvasUsine(self.contenu, nlignes=20, ncolones=20)
+        self.canvas_usine.chargement(self.carte)
         self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
         self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left',

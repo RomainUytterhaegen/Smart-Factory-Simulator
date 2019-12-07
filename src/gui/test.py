@@ -1,3 +1,5 @@
+from Carte import Carte
+
 # # Chargement du module tkinter
 # from tkinter import * # pour Python2 se serait Tkinter
 #
@@ -18,9 +20,24 @@
 # # Lancement de la «boucle principale»
 # root.mainloop()
 
-l = (3, 4)
+# l = (3, 4)
+#
+# x, y = [i * 20 for i in l]
+#
+# print(x, y, l)
 
-x, y = [i * 20 for i in l]
+cartet = Carte("Coucou", 20, 20)
+cartet.ajouter_robot(True, True, (1, 1), 1)
+cartet.ajouter_obstacle((1, 2), (2, 4))
+cartet.ajouter_obstacle((5, 6), (10, 11))
+cartet.ajouter_obstacle((3, 11), (4, 15))
+cartet.ajouter_obstacle((13, 13), (14, 16))
+cartet.ajouter_obstacle((11, 11), (16, 12))
+cartet.ajouter_borne((15, 15))
 
-print(x, y, l)
+d = cartet.__dict__
+print(cartet.__dict__)
+c2 = Carte(" ", 10, 10)
+c2.__dict__ = d
+print(c2.__dict__)
 
