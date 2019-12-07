@@ -25,7 +25,7 @@ class Tache:
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200)  # Durée en secondes
         self.enchere = False
-        self.Tfin = 0
+        self.t_actuel = 0
         # on dit qu'une tâche a 10% de chance d'être une enchère
         if random.randint(0, 100) <= 10:
             self.enchere = True
@@ -45,21 +45,18 @@ class Tache:
     def liste_enchere(self):
         pass
 
-    def get_tfin(self):
-        return self.Tfin
+    def get_t_actuel(self):
+        return self.t_actuel
 
-    def set_tfin(self, tdebut: int):
-        self.Tfin = tdebut + self.duree
-
-    def get_amende(self):
-        tfin = self.get_tfin()
-        tdebut = 0
-        amende = 0
-        while tdebut <= tfin:
-            tdebut += 1
-            if tdebut == tfin:
-                amende = self.points / 2
-        return amende
+    def attribuer_points(self):
+        """
+        Donne le nombre de points si la tâche a été faite dans les délais, donne le montant de l'amende sinon.
+        """
+        if self.t_actuel > self.duree:
+            res = (self.t_actuel-self.duree) * 3
+        else:
+            res = self.points
+        return res
 
     def __bool__(self):
         return self.valide
