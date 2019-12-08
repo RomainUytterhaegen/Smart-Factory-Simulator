@@ -3,18 +3,20 @@ from Tache import Tache
 
 
 class Atelier(Obstacle):
-    def __init__(self, id_atelier: int, pos1: tuple, pos2: tuple, taches: Tache):
+    def __init__(self, id_atelier: int, pos1: tuple, pos2: tuple):
         Obstacle.__init__(self, id_atelier, pos1, pos2)
-        self.taches = taches
+        #self.taches = taches
         self.liste_gen_taches = []
 
-    def gen_tache(self, tache: Tache, temps: int):
+    def gen_tache(self, pos: tuple, temps: int):
         """
         Ajoute une tache a la liste des taches générée par cet atelier
+        :param pos: position où la tâche a lieu (comprise dans l'atelier)
         :param tache: La tache générée
         :param temps: Le temps entre chaque génération
         """
-        self.liste_gen_taches.append((tache, temps, temps))  # le premier temps est celui de référence
+        tache = Tache(pos_depart=pos)
+        self.liste_gen_taches.append([tache, temps, temps])  # le premier temps est celui de référence
 
     def update_taches(self):
         retour_taches = []

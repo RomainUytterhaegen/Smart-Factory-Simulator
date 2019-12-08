@@ -254,8 +254,10 @@ class CanvasUsine(Canvas):
     def chargement(self, carte: Carte):
         self.carte = carte
         for atelier in self.carte.liste_atelier:
-            x, y = [i * self.taille_case for i in atelier.pos]
-            self.create_rectangle(x, y, tags=('movable', 'resizeable', 'atelier'), fill='gray')
+            x1, y1 = [i * self.taille_case for i in atelier.pos1]
+            x2, y2 = [i * self.taille_case for i in atelier.pos2]
+            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct + self.taille_case,
+                                  y2 + self.taille_case, tags=('movable', 'resizeable', 'atelier'), fill='gray')
         for borne in self.carte.liste_borne:
             x, y = [i * self.taille_case for i in borne.pos1]
             self.create_rectangle(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,

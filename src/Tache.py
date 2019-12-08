@@ -16,7 +16,7 @@ class Tache:
             self.fin = kwargs["pos_fin"]
             self.type = Tache.TRANSPORT
         else:
-            self.fin = (0, 0)
+            self.fin = (-1, -1)
             self.type = Tache.ASSEMBLAGE
 
         if "pos_depart" in kwargs:

@@ -54,6 +54,27 @@ class Carte:
         else:
             self.liste_tache.append(Tache(pos_depart = pos_deb, pos_fin= pos_fin))
 
+    def find_atelier(self, id_atelier):
+        """
+        Trouve un atelier à partir d'un id. Retourne une erreur si l'id ne corresspond à rien
+        :param id_atelier: Id d'un atelier à trouver
+        :return: L'atelier en question
+        """
+        for atelier in self.liste_atelier:
+            if atelier.id == id_atelier:
+                return atelier
+        raise ValueError
+
+    def get_taches_ateliers(self):
+        return [t for atelier in self.liste_atelier for t in atelier.update_taches()]
+
+    def ajout_tache_atelier(self, id_atelier, temps: int):
+        try:
+            atelier = self.find_atelier(id_atelier)
+            atelier.gen_tache(atelier.pos1, temps)
+        except ValueError:
+            print(f"Aucune Tâche ne peut être assigné à l'atelier numéro {id_atelier}")
+
     def get_obstacles(self):
         """
         Retourne tout les obstacles
@@ -147,18 +168,15 @@ class Carte:
         """
         Retourne l'ensemble des positions prises par les ateliers
         """
-        res = []
-        for atelier in self.liste_atelier:
-            for i in range(atelier.getPos1()[1], atelier.getPos2()[1]):
-                for j in range(atelier.getPos1()[0], atelier.getPos2()[0]):
-                    res.append((i, j))
-        return res
+        return  [(i, j) for atelier in self.liste_atelier for i in range(atelier.pos1[0], atelier.pos2[0])
+                 for j in range(atelier.pos1[1], atelier.pos2[1])]
 
-    def ajouter_atelier(self, atelier: Atelier):
+    def ajouter_atelier(self, pos1: tuple, pos2: tuple):
         """
         Ajoute un atelier à la Carte
         """
-        # GERER LE CAS OÙ L'ATELIER NE PEUT PAS ÊTRE POSÉ
+        id_at = len(self.liste_atelier)
+        self.liste_atelier.append(Atelier(id_at, pos1, pos2))
 
     def supprimer_atelier(self, id_atelier: int):
         """
@@ -245,10 +263,13 @@ class Carte:
         nb_robot_afk = 0
         print("DEBUG tour simulation")
 
+        self.liste_tache += self.get_taches_ateliers()
+
         for robot in self.liste_robot:
             if robot.tache == -1:
                 #  choix_taches retourne 1 si il est en atente
                 nb_robot_afk += self.choix_taches(robot)
+                # todo faire en sorte que si le robot est afk, il prenne une tache si une nouvelle est déclarée
             action = robot.faire_tache()
 
             if action[0] == Robot.RECHARGEMENT:
@@ -339,6 +360,7 @@ if __name__ == '__main__':
     carte_test.ajouter_obstacle((2, 1), (4, 1))
     chemin2_t = carte_test.cheminement((1, 1), (5, 5))
     carte_test.ajouter_borne((8, 8))
+
     print(carte_test.liste_robot[0].pos)
     carte_test.tour_simulation()
     print(carte_test.liste_robot[0].pos)
