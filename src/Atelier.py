@@ -1,17 +1,26 @@
 from Obstacle import Obstacle
 from Tache import Tache
-from random import *
 
 
 class Atelier(Obstacle):
-    def __init__(self, pos1: tuple, pos2: tuple, utilite: str, taches: Tache):
-        Obstacle.__init__(self, pos1, pos2)
-        self.utilite = utilite
+    def __init__(self, id_atelier: int, pos1: tuple, pos2: tuple, taches: Tache):
+        Obstacle.__init__(self, id_atelier, pos1, pos2)
         self.taches = taches
-        self.temps_avant_tache = random.randint(30,300)
+        self.liste_gen_taches = []
 
-    def get_utilite(self):
+    def gen_tache(self, tache: Tache, temps: int):
         """
-        Retourne l'utilité de l'atelier
+        Ajoute une tache a la liste des taches générée par cet atelier
+        :param tache: La tache générée
+        :param temps: Le temps entre chaque génération
         """
-        return self.utilite
+        self.liste_gen_taches.append((tache, temps, temps))  # le premier temps est celui de référence
+
+    def update_taches(self):
+        retour_taches = []
+        for t in range(len(self.liste_gen_taches)):
+            self.liste_gen_taches[t][-1] -= 1
+            if self.liste_gen_taches[t][-1] <= 0:
+                self.liste_gen_taches[t][-1] = self.liste_gen_taches[t][1]
+                retour_taches.append(self.liste_gen_taches[t][0])
+        return retour_taches

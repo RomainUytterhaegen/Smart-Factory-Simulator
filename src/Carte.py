@@ -7,6 +7,7 @@ from Ouvrier import Ouvrier
 # from random import choice
 from Chemin import Chemin, heuristic
 from sys import stderr
+from Tache import Tache
 
 
 class Carte:
@@ -46,6 +47,12 @@ class Carte:
         
         self.x = x
         self.y = y
+
+    def ajout_tache(self, pos_deb: tuple, pos_fin = (-1, -1)):
+        if pos_fin == (-1, -1):
+            self.liste_tache.append(Tache(pos_depart = pos_deb))
+        else:
+            self.liste_tache.append(Tache(pos_depart = pos_deb, pos_fin= pos_fin))
 
     def get_obstacles(self):
         """

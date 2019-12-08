@@ -25,9 +25,9 @@ class Robot:
                 if len(self.chemin)*2 > self.batterie:
                     # On peut modifier ce facteur *2 pour représenter l'aller jusqu'a la tache + le rechargement.
                     return Robot.RECHARGEMENT, self.pos
-                elif self.tache.type == "Assemblage":
+                elif self.tache.type == Tache.ASSEMBLAGE:
                     return Robot.ASSEMBLAGE, self.pos
-                elif self.tache.type == "Transport":
+                elif self.tache.type == Tache.TRANSPORT:
                     return Robot.TRANSPORT, self.pos, self.tache.fin
         else:
             return Robot.RECHARGEMENT, self.pos

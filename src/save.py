@@ -55,7 +55,7 @@ def typifier(objet: dict, typer: type):
     Création d'un objet à partir de ses attributs. Repose sur le fonctionnement très bas niveau de Python
     :param objet: __dict__ d'un objet
     :param typer: classe d'un objet
-    :return:
+    :return: un Objet de type type et obj.__dict__ == objet
     """
     obj = typer.__new__(typer, "obj")
     obj.__dict__ = objet

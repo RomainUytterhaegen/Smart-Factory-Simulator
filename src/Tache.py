@@ -3,18 +3,21 @@ import random
 
 class Tache:
 
+    ASSEMBLAGE = 1
+    TRANSPORT = 2
+
     def __init__(self, **kwargs):
         """
         Les arguments passent en kwargs pour éviter de faire des héritages pour 2 attributs
-        :param kwargs: "valid", "pos_fin", "pos_depart"
+        :param kwargs: "pos_fin", "pos_depart"
         """
 
         if "pos_fin" in kwargs:
             self.fin = kwargs["pos_fin"]
-            self.type = "Transport"
+            self.type = Tache.TRANSPORT
         else:
             self.fin = (0, 0)
-            self.type = "Assemblage"
+            self.type = Tache.ASSEMBLAGE
 
         if "pos_depart" in kwargs:
             self.depart = kwargs["pos_depart"]  # Si la tâche est utilisable ou non (initialisation du robot)
