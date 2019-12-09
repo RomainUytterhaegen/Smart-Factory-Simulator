@@ -7,10 +7,11 @@ cartet.ajouter_obstacle((1, 2), (2, 4))
 cartet.ajouter_obstacle((5, 6), (10, 11))
 cartet.ajouter_obstacle((3, 11), (4, 15))
 cartet.ajouter_obstacle((13, 13), (14, 16))
-cartet.ajouter_obstacle((11, 11), (16,12))
+cartet.ajouter_obstacle((11, 11), (16, 12))
 cartet.ajouter_borne((15, 15))
 cartet.ajouter_atelier((14, 0), (14, 2))
 cartet.ajout_tache_atelier(0, 10)
+
 
 class Test(Frame):
     def __init__(self, window):
@@ -58,4 +59,3 @@ if __name__ == '__main__':
     usine.after(500, lambda: print("Position Robot cartet:", cartet.liste_robot[0].pos))
     usine.after(600, lambda: usine.canvas.chargement(cartet))
     usine.mainloop()
-

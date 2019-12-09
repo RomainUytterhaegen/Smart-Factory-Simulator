@@ -19,6 +19,7 @@ class Robot:
         self.points = 0
         self.tache = Tache()
         self.chemin = []
+        self.etat = Robot.AFK
 
     def faire_tache(self):
         if self.tache:
