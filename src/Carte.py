@@ -75,6 +75,22 @@ class Carte:
         except ValueError:
             print(f"Aucune Tâche ne peut être assigné à l'atelier numéro {id_atelier}")
 
+    def get_voisins_tache(self, obstacle: Obstacle):
+        """
+        retourne les cases voisines inocupées d'un obstacle
+        :param obstacle:
+        :return:
+        """
+        res = {}
+        for i in range(obstacle.pos1[0],obstacle.pos2[0]+1):
+            res.add((i,obstacle.pos1[1]-1))
+            res.add((i,obstacle.pos2[1]+1))
+        for j in range(obstacle.pos1[1],obstacle.pos2[1]+1):
+            res.add((obstacle.pos1[0]-1,j))
+            res.add((obstacle.pos2[0]+1,j))
+        return res.difference(set(self.get_pos_impossible()))
+
+
     def get_obstacles(self):
         """
         Retourne tout les obstacles

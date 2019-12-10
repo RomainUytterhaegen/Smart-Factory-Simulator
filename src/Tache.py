@@ -18,6 +18,7 @@ class Tache:
         else:
             self.fin = (-1, -1)
             self.type = Tache.ASSEMBLAGE
+            self.temps_assemblage = random.randint(15,20)
 
         if "pos_depart" in kwargs:
             self.depart = kwargs["pos_depart"]  # Si la tâche est utilisable ou non (initialisation du robot)
@@ -28,35 +29,18 @@ class Tache:
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200)  # Durée en tour
         self.enchere = False
-        self.t_actuel = 0
+        self.temps_actuel = 0
         # on dit qu'une tâche a 10% de chance d'être une enchère
         if random.randint(0, 100) <= 10:
             self.enchere = True
 
-    def get_points(self):
-        return self.points
-
-    def get_duree(self):
-        return self.duree
-
-    def get_enchere(self):
-        return self.enchere
-    
-    def get_type(self):
-        return self.type
-
-    def liste_enchere(self):
-        pass
-
-    def get_t_actuel(self):
-        return self.t_actuel
 
     def attribuer_points(self):
         """
         Donne le nombre de points si la tâche a été faite dans les délais, donne le montant de l'amende sinon.
         """
-        if self.t_actuel > self.duree:
-            res = (self.t_actuel-self.duree) * 3
+        if self.temps_actuel > self.duree:
+            res = (self.temps_actuel - self.duree) * 3
         else:
             res = self.points
         return res
