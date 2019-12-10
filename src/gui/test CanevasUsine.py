@@ -1,15 +1,7 @@
 from CanevasUsine import CanvasUsine, Tk, Frame
-from Carte import Carte
+from Save import importer
 
-cartet = Carte("Coucou", 20, 20)
-cartet.ajouter_robot(True, True, (1, 1), 1)
-cartet.ajouter_obstacle((1, 2), (2, 4))
-cartet.ajouter_obstacle((5, 6), (10, 11))
-cartet.ajouter_obstacle((3, 11), (4, 15))
-cartet.ajouter_obstacle((13, 13), (14, 16))
-cartet.ajouter_obstacle((11, 11), (16, 12))
-cartet.ajouter_borne((15, 15))
-cartet.ajouter_atelier((14, 0), (14, 2))
+cartet = importer("../cartet.json")
 cartet.ajout_tache_atelier(0, 10)
 
 

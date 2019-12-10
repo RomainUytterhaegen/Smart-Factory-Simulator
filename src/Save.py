@@ -1,10 +1,5 @@
 import json
-from Borne import Borne
-from Atelier import Atelier
-from Obstacle import Obstacle
-from Robot import Robot
-from Ouvrier import Ouvrier
-from Carte import Carte
+from Carte import Carte, Borne, Ouvrier, Tache, Obstacle, Robot, Atelier
 
 
 class CarteEncoder(json.JSONEncoder):
@@ -19,7 +14,7 @@ def exporter(carte: Carte):
     :return:
     """
     with open(f'{carte.nom}.json', 'w') as outfile:
-        json.dump(carte, outfile, cls=CarteEncoder, indent=4)
+        json.dump(carte, outfile, cls=CarteEncoder)
 
 
 def importer(chemin: str):
@@ -34,18 +29,31 @@ def importer(chemin: str):
 
     for i in range(len(dico_carte['liste_obstacle'])):
         dico_carte['liste_obstacle'][i] = typifier(dico_carte['liste_obstacle'][i], Obstacle)
+        dico_carte['liste_obstacle'][i].pos1 = tuple(dico_carte['liste_obstacle'][i].pos1)
+        dico_carte['liste_obstacle'][i].pos2 = tuple(dico_carte['liste_obstacle'][i].pos2)
 
     for i in range(len(dico_carte['liste_robot'])):
         dico_carte['liste_robot'][i] = typifier(dico_carte['liste_robot'][i], Robot)
+        dico_carte['liste_robot'][i].tache = typifier(dico_carte['liste_robot'][i].tache, Tache)
+        dico_carte['liste_robot'][i].tache.depart = tuple(dico_carte['liste_robot'][i].tache.depart)
+        dico_carte['liste_robot'][i].tache.fin = tuple(dico_carte['liste_robot'][i].tache.fin)
+        dico_carte['liste_robot'][i].pos = tuple(dico_carte['liste_robot'][i].pos)
 
     for i in range(len(dico_carte['liste_atelier'])):
         dico_carte['liste_atelier'][i] = typifier(dico_carte['liste_atelier'][i], Atelier)
+        dico_carte['liste_atelier'][i].pos1 = tuple(dico_carte['liste_atelier'][i].pos1)
+        dico_carte['liste_atelier'][i].pos2 = tuple(dico_carte['liste_atelier'][i].pos2)
 
     for i in range(len(dico_carte['liste_borne'])):
         dico_carte['liste_borne'][i] = typifier(dico_carte['liste_borne'][i], Borne)
+        dico_carte['liste_borne'][i].pos1 = tuple(dico_carte['liste_borne'][i].pos1)
+        dico_carte['liste_borne'][i].pos2 = tuple(dico_carte['liste_borne'][i].pos2)
 
     for i in range(len(dico_carte['liste_ouvrier'])):
         dico_carte['liste_ouvrier'][i] = typifier(dico_carte['liste_ouvrier'][i], Ouvrier)
+
+    for i in range(len(dico_carte['liste_tache'])):
+        dico_carte['liste_tache'][i] = typifier(dico_carte['liste_tache'][i], Tache)
 
     return typifier(dico_carte, Carte)
 
@@ -165,8 +173,8 @@ if __name__ == '__main__':
     cartet.ajouter_obstacle((11, 11), (16, 12))
     cartet.ajouter_borne((15, 15))
 
-    print(cartet.__dict__)
+    print(cartet.liste_borne[0].__dict__)
     exporter(cartet)
     # print(json.dumps(cartet, cls=CarteEncoder))
     c = importer("cartet.json")
-    print(c.__dict__)
+    print(c.liste_borne[0].__dict__)
