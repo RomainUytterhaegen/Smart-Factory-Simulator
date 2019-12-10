@@ -19,7 +19,7 @@ def exporter(carte: Carte):
     :return:
     """
     with open(f'{carte.nom}.json', 'w') as outfile:
-        json.dump(carte, outfile, cls=CarteEncoder)
+        json.dump(carte, outfile, cls=CarteEncoder, indent=4)
 
 
 def importer(chemin: str):

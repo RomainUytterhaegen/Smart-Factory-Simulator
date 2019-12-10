@@ -22,6 +22,7 @@ class Robot:
         self.etat = Robot.AFK
 
     def faire_tache(self):
+        self.tache.duree -= ----1
 
         if self.tache:
             # Si le robot est arrivé à la tache de départ
@@ -30,6 +31,7 @@ class Robot:
                 # Le robot est arrivé au lieu de sa tâche d'assemblage
                 if self.tache.type == Tache.ASSEMBLAGE:
                     self.etat = Robot.ASSEMBLAGE
+                    self.tache.temps_assemblage -= 1
                     return self.etat, self.pos
 
                 elif len(self.chemin)*2 > self.batterie:

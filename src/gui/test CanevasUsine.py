@@ -10,7 +10,7 @@ cartet.ajouter_obstacle((13, 13), (14, 16))
 cartet.ajouter_obstacle((11, 11), (16, 12))
 cartet.ajouter_borne((15, 15))
 cartet.ajouter_atelier((14, 0), (14, 2))
-# cartet.ajout_tache_atelier(0, 10)
+cartet.ajout_tache_atelier(0, 10)
 
 
 class Test(Frame):

@@ -13,7 +13,7 @@ from Tache import Tache
 class Carte:
 
     def __init__(self, nom: str, x: int, y: int, liste_obstacle: list = None,
-                 liste_robot: list = None, liste_atelier: list = None,  liste_ouvrier: list = None):
+                 liste_robot: list = None, liste_atelier: list = None, liste_ouvrier: list = None):
         """
         Objet carte enregistrable et instancié dans simulateur. Ne doit pas être importé dans les autres classes
         :param nom: Nom de la carte par défault lors de l'enregistrement
@@ -44,7 +44,7 @@ class Carte:
         self.liste_borne = []
         self.nom = nom
         self.liste_tache = []
-        
+
         self.x = x
         self.y = y
 
@@ -81,15 +81,14 @@ class Carte:
         :param obstacle:
         :return:
         """
-        res = {}
-        for i in range(obstacle.pos1[0],obstacle.pos2[0]+1):
-            res.add((i,obstacle.pos1[1]-1))
-            res.add((i,obstacle.pos2[1]+1))
-        for j in range(obstacle.pos1[1],obstacle.pos2[1]+1):
-            res.add((obstacle.pos1[0]-1,j))
-            res.add((obstacle.pos2[0]+1,j))
+        res = set()
+        for i in range(obstacle.pos1[0], obstacle.pos2[0] + 1):
+            res.add((i, obstacle.pos1[1] - 1))
+            res.add((i, obstacle.pos2[1] + 1))
+        for j in range(obstacle.pos1[1], obstacle.pos2[1] + 1):
+            res.add((obstacle.pos1[0] - 1, j))
+            res.add((obstacle.pos2[0] + 1, j))
         return res.difference(set(self.get_pos_impossible()))
-
 
     def get_obstacles(self):
         """
@@ -184,8 +183,8 @@ class Carte:
         """
         Retourne l'ensemble des positions prises par les ateliers
         """
-        return  [(i, j) for atelier in self.liste_atelier for i in range(atelier.pos1[0], atelier.pos2[0])
-                 for j in range(atelier.pos1[1], atelier.pos2[1])]
+        return [(i, j) for atelier in self.liste_atelier for i in range(atelier.pos1[0], atelier.pos2[0])
+                for j in range(atelier.pos1[1], atelier.pos2[1])]
 
     def ajouter_atelier(self, pos1: tuple, pos2: tuple):
         """
@@ -196,7 +195,7 @@ class Carte:
 
     def supprimer_atelier(self, id_atelier: int):
         """
-        Supprime un robot de l'environnement
+        Supprime un atelier de l'environnement
         """
         res = -1
         i = 1
@@ -294,9 +293,11 @@ class Carte:
                 robot.chemin = self.chemin_borne_proche(action[1]).chemin
                 robot.avancer()
             elif action[0] == Robot.ASSEMBLAGE:
+                # Si jamais il faut faire quelque chose pendant l'assemblage
                 pass
             elif action[0] == Robot.TRANSPORT:
-                pass
+                robot.chemin = self.cheminement(action[1], action[2])
+                robot.avancer()
 
     @staticmethod
     def get_voisins(pos: tuple):
@@ -359,10 +360,6 @@ class Carte:
         Instancie un Chemin puis retounne le nombre de cases à parcourir
         """
         return int(self.cheminement(debut, fin))
-
-    def visu_text(self):
-        grid = []
-
 
 
 if __name__ == '__main__':
