@@ -296,7 +296,10 @@ class Carte:
                 # Si jamais il faut faire quelque chose pendant l'assemblage
                 pass
             elif action[0] == Robot.TRANSPORT:
-                robot.chemin = self.cheminement(action[1], action[2])
+                robot.chemin = self.cheminement(action[1], action[2]).chemin
+                robot.avancer()
+            elif action[0] == Robot.DEPLACEMENT:
+                robot.chemin = self.cheminement(action[1], action[2]).chemin
                 robot.avancer()
 
     @staticmethod

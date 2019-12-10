@@ -2,6 +2,7 @@ from CanevasUsine import CanvasUsine, Tk, Frame
 from Save import importer
 
 cartet = importer("../cartet.json")
+cartet.ajouter_atelier((14, 0), (14, 2))
 cartet.ajout_tache_atelier(0, 10)
 
 
