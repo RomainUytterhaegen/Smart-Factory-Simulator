@@ -33,13 +33,16 @@ class Ouvrier:
         :param pos:
         :return:
         """
-        return ((self.get_pos_init()[0] - self.get_radius() <=
-                 self.get_pos()[0] + pos[0] <= self.get_pos_init()[0] + self.get_radius())
-                and self.get_pos_init()[1] - self.get_radius() <=
-                self.get_pos()[1] + pos[1] <= self.get_pos_init()[1] + self.get_radius())
+        radius = self.get_radius()
+        x0 = self.get_pos_init()[0]
+        xf = pos[0]
+        y0 = self.get_pos_init()[1]
+        yf = pos[1]
+        return ((x0 - rad <= x0 + xf <= x0 + rad)
+                and (y0 - rad <= y0 + yf <= y0 + rad))
 
-    def se_deplacer(self):
+    def se_deplacer(self,pos:tuple):
         """
         Déplace l'ouvrier aléatoirement dans son radius
         """
-        self.pos = tup
+        self.pos = pos

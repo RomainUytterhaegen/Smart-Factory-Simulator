@@ -314,15 +314,17 @@ class Carte:
 
     def case_occupee(self, pos: tuple):
         return pos in self.get_obstacles()
+            def case_libre(self,pos:tuple):
+        return not (pos in self.get_pos_impossible())
 
     def deplace_ouvrier(self, ouv: Ouvrier):
         """
         Déplace l'ouvrier d'une case disponible, à sa portée et dans son rayon de déplacement
         :param ouv: Ouvrier que l'on souhaite déplacer
         """
-        ouv.se_deplacer()
-        # choice(filter(self.case_occupee, list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos()))))))
-
+        voisinsDansRad = list(filter(ouv.in_radius, self.get_voisins(ouv.get_pos())))
+        ouv.se_deplacer(choice list(filter(self.case_libre, voisinsDansRad)))
+        
     def cheminement(self, debut: tuple, fin: tuple):
         """
         Renvoie un chemin entre deux points
