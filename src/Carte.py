@@ -260,15 +260,14 @@ class Carte:
         Réalise un tour de simulation
         :return: True si les robots n'ont tous plus rien à faire
         """
-        nb_robot_afk = 0
         print("DEBUG tour simulation")
 
         self.liste_tache += self.get_taches_ateliers()
 
         for robot in self.liste_robot:
-            if robot.tache == -1:
-                #  choix_taches retourne 1 si il est en atente
-                nb_robot_afk += self.choix_taches(robot)
+            if robot.etat == Robot.AFK:
+                #  Ajouter la condition de tache fini
+                self.choix_taches(robot)
                 # todo faire en sorte que si le robot est afk, il prenne une tache si une nouvelle est déclarée
             action = robot.faire_tache()
 
@@ -281,7 +280,6 @@ class Carte:
             elif action[0] == Robot.TRANSPORT:
                 pass
 
-        return nb_robot_afk == len(self.liste_robot)
 
     def deplacer_robot(self, robot: Robot):
         pass

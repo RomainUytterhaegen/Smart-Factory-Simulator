@@ -26,7 +26,7 @@ class Tache:
             self.valide = False  # Si la tâche est utilisable ou non (initialisation du robot)
 
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
-        self.duree = random.randint(50, 200)  # Durée en secondes
+        self.duree = random.randint(50, 200)  # Durée en tour
         self.enchere = False
         self.t_actuel = 0
         # on dit qu'une tâche a 10% de chance d'être une enchère

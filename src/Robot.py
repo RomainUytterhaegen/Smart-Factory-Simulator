@@ -26,13 +26,16 @@ class Robot:
             if self.tache.depart == self.pos:
                 if len(self.chemin)*2 > self.batterie:
                     # On peut modifier ce facteur *2 pour représenter l'aller jusqu'a la tache + le rechargement.
-                    return Robot.RECHARGEMENT, self.pos
+                    self.etat = Robot.RECHARGEMENT
+                    return self.etat, self.pos
                 elif self.tache.type == Tache.ASSEMBLAGE:
-                    return Robot.ASSEMBLAGE, self.pos
+                    self.etat = Robot.ASSEMBLAGE
+                    return self.etat, self.pos
                 elif self.tache.type == Tache.TRANSPORT:
-                    return Robot.TRANSPORT, self.pos, self.tache.fin
+                    self.etat = Robot.TRANSPORT
+                    return self.etat, self.pos, self.tache.fin
         else:
-            return Robot.RECHARGEMENT, self.pos
+            return Robot.AFK, self.pos
 
     # def aller_borne(self):
     #     """
