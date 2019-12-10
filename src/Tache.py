@@ -29,6 +29,7 @@ class Tache:
         self.points = random.randint(1, 1000)  # à changer plus tard, la c'est juste pour test
         self.duree = random.randint(50, 200)  # Durée en tour
         self.enchere = False
+        self.commence = False
         self.temps_actuel = 0
         # on dit qu'une tâche a 10% de chance d'être une enchère
         if random.randint(0, 100) <= 10:

@@ -48,11 +48,11 @@ class Carte:
         self.x = x
         self.y = y
 
-    def ajout_tache(self, pos_deb: tuple, pos_fin = (-1, -1)):
+    def ajout_tache(self, pos_deb: tuple, pos_fin=(-1, -1)):
         if pos_fin == (-1, -1):
-            self.liste_tache.append(Tache(pos_depart = pos_deb))
+            self.liste_tache.append(Tache(pos_depart=pos_deb))
         else:
-            self.liste_tache.append(Tache(pos_depart = pos_deb, pos_fin= pos_fin))
+            self.liste_tache.append(Tache(pos_depart=pos_deb, pos_fin=pos_fin))
 
     def find_atelier(self, id_atelier):
         """
@@ -287,18 +287,16 @@ class Carte:
                 # todo faire en sorte que si le robot est afk, il prenne une tache si une nouvelle est déclarée
             action = robot.faire_tache()
 
+            if action[0] == Robot.AFK:
+                robot.chemin = self.chemin_borne_proche(action[1]).chemin
+                robot.avancer()
             if action[0] == Robot.RECHARGEMENT:
-
                 robot.chemin = self.chemin_borne_proche(action[1]).chemin
                 robot.avancer()
             elif action[0] == Robot.ASSEMBLAGE:
                 pass
             elif action[0] == Robot.TRANSPORT:
                 pass
-
-
-    def deplacer_robot(self, robot: Robot):
-        pass
 
     @staticmethod
     def get_voisins(pos: tuple):

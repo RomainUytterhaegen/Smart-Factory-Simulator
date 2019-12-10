@@ -22,40 +22,40 @@ class Robot:
         self.etat = Robot.AFK
 
     def faire_tache(self):
+
         if self.tache:
+            # Si le robot est arrivé à la tache de départ
             if self.tache.depart == self.pos:
-                if len(self.chemin)*2 > self.batterie:
-                    # On peut modifier ce facteur *2 pour représenter l'aller jusqu'a la tache + le rechargement.
-                    self.etat = Robot.RECHARGEMENT
-                    return self.etat, self.pos
-                elif self.tache.type == Tache.ASSEMBLAGE:
+
+                # Le robot est arrivé au lieu de sa tâche d'assemblage
+                if self.tache.type == Tache.ASSEMBLAGE:
                     self.etat = Robot.ASSEMBLAGE
                     return self.etat, self.pos
+
+                elif len(self.chemin)*2 > self.batterie:
+                    # On peut modifier ce facteur *2 pour représenter l'aller jusqu'a la tache + le rechargement.
+                    # Le robot n'a plus assez de batterie pour un aller retour
+                    self.etat = Robot.RECHARGEMENT
+                    return self.etat, self.pos
+
+                # Le robot est arrivé au lieu du transport et commence son déplacement
                 elif self.tache.type == Tache.TRANSPORT:
-                    self.etat = Robot.TRANSPORT
+                    self.tache.commence = True
+                    self.etat = Robot.DEPLACEMENT
                     return self.etat, self.pos, self.tache.fin
+
+            # Le robot a une tache de transport et est en déplacement entre les deux points
+            elif self.tache.commence:
+                self.etat = Robot.DEPLACEMENT
+                return self.etat,  self.pos, self.tache.fin
+
+            # Le robot est en déplacement vers le début
+            else:
+                self.etat = Robot.DEPLACEMENT
+                return self.etat,  self.pos, self.tache.depart
+
         else:
             return Robot.AFK, self.pos
-
-    # def aller_borne(self):
-    #     """
-    #     Trouve une borne qui n'est pas occupée, détermine le Chemin pour y aller, puis s'y dirige.
-    #     retourne False si aucune borne n'est disponible
-    #     """
-    #
-    #     #  ON RECUPERE TOUTES LES BORNES DISPONIBLES
-    #     bornes_dispo = {}
-    #     for borne in carte.listeBorne:
-    #         bornes_dispo[borne.id] = self.get_distance(borne,carte)
-    #
-    #     #ON CHERCHE LAQUELLE EST LA PLUS PROCHE
-    #     la_borne = min(bornes_dispo.items(), key=lambda x: x[1])
-    #
-    #     # ON DIRIGE LE ROBOT JUSQU'A LA BORNE ET IL SE RECHARGE
-    #     for borne_1 in carte.listeBorne:
-    #         if la_borne[0] == borne_1.id:
-    #             self.aller_a(borne_1,carte)
-    #             borne_1.recharge(self)
 
     def get_id(self):
         """
@@ -84,30 +84,6 @@ class Robot:
         Retourne la vitesse du robot
         """
         return self.vitesse
-
-    # def aller_a(self):
-    #     """
-    #     Déplace le robot jusqu'à un point donné. Vérifie qu'il avance une case par une(voir code ci-dessous)
-    #
-    #     """
-    #     #INSTANCIE UN CHEMIN
-    #     voie = Chemin((carte.x,carte.y),self.pos,obstacle.pos1,carte.listeObstacle)
-    #
-    #     #DEPLACE LE ROBOT EN SUIVANT LE CHEMIN
-    #     while len(voie.chemin)>1:
-    #         x = voie.chemin[0][0]
-    #         y = voie.chemin[0][1]
-    #         if carte.plan[x][y] == 0:
-    #             self.pos = voie.chemin[0]
-    #             voie.chemin.pop(0)
-    #
-    # def pour_combien(self):
-    #     """
-    #     Le robot estime son prix minimal pour être payé(en fonction de sa distance,
-    #     ses compétences, vitesse , ect), il propose un prix en fonction de ce calcul.
-    #     le reste sera géré par la classe TacheEnchere.
-    #     """
-    #     return self.get_distance(tache, carte)*self.vitesse + tache.duree()
 
     def is_full(self):
         """
