@@ -1,11 +1,12 @@
 # import time
 from Obstacle import Obstacle
 from Robot import Robot
+from sys import stderr
 
 
 class Borne(Obstacle):
 
-    TAUX_RECHARGE = 1
+    TAUX_RECHARGE = 100
 
     def __init__(self, id_borne: int, pos1: tuple):
         Obstacle.__init__(self, id_borne, pos1, pos1)
@@ -17,22 +18,9 @@ class Borne(Obstacle):
         :param:
         :return:
         """
-        while not(robot.is_full()):
+        if not robot.is_full():
             self.used = True
             robot.remplir_batterie(Borne.TAUX_RECHARGE)
-        self.used = False
-
-    def valide_charge(self, robot: Robot):
-        """
-        Méthode vérifiant que la borne est disponible et que la batterie du robot
-        n'est pas déjà remplie
-        Retourne True si elle peut charger le robot,false sinon
-        :return:
-        """
-        b = False
-        if not self.used:
-            if robot.is_full():
-                raise EnvironmentError('Le robot est déjà rechargé')
-            else:
-                b = True
-        return b
+        else:
+            print('Le robot est chargé', file=stderr)
+            self.used = False
