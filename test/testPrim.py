@@ -25,11 +25,40 @@ def creer_graphe(*tuples):
 
     return graphe
 
+def indice_min(liste:list):
+    imin = 0
+    for i in range(len(liste)):
+        if liste[imin] > liste[i]:
+            imin = i
+    return imin
+
+def est_complet(graphe:list):
+    res = True
+    for i in range(len(graphe)):
+        if sum(graphe[i]) <= 0:
+            res = False
+    return res
+
+test = [[0,4,25,1],
+        [2,0,6,1],
+        [2,6,0,24],
+        [2,1,2,0],
+        ]
+
 def min_spanning_tree(graphe:list):
     """
     Créer l'arbre de poids minimum du graphe, ce qui permet dde déterminer le chemin le plus optimisé.
     :param graphe:
     :return:
     """
+    racine = 0
+
+    res = [[0 for column in range(len(tuples))]
+              for row in range(len(tuples))]
+
+
+
+
+
     pass
 
