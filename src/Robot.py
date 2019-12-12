@@ -9,7 +9,7 @@ class Robot:
     TRANSPORT = 4
     AFK = 5
 
-    def __init__(self, id_robot: int, transport: bool, assemblage: bool, pos: tuple, vitesse=2):
+    def __init__(self, id_robot: int, transport: bool, assemblage: bool, pos: tuple, vitesse=1):
         self.id = id_robot
         self.transport = transport  # booléen
         self.assemblage = assemblage  # booléen

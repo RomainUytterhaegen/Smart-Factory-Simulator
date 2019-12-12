@@ -1,6 +1,8 @@
 from tkinter import *
+from tkinter.filedialog import askopenfilename
 from Formulaire import Formulaire
 from CanevasUsine import CanvasUsine, Carte
+from Save import importer
 
 
 class GuiUsine(Frame):
@@ -19,14 +21,8 @@ class GuiUsine(Frame):
 
         # déclaration des grilles des boutons
         self.boutons_haut = Frame(self, bg='#faf7f2')
-        self.boutons_haut.columnconfigure(0, weight=1)
-        self.boutons_haut.columnconfigure(1, weight=1)
-        self.boutons_haut.columnconfigure(2, weight=1)
-        self.boutons_haut.columnconfigure(3, weight=1)
-        self.boutons_haut.columnconfigure(4, weight=1)
-        self.boutons_haut.columnconfigure(5, weight=1)
-        self.boutons_haut.columnconfigure(6, weight=1)
-        self.boutons_haut.columnconfigure(7, weight=1)
+        for nbcol in range(9):
+            self.boutons_haut.columnconfigure(nbcol, weight=1)
         self.boutons_haut.rowconfigure(0, weight=1)
 
         self.boutons_haut.grid(row=0, column=0, sticky='news')
@@ -52,6 +48,7 @@ class GuiUsine(Frame):
         self.bouton_modifier_usine = Button(self.boutons_haut, text="Modifier l'usine", command=self.modifier_usine)
         self.bouton_mode_visuel = Button(self.boutons_haut, text="Passer en Mode visuel", command=self.mode_visuel)
         self.bouton_mode_text = Button(self.boutons_haut, text="Passer en Mode texte", command=self.mode_text)
+        self.bouton_charger_carte = Button(self.boutons_haut, text="Charger une carte", command=self.charger_carte)
 
         # pack des boutons
         self.bouton_play.grid(row=0, column=0, padx=2, pady=2, sticky='news')
@@ -62,10 +59,12 @@ class GuiUsine(Frame):
         self.bouton_modifier_usine.grid(row=0, column=5, padx=2, pady=2, sticky='news')
         self.bouton_mode_visuel.grid(row=0, column=6, padx=2, pady=2, sticky='news')
         self.bouton_mode_text.grid(row=0, column=7, padx=2, pady=2, sticky='news')
+        self.bouton_charger_carte.grid(row=0, column=8, padx=2, pady=2, sticky='news')
 
         self.carte = Carte("Carte 1", 20, 20)
 
         # contenu du contenu
+        self.canvas_usine = CanvasUsine.__new__(CanvasUsine)
         self.mode_visuel()
 
     def lancer(self):
@@ -87,6 +86,10 @@ class GuiUsine(Frame):
         Réinitialise la simulation de l'usine
         :return:
         """
+        self.mode_visuel()
+
+    def charger_carte(self):
+        self.carte = importer(askopenfilename())
         self.mode_visuel()
 
     def popup(self, frame, *args, **kwargs):
