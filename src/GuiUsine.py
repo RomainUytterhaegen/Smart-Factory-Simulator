@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Frame, Message, Button, Toplevel, BooleanVar, IntVar, Tk, Label
 from tkinter.filedialog import askopenfilename
 from Formulaire import Formulaire
 from CanevasUsine import CanvasUsine, Carte
