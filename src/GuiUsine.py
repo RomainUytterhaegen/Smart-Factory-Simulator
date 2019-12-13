@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 from Formulaire import Formulaire
 from CanevasUsine import CanvasUsine, Carte
-from Save import importer
+from Save import importer, exporter
+from copy import copy
 
 
 class GuiUsine(Frame):
@@ -66,6 +67,7 @@ class GuiUsine(Frame):
         # contenu du contenu
         self.canvas_usine = CanvasUsine.__new__(CanvasUsine)
         self.mode_visuel()
+        self.simulation_lancee = False
 
     def lancer(self):
         """
@@ -73,6 +75,17 @@ class GuiUsine(Frame):
         :return:
         """
         self.mode_visuel()
+        temp = copy(self.carte)
+        temp.nom = "carte_temp"
+        exporter(temp)
+        self.simulation_lancee = True
+        self.simulation_boucle()
+
+    def simulation_boucle(self):
+        if self.simulation_lancee:
+            self.canvas_usine.after(10, self.canvas_usine.carte.tour_simulation)
+            self.canvas_usine.after(490, self.canvas_usine.chargement(self.canvas_usine.carte))
+            self.canvas_usine.after(500, self.simulation_boucle)
 
     def pauser(self):
         """
@@ -80,12 +93,14 @@ class GuiUsine(Frame):
         :return:
         """
         self.mode_visuel()
+        self.simulation_lancee = False
 
     def reinitialiser(self):
         """
         Réinitialise la simulation de l'usine
         :return:
         """
+        self.carte = importer("carte_temp.json")
         self.mode_visuel()
 
     def charger_carte(self):

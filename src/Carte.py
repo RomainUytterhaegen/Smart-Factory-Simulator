@@ -12,8 +12,8 @@ from Tache import Tache
 
 class Carte:
 
-    def __init__(self, nom: str, x: int, y: int, liste_obstacle: list = None,
-                 liste_robot: list = None, liste_atelier: list = None, liste_ouvrier: list = None):
+    def __init__(self, nom: str, x: int, y: int, liste_obstacle: list = None, liste_robot: list = None,
+                 liste_atelier: list = None, liste_ouvrier: list = None, liste_borne: list = None):
         """
         Objet carte enregistrable et instancié dans simulateur. Ne doit pas être importé dans les autres classes
         :param nom: Nom de la carte par défault lors de l'enregistrement
@@ -28,20 +28,26 @@ class Carte:
             self.liste_obstacle = []
         else:
             self.liste_obstacle = liste_obstacle
+
         if not liste_robot:
             self.liste_robot = []
         else:
             self.liste_robot = liste_robot
+
         if not liste_atelier:
             self.liste_atelier = []
         else:
             self.liste_atelier = liste_atelier
+
         if not liste_ouvrier:
             self.liste_ouvrier = []
         else:
             self.liste_ouvrier = liste_ouvrier
 
-        self.liste_borne = []
+        if not liste_borne:
+            self.liste_borne = []
+        else:
+            self.liste_borne = liste_borne
         self.nom = nom
         self.liste_tache = []
 
