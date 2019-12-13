@@ -288,25 +288,6 @@ class CanvasUsine(Canvas):
         """
         pass
 
-    def enregistrer(self):
-        """
-        enregistre dans un fichier json le contenu de l'usine
-        Ce contenu est composé de tous les block situé à droite de la ligne.
-        :return:
-        """
-        return self.carte
-        # todo ajouter les instaces dans des listes à leur création
-        # lr = self.find_withtag('robot')
-        # liste_robot = []
-        # for irobot in range(len(lr)):
-        #     tags = self.gettags(lr[irobot])
-        #     x1, y1, *r = self.coords(lr[irobot])
-        #     x1 /= self.taille_case
-        #     y1 /= self.taille_casnbcolonese
-        #     assemb = 'assemblage' in tags
-        #     transp = 'transport' in tags
-        #     liste_robot.append(Robot(irobot, transp, assemb, (x1, y1), (self.nbcolones, self.nblignes)))
-
     @staticmethod
     def test_coucou():
         print("coucou")

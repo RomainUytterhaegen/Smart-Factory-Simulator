@@ -1,20 +1,22 @@
-import json
+from json import JSONEncoder, load, dump
+from os import sep
 from Carte import Carte, Borne, Ouvrier, Tache, Obstacle, Robot, Atelier
 
 
-class CarteEncoder(json.JSONEncoder):
+class CarteEncoder(JSONEncoder):
     def default(self, o):
         return o.__dict__
 
 
-def exporter(carte: Carte):
+def exporter(carte: Carte, path: str = ""):
     """
-
+    :param path: Chemin finissant par /
     :param carte:
     :return:
     """
-    with open(f'{carte.nom}.json', 'w') as outfile:
-        json.dump(carte, outfile, cls=CarteEncoder)
+    with open(f'{path}{carte.nom}.json', 'w') as outfile:
+        dump(carte, outfile, cls=CarteEncoder)
+    print(f'{path}/{carte.nom}.json')
 
 
 def importer(chemin: str):
@@ -25,7 +27,7 @@ def importer(chemin: str):
     :return: Le premier objet carte du fichier chemin
     """
     with open(chemin, 'r') as infile:
-        dico_carte = json.load(infile)
+        dico_carte = load(infile)
 
     for i in range(len(dico_carte['liste_obstacle'])):
         dico_carte['liste_obstacle'][i] = typifier(dico_carte['liste_obstacle'][i], Obstacle)

@@ -1,5 +1,5 @@
 from tkinter import Frame, Message, Button, Toplevel, BooleanVar, IntVar, Tk, Label
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, askdirectory
 from Formulaire import Formulaire
 from CanevasUsine import CanvasUsine, Carte
 from Save import importer, exporter
@@ -22,7 +22,7 @@ class GuiUsine(Frame):
 
         # déclaration des grilles des boutons
         self.boutons_haut = Frame(self, bg='#faf7f2')
-        for nbcol in range(9):
+        for nbcol in range(10):
             self.boutons_haut.columnconfigure(nbcol, weight=1)
         self.boutons_haut.rowconfigure(0, weight=1)
 
@@ -50,6 +50,7 @@ class GuiUsine(Frame):
         self.bouton_mode_visuel = Button(self.boutons_haut, text="Passer en Mode visuel", command=self.mode_visuel)
         self.bouton_mode_text = Button(self.boutons_haut, text="Passer en Mode texte", command=self.mode_text)
         self.bouton_charger_carte = Button(self.boutons_haut, text="Charger une carte", command=self.charger_carte)
+        self.bouton_sauver_carte = Button(self.boutons_haut, text="Sauver la carte", command=self.sauver_carte)
 
         # pack des boutons
         self.bouton_play.grid(row=0, column=0, padx=2, pady=2, sticky='news')
@@ -61,8 +62,9 @@ class GuiUsine(Frame):
         self.bouton_mode_visuel.grid(row=0, column=6, padx=2, pady=2, sticky='news')
         self.bouton_mode_text.grid(row=0, column=7, padx=2, pady=2, sticky='news')
         self.bouton_charger_carte.grid(row=0, column=8, padx=2, pady=2, sticky='news')
+        self.bouton_sauver_carte.grid(row=0, column=9, padx=2, pady=2, sticky='news')
 
-        self.carte = Carte("Carte 1", 20, 20)
+        self.carte = Carte("Carte_default", 20, 20)
 
         # contenu du contenu
         self.canvas_usine = CanvasUsine.__new__(CanvasUsine)
@@ -106,6 +108,13 @@ class GuiUsine(Frame):
     def charger_carte(self):
         self.carte = importer(askopenfilename())
         self.mode_visuel()
+
+    def sauver_carte(self):
+        direc = askdirectory()
+        if direc:
+            exporter(self.carte, direc)
+        else:
+            exporter(self.carte)
 
     def popup(self, frame, *args, **kwargs):
         top = Toplevel(self.master)
@@ -161,6 +170,7 @@ class GuiUsine(Frame):
         self.contenu.grid(row=1, column=0, sticky='news')
 
         self.canvas_usine = CanvasUsine(self.contenu, True, nlignes=20, ncolones=20)
+        self.canvas_usine.chargement(self.carte)
         self.canvas_usine.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
         self.message_textmode = Message(self.contenu, text=self.terminal_text(), width=300000, justify='left',
@@ -229,12 +239,6 @@ class GuiUsine(Frame):
         self.contenu.label_non_implemente = Label(self.contenu, text="Le contenu n'est pas encore implémenté", bg='red')
         self.contenu.label_non_implemente.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
-
-"""
-def formulaire(objet, window, **kwargs):
-    for s,v in kwargs:
-        objet.label window
-"""
 
 if __name__ == '__main__':
     fenetre = Tk()
