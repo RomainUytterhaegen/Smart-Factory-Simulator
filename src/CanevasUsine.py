@@ -114,16 +114,9 @@ class CanvasUsine(Canvas):
 
         topup.grid(row=0, column=0, sticky='new')
 
+        self.after(1000, self._verif_fin_formulaire, topup)
+
         top.mainloop()
-
-        while not topup.fini:
-            print("aaa")
-        dic = topup.retour
-        top.destroy()
-        top.update()
-        print("c'est destrui")
-
-        return dic
 
     def _create_grid(self):
         for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):
@@ -182,8 +175,8 @@ class CanvasUsine(Canvas):
         if abs(dx) > min_pixels or abs(dy) > min_pixels:
             if magnetisme:
                 if 'robot' in self.gettags(self.selected):
-                    dic = self._create_robot()
-                    self.carte.ajouter_robot(dic["Transport"], dic["Assemblage"], (0, 0), dic["Vitesse"])
+                    self._create_robot()
+                pass
                 #  rajouter le mgnétisme ici?
             self.move(self.selected, dx, dy)
             self.last_xy = x1, y1
@@ -230,8 +223,15 @@ class CanvasUsine(Canvas):
 
         self.coords('current', x0, y0, x1, y1)
 
-    def _verif_fin_formulaire(self):
-        pass
+    def _verif_fin_formulaire(self, form: Formulaire):
+        if not form.fini:
+            self.after(1000, self._verif_fin_formulaire, form)
+        else:
+            dic = form.retour
+            self.carte.ajouter_robot(dic["Transport"], dic["Assemblage"], (0, 0), dic["Vitesse"])
+            form.master.destroy()
+            print(self.carte.liste_robot[0].pos, )
+
 
     def _suppr_current(self):
         if 'movable' in self.gettags('current'):

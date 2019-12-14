@@ -23,7 +23,7 @@ class Test(Frame):
         if self.etat:
             print("Position Robot:", self.canvas.carte.liste_robot[0].pos)
             self.canvas.after(10, self.canvas.carte.tour_simulation)
-            self.canvas.after(120, self.canvas.chargement(self.canvas.carte))
+            self.canvas.after(120, self.canvas.chargement, self.canvas.carte)
             self.canvas.after(150, self.boucle_chargement)
 
     def toggle_etat(self):
@@ -34,7 +34,7 @@ class Test(Frame):
             if self.canvas.carte.liste_robot[0].pos in \
                     self.canvas.carte.get_voisins(self.canvas.carte.liste_borne[0].pos1):
                 self.toggle_etat()
-                self.canvas.after(130, self.canvas.chargement(self.canvas.carte))
+                self.canvas.after(130, self.canvas.chargement, self.canvas.carte)
             else:
                 self.canvas.after(10, self.test_fin)
 
