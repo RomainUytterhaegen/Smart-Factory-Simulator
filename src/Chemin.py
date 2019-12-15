@@ -7,6 +7,93 @@ Seulement Chemin est utilisé dans les autres pages
 """
 
 
+class Chemin:
+    """
+    Classe qui trouve un chemin entre deux position.
+    Si il n'y a pas de chemin, self.chemin sera vide
+    """
+
+    distance = 0
+    deb = 0, 0
+    fin = 0, 0
+    chemin = []
+    cur = 0
+
+    def __init__(self, taille_grille, debut: tuple, fin: tuple, murs=None):
+        if murs is None:
+            murs = list()
+
+        self.deb = debut
+        self.fin = fin
+
+        if debut in murs:
+            raise ValueError(f"La position de départ est dans un obstacle. dep:{debut} fin:{fin}")
+        if fin in murs:
+            raise ValueError(f"La position d'arrivée est dans un obstacle. dep:{debut} fin:{fin}")
+
+        try:
+            if debut != fin:
+                self.chemin = a_star(taille_grille, debut, fin, murs)
+            else:
+                self.chemin = []
+            self.distance = len(self.chemin)
+        except KeyError:
+            # l'objet est inateignable
+            self.distance = taille_grille[0]*taille_grille[1]
+            self.chemin = [debut]
+
+    def get_next(self):
+        self.cur += 1
+        return self.chemin[self.cur-1]
+
+    def __int__(self):
+        return self.distance
+
+
+class PlusProche:
+
+    distance = 0
+    proche = (0, 0)
+
+    def __init__(self, taille_grille: tuple, debut: tuple, objectifs: list, murs=None):
+        """
+        Permet de définir l'objectif le plus proche et sa distance
+        :param taille_grille: taille de la grille (hauteur, longueur)
+        :param debut: position de départ (x, y)
+        :param objectifs: Liste avec les positions d'arrivées
+        :param murs: Si il y a des murs, une liste qui les contient
+        """
+        if not murs:
+            murs = []
+
+        w, h = taille_grille
+        grid = SquareGrid(w, h)
+        grid.walls = murs
+
+        resultat = plus_proche_search(grid, debut, objectifs)
+        if resultat:
+            self.proche, self.distance = resultat
+        else:
+            self.proche = debut
+            self.distance = taille_grille[0]*taille_grille[1]
+
+
+
+
+class PriorityQueue:
+    def __init__(self):
+        self.elements = []
+
+    def empty(self):
+        return len(self.elements) == 0
+
+    def get(self):
+        return heapq.heappop(self.elements)[1]
+
+    def put(self, item, priority):
+        heapq.heappush(self.elements, (priority, item))
+
+
 class SquareGrid:
     def __init__(self, width, height):
         self.width = width
@@ -16,9 +103,6 @@ class SquareGrid:
     def in_bounds(self, pos):
         (x, y) = pos
         return 0 <= x < self.width and 0 <= y < self.height
-
-    def passable(self, pos):
-        return pos not in self.walls
 
     def neighbors(self, pos):
         try:
@@ -31,25 +115,8 @@ class SquareGrid:
         results = filter(self.passable, results)
         return list(results)
 
-
-class PriorityQueue:
-    def __init__(self):
-        self.elements = []
-
-    def empty(self):
-        return len(self.elements) == 0
-
-    def put(self, item, priority):
-        heapq.heappush(self.elements, (priority, item))
-
-    def get(self):
-        return heapq.heappop(self.elements)[1]
-
-
-def heuristic(a, b):
-    (x1, y1) = a
-    (x2, y2) = b
-    return abs(x1 - x2) + abs(y1 - y2)
+    def passable(self, pos):
+        return pos not in self.walls
 
 
 def a_star_search(graph: SquareGrid, start: tuple, goal: tuple):
@@ -105,6 +172,14 @@ def a_star(tgrille: list, depart: tuple, fin: tuple, pos_murs: list) -> list:
     return a_star_search(grille_jeu, depart, fin)
 
 
+def heuristic(a, b):
+    (x1, y1) = a
+    (x2, y2) = b
+    return abs(x1 - x2) + abs(y1 - y2)
+
+
+
+
 def plus_proche_search(graph: SquareGrid, start: tuple, objectifs: list):
     """
     Algorithme trouvant l'objectif le plus proche
@@ -140,74 +215,6 @@ def plus_proche_search(graph: SquareGrid, start: tuple, objectifs: list):
     return position, cost_sofar[position]
 
 
-class PlusProche:
 
-    distance = 0
-    proche = (0, 0)
-
-    def __init__(self, taille_grille: tuple, debut: tuple, objectifs: list, murs=None):
-        """
-        Permet de définir l'objectif le plus proche et sa distance
-        :param taille_grille: taille de la grille (hauteur, longueur)
-        :param debut: position de départ (x, y)
-        :param objectifs: Liste avec les positions d'arrivées
-        :param murs: Si il y a des murs, une liste qui les contient
-        """
-        if not murs:
-            murs = []
-
-        w, h = taille_grille
-        grid = SquareGrid(w, h)
-        grid.walls = murs
-
-        resultat = plus_proche_search(grid, debut, objectifs)
-        if resultat:
-            self.proche, self.distance = resultat
-        else:
-            self.proche = debut
-            self.distance = taille_grille[0]*taille_grille[1]
-
-
-class Chemin:
-    """
-    Classe qui trouve un chemin entre deux position.
-    Si il n'y a pas de chemin, self.chemin sera vide
-    """
-
-    distance = 0
-    deb = 0, 0
-    fin = 0, 0
-    chemin = []
-    cur = 0
-
-    def __init__(self, taille_grille, debut: tuple, fin: tuple, murs=None):
-        if murs is None:
-            murs = list()
-
-        self.deb = debut
-        self.fin = fin
-
-        if debut in murs:
-            raise ValueError(f"La position de départ est dans un obstacle. dep:{debut} fin:{fin}")
-        if fin in murs:
-            raise ValueError(f"La position d'arrivée est dans un obstacle. dep:{debut} fin:{fin}")
-
-        try:
-            if debut != fin:
-                self.chemin = a_star(taille_grille, debut, fin, murs)
-            else:
-                self.chemin = []
-            self.distance = len(self.chemin)
-        except KeyError:
-            # l'objet est inateignable
-            self.distance = taille_grille[0]*taille_grille[1]
-            self.chemin = [debut]
-
-    def get_next(self):
-        self.cur += 1
-        return self.chemin[self.cur-1]
-
-    def __int__(self):
-        return self.distance
 
 # Chemin(taille, debut, fin).distance

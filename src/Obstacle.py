@@ -6,7 +6,15 @@ class Obstacle:
         self.id = id_obstacle
         self.pos1 = pos1  # tuple (x1,y1)
         self.pos2 = pos2  # tuple (x2,y2)
-    
+
+    def get_height(self):
+        """
+        Retourne la hauteur de l'obstacle (axe Y)
+        :return: Int
+        """
+        return (self.pos2[1]-self.pos1[1])+1
+
+
     def get_id(self):
         """
         Retourne l'id d'un obstacle
@@ -27,12 +35,6 @@ class Obstacle:
         """
         return self.pos2
 
-    def get_height(self):
-        """
-        Retourne la hauteur de l'obstacle (axe Y)
-        :return: Int
-        """
-        return (self.pos2[1]-self.pos1[1])+1
 
     def get_width(self):
         """

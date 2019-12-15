@@ -6,12 +6,7 @@ class Ouvrier:
         self.radius = radius  # int, rayon correspondant à la limite de déplacement de l'ouvrier
         self.vit_marche = 1
 
-    def get_pos_init(self):
-        """
-        Retourne la position initiale de l'ouvrier (tuple)
-        :return:
-        """
-        return self.pos_init
+
 
     def get_pos(self):
         """
@@ -19,6 +14,13 @@ class Ouvrier:
         :return:
         """
         return self.pos
+
+    def get_pos_init(self):
+        """
+        Retourne la position initiale de l'ouvrier (tuple)
+        :return:
+        """
+        return self.pos_init
 
     def get_radius(self):
         """

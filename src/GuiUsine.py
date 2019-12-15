@@ -71,6 +71,35 @@ class GuiUsine(Frame):
         self.mode_visuel()
         self.simulation_lancee = False
 
+    def charger_carte(self):
+        self.carte = importer(askopenfilename())
+        self.mode_visuel()
+
+    def com_ajout_robot(self):
+
+        donnees = {
+            "Assemblage": (BooleanVar, "Oui", "Non"),
+            "Transport": (BooleanVar, "Oui", "Non"),
+            "Vitesse": (IntVar, 1, 2, 3, 4, 5)
+        }
+
+        self.popup(Formulaire, donnees, bg='#faf7f2')
+
+    def contenu_non_implemente(self):
+        """
+        Affiche un label pour prévenir l'utilisateur
+        :return:
+        """
+        self.contenu.destroy()
+
+        self.contenu = Frame(self, bg='red')
+        self.contenu.rowconfigure(0, weight=1)
+        self.contenu.columnconfigure(0, weight=1)
+        self.contenu.grid(row=1, column=0, sticky='news')
+
+        self.contenu.label_non_implemente = Label(self.contenu, text="Le contenu n'est pas encore implémenté", bg='red')
+        self.contenu.label_non_implemente.grid(row=0, column=0, padx=20, pady=20, sticky='news')
+
     def lancer(self):
         """
         Lance la simulation de l'usine
@@ -82,57 +111,6 @@ class GuiUsine(Frame):
         exporter(temp)
         self.simulation_lancee = True
         self.simulation_boucle()
-
-    def simulation_boucle(self):
-        if self.simulation_lancee:
-            self.canvas_usine.after(10, self.canvas_usine.carte.tour_simulation)
-            self.canvas_usine.after(490, self.canvas_usine.chargement(self.canvas_usine.carte))
-            self.canvas_usine.after(500, self.simulation_boucle)
-
-    def pauser(self):
-        """
-        Pause la simulation de l'usine
-        :return:
-        """
-        self.mode_visuel()
-        self.simulation_lancee = False
-
-    def reinitialiser(self):
-        """
-        Réinitialise la simulation de l'usine
-        :return:
-        """
-        self.carte = importer("carte_temp.json")
-        self.mode_visuel()
-
-    def charger_carte(self):
-        self.carte = importer(askopenfilename())
-        self.mode_visuel()
-
-    def sauver_carte(self):
-        direc = askdirectory()
-        if direc:
-            exporter(self.carte, direc)
-        else:
-            exporter(self.carte)
-
-    def popup(self, frame, *args, **kwargs):
-        top = Toplevel(self.master)
-        top.rowconfigure(0, weight=1)
-        top.columnconfigure(0, weight=1)
-        topup = frame(top, *args, **kwargs)
-
-        topup.grid(row=0, column=0, sticky='new')
-
-    def com_ajout_robot(self):
-
-        donnees = {
-            "Assemblage": (BooleanVar, "Oui", "Non"),
-            "Transport": (BooleanVar, "Oui", "Non"),
-            "Vitesse": (IntVar, 1, 2, 3, 4, 5)
-        }
-
-        self.popup(Formulaire, donnees, bg='#faf7f2')
 
     def modifier_robot(self):
         """
@@ -148,13 +126,6 @@ class GuiUsine(Frame):
         self.contenu.bouton_ajouter_robot = Button(self.contenu, text="Ajouter un robot",
                                                    command=self.com_ajout_robot)
         self.contenu.bouton_ajouter_robot.grid(row=0, column=0, padx=20, pady=20, sticky='news')
-
-    def voir_ateliers(self):
-        """
-        Permet de voir la liste des tâches en cours
-        :return:
-        """
-        self.contenu_non_implemente()
 
     def modifier_usine(self):
         """
@@ -198,6 +169,43 @@ class GuiUsine(Frame):
                                         highlightcolor='blue')
         self.message_textmode.grid(row=1, column=0, padx=20, pady=20, sticky='news')
 
+    def pauser(self):
+        """
+        Pause la simulation de l'usine
+        :return:
+        """
+        self.mode_visuel()
+        self.simulation_lancee = False
+
+    def popup(self, frame, *args, **kwargs):
+        top = Toplevel(self.master)
+        top.rowconfigure(0, weight=1)
+        top.columnconfigure(0, weight=1)
+        topup = frame(top, *args, **kwargs)
+
+        topup.grid(row=0, column=0, sticky='new')
+
+    def reinitialiser(self):
+        """
+        Réinitialise la simulation de l'usine
+        :return:
+        """
+        self.carte = importer("carte_temp.json")
+        self.mode_visuel()
+
+    def sauver_carte(self):
+        direc = askdirectory()
+        if direc:
+            exporter(self.carte, direc)
+        else:
+            exporter(self.carte)
+
+    def simulation_boucle(self):
+        if self.simulation_lancee:
+            self.canvas_usine.after(10, self.canvas_usine.carte.tour_simulation)
+            self.canvas_usine.after(490, self.canvas_usine.chargement(self.canvas_usine.carte))
+            self.canvas_usine.after(500, self.simulation_boucle)
+
     def mode_text(self):
         """
         Permet d'afficher l'écran du mode texte
@@ -224,20 +232,13 @@ class GuiUsine(Frame):
         # todo réussir à aligner le texte à gauche
         return msg
 
-    def contenu_non_implemente(self):
+    def voir_ateliers(self):
         """
-        Affiche un label pour prévenir l'utilisateur
+        Permet de voir la liste des tâches en cours
         :return:
         """
-        self.contenu.destroy()
+        self.contenu_non_implemente()
 
-        self.contenu = Frame(self, bg='red')
-        self.contenu.rowconfigure(0, weight=1)
-        self.contenu.columnconfigure(0, weight=1)
-        self.contenu.grid(row=1, column=0, sticky='news')
-
-        self.contenu.label_non_implemente = Label(self.contenu, text="Le contenu n'est pas encore implémenté", bg='red')
-        self.contenu.label_non_implemente.grid(row=0, column=0, padx=20, pady=20, sticky='news')
 
 
 if __name__ == '__main__':

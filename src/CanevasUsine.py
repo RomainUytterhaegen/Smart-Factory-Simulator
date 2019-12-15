@@ -65,6 +65,49 @@ class CanvasUsine(Canvas):
 
         self._create_grid()
 
+    def bind_item(self):
+        self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
+        self.tag_bind('copy_and_drop', "<Button1-Motion>", lambda e: self._move_selected(e.x, e.y))
+        self.tag_bind('copy_and_drop', "<ButtonRelease-1>", lambda e: self._move_selected(e.x, e.y, 0, True))
+
+        self.tag_bind('resizeable', "<ButtonPress-3>", self.on_item_click)
+        #  self.tag_bind('resizeable', "<Button3-Motion>", lambda e: self._resize_item(e.x, e.y))
+        self.tag_bind('resizeable', "<ButtonRelease-3>", lambda e: self._resize_item(e.x, e.y, True))
+
+        self.tag_bind('movable', "<ButtonPress-1>", self.on_item_click)
+        self.tag_bind('movable', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y))
+        self.tag_bind('movable', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y, 0, True))
+        self.master.master.bind("<KeyRelease-Delete>", lambda e: self._suppr_current())
+
+    def chargement(self, carte: Carte):
+        self.carte = carte
+        for atelier in self.carte.liste_atelier:
+            x1, y1 = [i * self.taille_case for i in atelier.pos1]
+            x2, y2 = [i * self.taille_case for i in atelier.pos2]
+            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct + self.taille_case,
+                                  y2 + self.taille_case, tags=('movable', 'resizeable', 'atelier'), fill='gray')
+        for borne in self.carte.liste_borne:
+            x, y = [i * self.taille_case for i in borne.pos1]
+            self.create_rectangle(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
+                                  y+self.taille_case, tags=('movable', 'base'), fill='orange')
+        for obstacle in self.carte.liste_obstacle:
+            x1, y1 = [i * self.taille_case for i in obstacle.pos1]
+            x2, y2 = [i * self.taille_case for i in obstacle.pos2]
+            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct + self.taille_case,
+                                  y2 + self.taille_case, tags=('movable', 'resizeable', 'obstacle'), fill='black')
+        self.delete('robot')
+        for rob in self.carte.liste_robot:
+            x, y = [i * self.taille_case for i in rob.pos]
+            self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
+                             y+self.taille_case, tags=('movable', 'robot'), fill='yellow')
+
+    def on_item_click(self, event):
+        self.last_xy = event.x, event.y
+
+    def on_item_click_copy(self, event):
+        self.on_item_click(event)
+        self._copy_curent()
+
     def _copy_curent(self):
         iid = self.find_withtag('current')
         self.selected = self._copy_item(iid)
@@ -94,6 +137,15 @@ class CanvasUsine(Canvas):
         elif self.type(iid) == 'rectangle':
             return self.create_rectangle(*coords, **kwds)
 
+    def _create_grid(self):
+        for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):
+            self.create_line(i, 0, i, self.height, fill="grey")
+        self.create_line(self.width, 0, self.width, self.height, fill="black")
+
+        for i in range(self.taille_case, self.height, self.taille_case):
+            self.create_line(100 * self.construct, i, self.width, i, fill="grey")
+        self.create_line(100 * self.construct, self.height, self.width, self.height, fill="black")
+
     def _create_robot(self):
         """
         action à effectuer à la création d'un robot
@@ -117,15 +169,6 @@ class CanvasUsine(Canvas):
         self.after(1000, self._verif_fin_formulaire, topup)
 
         top.mainloop()
-
-    def _create_grid(self):
-        for i in range(100 * self.construct + self.taille_case, self.width, self.taille_case):
-            self.create_line(i, 0, i, self.height, fill="grey")
-        self.create_line(self.width, 0, self.width, self.height, fill="black")
-
-        for i in range(self.taille_case, self.height, self.taille_case):
-            self.create_line(100 * self.construct, i, self.width, i, fill="grey")
-        self.create_line(100 * self.construct, self.height, self.width, self.height, fill="black")
 
     def _magnetisme(self, pos: tuple):
         """
@@ -196,6 +239,22 @@ class CanvasUsine(Canvas):
         if diffx >= self.taille_case-5 and diffy >= self.taille_case-5:
             self.coords('current', x0, y0, x1, y1)
 
+    def _suppr_current(self):
+        if 'movable' in self.gettags('current'):
+            self.delete('current')
+
+    def sync_drag_and_drop(self):
+        """
+        Fonction qui ajoute les objets créé via d&d dans la carte
+        (Ou alors faire ça lors de la copîe)
+        :return:
+        """
+        pass
+
+    @staticmethod
+    def test_coucou():
+        print("coucou")
+
     def _verif_in_usine(self):
         """
         Verification des coordonées à droite de la ligne et dans le canvas
@@ -233,64 +292,7 @@ class CanvasUsine(Canvas):
             print(self.carte.liste_robot[0].pos, )
 
 
-    def _suppr_current(self):
-        if 'movable' in self.gettags('current'):
-            self.delete('current')
 
-    def bind_item(self):
-        self.tag_bind('copy_and_drop', "<ButtonPress-1>", self.on_item_click_copy)
-        self.tag_bind('copy_and_drop', "<Button1-Motion>", lambda e: self._move_selected(e.x, e.y))
-        self.tag_bind('copy_and_drop', "<ButtonRelease-1>", lambda e: self._move_selected(e.x, e.y, 0, True))
-
-        self.tag_bind('resizeable', "<ButtonPress-3>", self.on_item_click)
-        #  self.tag_bind('resizeable', "<Button3-Motion>", lambda e: self._resize_item(e.x, e.y))
-        self.tag_bind('resizeable', "<ButtonRelease-3>", lambda e: self._resize_item(e.x, e.y, True))
-
-        self.tag_bind('movable', "<ButtonPress-1>", self.on_item_click)
-        self.tag_bind('movable', "<Button1-Motion>", lambda e: self._move_item(e.x, e.y))
-        self.tag_bind('movable', "<ButtonRelease-1>", lambda e: self._move_item(e.x, e.y, 0, True))
-        self.master.master.bind("<KeyRelease-Delete>", lambda e: self._suppr_current())
-
-    def chargement(self, carte: Carte):
-        self.carte = carte
-        for atelier in self.carte.liste_atelier:
-            x1, y1 = [i * self.taille_case for i in atelier.pos1]
-            x2, y2 = [i * self.taille_case for i in atelier.pos2]
-            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct + self.taille_case,
-                                  y2 + self.taille_case, tags=('movable', 'resizeable', 'atelier'), fill='gray')
-        for borne in self.carte.liste_borne:
-            x, y = [i * self.taille_case for i in borne.pos1]
-            self.create_rectangle(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
-                                  y+self.taille_case, tags=('movable', 'base'), fill='orange')
-        for obstacle in self.carte.liste_obstacle:
-            x1, y1 = [i * self.taille_case for i in obstacle.pos1]
-            x2, y2 = [i * self.taille_case for i in obstacle.pos2]
-            self.create_rectangle(x1 + 100 * self.construct, y1, x2 + 100 * self.construct + self.taille_case,
-                                  y2 + self.taille_case, tags=('movable', 'resizeable', 'obstacle'), fill='black')
-        self.delete('robot')
-        for rob in self.carte.liste_robot:
-            x, y = [i * self.taille_case for i in rob.pos]
-            self.create_oval(x + 100 * self.construct, y, x + self.taille_case + 100 * self.construct,
-                             y+self.taille_case, tags=('movable', 'robot'), fill='yellow')
-
-    def on_item_click(self, event):
-        self.last_xy = event.x, event.y
-
-    def on_item_click_copy(self, event):
-        self.on_item_click(event)
-        self._copy_curent()
-
-    def sync_drag_and_drop(self):
-        """
-        Fonction qui ajoute les objets créé via d&d dans la carte
-        (Ou alors faire ça lors de la copîe)
-        :return:
-        """
-        pass
-
-    @staticmethod
-    def test_coucou():
-        print("coucou")
 
 
 class Test(Frame):

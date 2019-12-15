@@ -59,18 +59,24 @@ class Robot:
         else:
             return Robot.AFK, self.pos
 
-    def get_id(self):
+    def able(self, robot, atelier):  # , carte: Carte):
         """
-        Retourne l'indice du Robot
+        le robot peut-il faire la tâche?
+        :param robot:
+        :param atelier:
+        :return:
         """
-        return self.id
+        pass
+
+    def avancer(self):
+        self.pos = self.chemin[0]
 
     def get_autonomie(self):
         """
         Retourne la distance que peut faire le robot avant de tomber en panne
         """
         return self.batterie
-    
+
     def get_competences(self):
         """
         Retourne les compétences du robot sous forme d'un tableau booléen
@@ -78,8 +84,11 @@ class Robot:
         """
         return [self.transport, self.assemblage]
 
-    def avancer(self):
-        self.pos = self.chemin[0]
+    def get_id(self):
+        """
+        Retourne l'indice du Robot
+        """
+        return self.id
 
     def get_vitesse(self):
         """
@@ -99,11 +108,4 @@ class Robot:
         """
         self.batterie += recharge
 
-    def able(self, robot, atelier):  # , carte: Carte):
-        """
-        le robot peut-il faire la tâche?
-        :param robot:
-        :param atelier:
-        :return:
-        """
-        pass
+
